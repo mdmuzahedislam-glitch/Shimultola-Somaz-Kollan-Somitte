@@ -6,25 +6,36 @@
     <title>মেম্বার ড্যাশবোর্ড - শিমুলতলা সমাজকল্যাণ সমবায় সমিতি</title>
     <style>
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
-        body { background: #f4f7f6; padding: 15px; color: #333; }
-        .container { max-width: 800px; margin: 0 auto; }
-        header { background: #1b5e20; color: white; padding: 15px; border-radius: 8px; display: flex; justify-content: space-between; align- items: center; margin-bottom: 20px; }
+        body { background: #f4f7f6; padding: 15px; color: #333; display: none; }
+        .container { max-width: 850px; margin: 0 auto; }
+        header { background: #1b5e20; color: white; padding: 15px; border-radius: 8px; display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
         header h2 { font-size: 18px; }
-        .logout-btn { background: #c62828; color: white; padding: 6px 12px; text-decoration: none; border-radius: 4px; font-size: 13px; font-weight: bold; cursor: pointer; border: none; }
+        .logout-btn { background: #c62828; color: white; padding: 6px 12px; border-radius: 4px; font-size: 13px; font-weight: bold; cursor: pointer; border: none; }
         
-        .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 15px; margin-bottom: 20px; }
-        .stat-box { background: white; padding: 20px; border-radius: 8px; box-shadow: 0 2px 6px rgba(0,0,0,0.08); text-align: center; border-left: 5px solid #2e7d32; }
+        .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; margin-bottom: 20px; }
+        .stat-box { background: white; padding: 15px; border-radius: 8px; box-shadow: 0 2px 6px rgba(0,0,0,0.08); text-align: center; border-left: 5px solid #2e7d32; }
         .stat-box.deposit { border-left-color: #0288d1; }
-        .stat-box h3 { font-size: 14px; color: #666; margin-bottom: 8px; }
-        .stat-box p { font-size: 22px; font-weight: bold; color: #1b5e20; }
+        .stat-box.loan { border-left-color: #e65100; }
+        .stat-box h3 { font-size: 13px; color: #666; margin-bottom: 6px; }
+        .stat-box p { font-size: 20px; font-weight: bold; color: #1b5e20; }
 
         .card { background: white; padding: 20px; border-radius: 8px; box-shadow: 0 2px 6px rgba(0,0,0,0.08); margin-bottom: 20px; }
         h3.section-title { color: #1b5e20; border-bottom: 2px solid #eee; padding-bottom: 8px; margin-bottom: 15px; font-size: 16px; }
 
         table { width: 100%; border-collapse: collapse; margin-top: 10px; }
         table, th, td { border: 1px solid #ddd; }
-        th, td { padding: 10px; text-align: center; font-size: 14px; }
+        th, td { padding: 9px; text-align: center; font-size: 13px; }
         th { background: #e8f5e9; color: #1b5e20; }
+
+        .btn-receipt { background: #0288d1; color: white; border: none; padding: 5px 10px; border-radius: 4px; cursor: pointer; font-size: 12px; }
+
+        /* Receipt Modal */
+        .modal { display: none; position: fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.5); justify-content:center; align-items:center; padding:15px; z-index:1000; }
+        .receipt-box { background: white; padding: 25px; border-radius: 8px; width: 100%; max-width: 450px; border: 2px solid #1b5e20; }
+        .receipt-header { text-align: center; border-bottom: 2px dashed #ccc; padding-bottom: 10px; margin-bottom: 15px; }
+        .receipt-header h3 { color: #1b5e20; font-size: 18px; }
+        .receipt-row { display: flex; justify-content: space-between; margin-bottom: 8px; font-size: 14px; }
+        .receipt-footer { text-align: center; margin-top: 20px; border-top: 2px dashed #ccc; padding-top: 10px; }
     </style>
 </head>
 <body>
@@ -33,75 +44,115 @@
     <header>
         <div>
             <h2 id="memberName">স্বাগতম, সদস্য</h2>
-            <p style="font-size: 12px; opacity: 0.9;" id="memberInfo">সদস্য আইডি ও টাইপ লোড হচ্ছে...</p>
+            <p style="font-size: 12px; opacity: 0.9;" id="memberInfo">সদস্য তথ্য লোড হচ্ছে...</p>
         </div>
         <button onclick="logout()" class="logout-btn">লগআউট</button>
     </header>
 
-    <!-- মূল ব্যালেন্স ও সঞ্চয় তথ্য -->
     <div class="grid">
         <div class="stat-box">
             <h3>💰 মোট সঞ্চয় ব্যালেন্স</h3>
             <p id="totalBalance">৳ ০</p>
         </div>
-        <div class="stat-box deposit">
-            <h3>📱 যোগাযোগ ফোন নম্বর</h3>
-            <p id="phoneNo" style="font-size: 18px; color: #0288d1;">-</p>
+        <div class="stat-box loan">
+            <h3>💳 বর্তমান বকেয়া ঋণ</h3>
+            <p id="loanBalance" style="color: #e65100;">৳ ০</p>
         </div>
-        <div class="stat-box" style="border-left-color: #e65100;">
-            <h3>💳 বর্তমান ঋণ বকেয়া</h3>
-            <p>৳ ০</p>
+        <div class="stat-box deposit">
+            <h3>📱 মোবাইল নম্বর</h3>
+            <p id="phoneNo" style="font-size: 16px; color: #0288d1;">-</p>
         </div>
     </div>
 
-    <!-- ডিপোজিট হিস্টোরি -->
     <div class="card">
-        <h3 class="section-title">📊 সাম্প্রতিক সঞ্চয় হিসাব বিবরণী</h3>
+        <h3 class="section-title">📊 সঞ্চয় হিস্টোরি ও ডিজিটাল রসিদ</h3>
         <table>
             <thead>
                 <tr>
                     <th>বিবরণ</th>
-                    <th>মোট জমা পরিমাণ</th>
+                    <th>জমার পরিমাণ</th>
                     <th>অবস্থা</th>
+                    <th>রসিদ</th>
                 </tr>
             </thead>
             <tbody>
                 <tr>
-                    <td>বর্তমান মোট জমা আমানত</td>
+                    <td>মাসিক নিয়মিত সঞ্চয় আমানত</td>
                     <td id="tableBalance" style="font-weight: bold; color: green;">৳ ০</td>
                     <td><span style="color: green; font-weight: bold;">সক্রিয়</span></td>
+                    <td><button class="btn-receipt" onclick="showReceipt('মাসিক সঞ্চয় আমানত')">🧾 রসিদ দেখুন</button></td>
                 </tr>
             </tbody>
         </table>
     </div>
 </div>
 
+<div class="modal" id="receiptModal">
+    <div class="receipt-box">
+        <div class="receipt-header">
+            <h3>🏛 শিমুলতলা সমাজকল্যাণ সমবায় সমিতি</h3>
+            <p style="font-size: 12px;">ইসলামপুর, জামালপুর (স্থাপিত: ২০২৪ ইং)</p>
+            <p style="font-size: 13px; font-weight: bold; margin-top: 5px; color: #0288d1;">ডিজিটাল জমা রসিদ</p>
+        </div>
+        <div class="receipt-row"><span>তারিখ:</span> <strong id="recDate"></strong></div>
+        <div class="receipt-row"><span>সদস্যের নাম:</span> <strong id="recName"></strong></div>
+        <div class="receipt-row"><span>সদস্য আইডি:</span> <strong id="recId"></strong></div>
+        <div class="receipt-row"><span>খাত:</span> <strong id="recType"></strong></div>
+        <div class="receipt-row" style="border-top: 1px solid #eee; padding-top: 5px;"><span>মোট জমা পরিমাণ:</span> <strong id="recAmount" style="color: green;"></strong></div>
+        
+        <div class="receipt-footer">
+            <p style="font-size: 11px; color: #777;">ইলেকট্রনিকভাবে প্রস্তুতকৃত রসিদ, স্বাক্ষরের প্রয়োজন নেই।</p>
+            <div style="margin-top: 15px;">
+                <button onclick="window.print()" style="background: #2e7d32; color: white; border: none; padding: 6px 12px; border-radius: 4px; cursor: pointer;">🖨 প্রিন্ট / সেভ করুন</button>
+                <button onclick="closeReceipt()" style="background: #757575; color: white; border: none; padding: 6px 12px; border-radius: 4px; cursor: pointer; margin-left: 5px;">বন্ধ করুন</button>
+            </div>
+        </div>
+    </div>
+</div>
+
 <script>
+    let currentMemberObj = null;
+
     window.onload = function() {
         const loggedInUser = sessionStorage.getItem('loggedInMember');
+
         if (!loggedInUser) {
-            alert('অনুগ্রহ করে প্রথমে লগইন করুন।');
-            window.location.href = 'member-login.html';
+            window.location.replace('member-login.html');
             return;
         }
 
-        const memberData = JSON.parse(loggedInUser);
+        currentMemberObj = JSON.parse(loggedInUser);
 
-        // অ্যাডমিন কোনো পরিবর্তন করে থাকলে আপডেট ডেটা লোকালস্টোরেজ থেকে আনা
-        const allMembers = JSON.parse(localStorage.getItem('somitte_members')) || [];
-        const currentMember = allMembers.find(m => m.id === memberData.id) || memberData;
+        document.body.style.display = 'block';
 
-        // স্ক্রিনে তথ্য দেখানো
-        document.getElementById('memberName').innerText = `স্বাগতম, ${currentMember.name}`;
-        document.getElementById('memberInfo').innerText = `আইডি: ${currentMember.id} | টাইপ: ${currentMember.type}`;
-        document.getElementById('totalBalance').innerText = `৳ ${currentMember.balance}`;
-        document.getElementById('phoneNo').innerText = currentMember.phone;
-        document.getElementById('tableBalance').innerText = `৳ ${currentMember.balance}`;
+        document.getElementById('memberName').innerText = `স্বাগতম, ${currentMemberObj.name}`;
+        document.getElementById('memberInfo').innerText = `আইডি: ${currentMemberObj.id} | টাইপ: ${currentMemberObj.type}`;
+        document.getElementById('totalBalance').innerText = `৳ ${currentMemberObj.balance}`;
+        document.getElementById('loanBalance').innerText = `৳ ${currentMemberObj.loan || 0}`;
+        document.getElementById('phoneNo').innerText = currentMemberObj.phone;
+        document.getElementById('tableBalance').innerText = `৳ ${currentMemberObj.balance}`;
     };
+
+    function showReceipt(type) {
+        if (!currentMemberObj) return;
+        const today = new Date().toLocaleDateString('bn-BD');
+        
+        document.getElementById('recDate').innerText = today;
+        document.getElementById('recName').innerText = currentMemberObj.name;
+        document.getElementById('recId').innerText = currentMemberObj.id;
+        document.getElementById('recType').innerText = type;
+        document.getElementById('recAmount').innerText = `৳ ${currentMemberObj.balance}`;
+
+        document.getElementById('receiptModal').style.display = 'flex';
+    }
+
+    function closeReceipt() {
+        document.getElementById('receiptModal').style.display = 'none';
+    }
 
     function logout() {
         sessionStorage.removeItem('loggedInMember');
-        window.location.href = 'member-login.html';
+        window.location.replace('member-login.html');
     }
 </script>
 
