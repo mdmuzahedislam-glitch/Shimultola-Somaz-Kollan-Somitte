@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>এডমিন ড্যাশবোর্ড - শিমুলতলা সমাজকল্যাণ সমবায় সমিতি</title>
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+        body { background: #f4f7f6; padding: 15px; }
+        .container { max-width: 1000px; margin: 0 auto; }
+        header { background: #b71c1c; color: white; padding: 15px 20px; border-radius: 8px; display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
+        header h2 { font-size: 18px; }
+        .logout-btn { background: #424242; color: white; padding: 6px 12px; text-decoration: none; border-radius: 4px; font-size: 13px; font-weight: bold; }
+
+        .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 15px; margin-bottom: 20px; }
+        .stat-box { background: white; padding: 20px; border-radius: 8px; box-shadow: 0 2px 6px rgba(0,0,0,0.08); text-align: center; border-left: 5px solid #2e7d32; }
+        .stat-box.expense { border-left-color: #c62828; }
+        .stat-box.members { border-left-color: #1565c0; }
+        .stat-box h3 { font-size: 14px; color: #666; margin-bottom: 8px; }
+        .stat-box p { font-size: 22px; font-weight: bold; color: #333; }
+
+        .card { background: white; padding: 20px; border-radius: 8px; box-shadow: 0 2px 6px rgba(0,0,0,0.08); margin-bottom: 20px; }
+        h3.section-title { color: #b71c1c; border-bottom: 2px solid #eee; padding-bottom: 8px; margin-bottom: 15px; font-size: 16px; display: flex; justify-content: space-between; align-items: center; }
+
+        table { width: 100%; border-collapse: collapse; margin-top: 10px; }
+        table, th, td { border: 1px solid #ddd; }
+        th, td { padding: 10px; text-align: center; font-size: 14px; }
+        th { background: #ffebee; color: #b71c1c; }
+
+        .btn { background: #2e7d32; color: white; border: none; padding: 6px 12px; border-radius: 4px; cursor: pointer; font-size: 13px; }
+        .btn-danger { background: #c62828; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <header>
+        <div>
+            <h2>⚙️ এডমিন কন্ট্রোল প্যানেল</h2>
+            <p style="font-size: 12px; opacity: 0.9;">শিমুলতলা সমাজকল্যাণ সমবায় সমিতি</p>
+        </div>
+        <a href="admin-login.html" class="logout-btn">লগআউট</a>
+    </header>
+
+    <!-- ড্যাশবোর্ড ওভারভিউ (আয়/ব্যয় ও তথ্য) -->
+    <div class="grid">
+        <div class="stat-box">
+            <h3>💵 মোট ক্যাশ/আয় (Cash In)</h3>
+            <p style="color: #2e7d32;">৳ ৪,৫০,০০০</p>
+        </div>
+        <div class="stat-box expense">
+            <h3>💸 মোট ব্যয়/ঋণ (Cash Out)</h3>
+            <p style="color: #c62828;">৳ ১,২০,০০০</p>
+        </div>
+        <div class="stat-box members">
+            <h3>👥 মোট নিবন্ধিত সদস্য</h3>
+            <p style="color: #1565c0;">৫০ জন</p>
+        </div>
+    </div>
+
+    <!-- ক্যাশবুক এন্ট্রি ও সামারি -->
+    <div class="card">
+        <h3 class="section-title">📖 ক্যাশবুক হিসাব (Cashbook Summary)</h3>
+        <table>
+            <thead>
+                <tr>
+                    <th>তারিখ</th>
+                    <th>খাত / বিবরণ</th>
+                    <th>প্রকার</th>
+                    <th>পরিমাণ</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>০৯/১০/২০২৬</td>
+                    <td>সদস্য জমা (সাপ্তাহিক ও মাসিক)</td>
+                    <td><span style="color: green; font-weight: bold;">আয়</span></td>
+                    <td>৳ ১২,৫০০</td>
+                </tr>
+                <tr>
+                    <td>০৮/১০/২০২৬</td>
+                    <td>অফিস মনিহারি ক্রয়</td>
+                    <td><span style="color: red; font-weight: bold;">ব্যয়</span></td>
+                    <td>৳ ১,২০০</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <!-- সদস্য কন্ট্রোল ও আলাদা আলাদা লেজার -->
+    <div class="card">
+        <h3 class="section-title">
+            <span>👤 সদস্য তালিকা ও লেজার কন্ট্রোল</span>
+            <button class="btn">+ নতুন সদস্য যুক্ত করুন</button>
+        </h3>
+        <table>
+            <thead>
+                <tr>
+                    <th>সদস্য আইডি</th>
+                    <th>নাম</th>
+                    <th>ফোন নম্বর</th>
+                    <th>মোট জমা</th>
+                    <th>অ্যাকশন (লেজার)</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>M-101</td>
+                    <td>মো: আব্দুল করিম</td>
+                    <td>০১৭১১-০০০০০১</td>
+                    <td>৳ ১৫,০০০</td>
+                    <td>
+                        <button class="btn">লেজার দেখুন</button>
+                        <button class="btn btn-danger">সম্পাদনা</button>
+                    </td>
+                </tr>
+                <tr>
+                    <td>M-102</td>
+                    <td>মো: রহিম মিয়া</td>
+                    <td>০১৭১১-০০০০০২</td>
+                    <td>৳ ১২,৫০৮</td>
+                    <td>
+                        <button class="btn">লেজার দেখুন</button>
+                        <button class="btn btn-danger">সম্পাদনা</button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+</body>
+</html>
