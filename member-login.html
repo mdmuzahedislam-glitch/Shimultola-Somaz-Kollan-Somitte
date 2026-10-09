@@ -38,12 +38,9 @@
 </div>
 
 <script>
-    // পেজ লোড হলেই পুরনো সব লগইন সেশন ক্লিয়ার করে দেবে
-    window.onload = function() {
-        sessionStorage.removeItem('loggedInMember');
-    };
+    // আগের সব ক্যাশ ও সেশন ক্লিয়ার
+    sessionStorage.removeItem('loggedInMember');
 
-    // ডিফল্ট সদস্য তথ্য (যদি লোকালস্টোরেজ খালি থাকে)
     const initialMembers = [
         { id: "M-101", name: "মো: আব্দুল করিম", username: "karim101", password: "123", phone: "01711000001", type: "সাধারণ সদস্য", balance: 15000 },
         { id: "M-102", name: "মো: রহিম মিয়া", username: "rahim102", password: "123", phone: "01711000002", type: "সাধারণ সদস্য", balance: 12508 }
@@ -54,9 +51,8 @@
         const user = document.getElementById('username').value.trim();
         const pass = document.getElementById('password').value.trim();
 
-        // LocalStorage থেকে মেম্বারদের তথ্য আনা
         let members = JSON.parse(localStorage.getItem('somitte_members'));
-        if (!members) {
+        if (!members || members.length === 0) {
             members = initialMembers;
             localStorage.setItem('somitte_members', JSON.stringify(initialMembers));
         }
@@ -64,11 +60,9 @@
         const foundMember = members.find(m => m.username === user && m.password === pass);
 
         if (foundMember) {
-            // সঠিক ইউজারনেম ও পাসওয়ার্ড দিয়ে সফল লগইন হলে সেশন সেট করবে
             sessionStorage.setItem('loggedInMember', JSON.stringify(foundMember));
             window.location.href = "member-dashboard.html";
         } else {
-            // ভুল তথ্য দিলে লাল এরর দেখাবে
             document.getElementById('errorMsg').style.display = 'block';
         }
     }
