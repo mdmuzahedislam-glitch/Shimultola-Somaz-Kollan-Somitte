@@ -15,6 +15,7 @@
         button { width: 100%; background: #d32f2f; color: white; border: none; padding: 12px; margin-top: 10px; border-radius: 5px; font-size: 16px; font-weight: bold; cursor: pointer; }
         button:hover { background: #b71c1c; }
         .back-link { text-align: center; display: block; margin-top: 15px; color: #555; text-decoration: none; font-size: 14px; }
+        .error-msg { color: #d32f2f; font-size: 13px; text-align: center; margin-top: 10px; display: none; font-weight: bold; }
     </style>
 </head>
 <body>
@@ -31,14 +32,28 @@
             <input type="password" id="adminPassword" placeholder="পাসওয়ার্ড দিন" required>
         </div>
         <button type="submit">এডমিন লগইন</button>
+        <p id="errorMsg" class="error-msg">❌ ভুল এডমিন আইডি বা পাসওয়ার্ড!</p>
     </form>
     <a href="index.html" class="back-link">← হোম পেজে ফিরে যান</a>
 </div>
 
 <script>
+    // নির্দিষ্ট সিকিউর এডমিন লগইন তথ্য
+    const ADMIN_USER = "admin";
+    const ADMIN_PASS = "admin123";
+
     function handleAdminLogin(event) {
         event.preventDefault();
-        window.location.href = "admin-dashboard.html";
+        const user = document.getElementById('adminUsername').value.trim();
+        const pass = document.getElementById('adminPassword').value.trim();
+
+        // সঠিক ইউজারনেম ও পাসওয়ার্ড যাচাইকরণ
+        if (user === ADMIN_USER && pass === ADMIN_PASS) {
+            sessionStorage.setItem('adminLoggedIn', 'true');
+            window.location.href = "admin-dashboard.html";
+        } else {
+            document.getElementById('errorMsg').style.display = 'block';
+        }
     }
 </script>
 
