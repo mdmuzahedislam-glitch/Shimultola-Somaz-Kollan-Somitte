@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>মেম্বার ড্যাশবোর্ড - শিমুলতলা সমাজকল্যাণ সমবায় সমিতি</title>
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+        body { background: #f4f7f6; padding: 15px; }
+        .container { max-width: 800px; margin: 0 auto; }
+        header { background: #1b5e20; color: white; padding: 15px; border-radius: 8px; display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
+        header h2 { font-size: 18px; }
+        .logout-btn { background: #c62828; color: white; padding: 6px 12px; text-decoration: none; border-radius: 4px; font-size: 13px; font-weight: bold; }
+        
+        .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 15px; margin-bottom: 20px; }
+        .stat-box { background: white; padding: 20px; border-radius: 8px; box-shadow: 0 2px 6px rgba(0,0,0,0.08); text-align: center; border-left: 5px solid #2e7d32; }
+        .stat-box.deposit { border-left-color: #0288d1; }
+        .stat-box h3 { font-size: 14px; color: #666; margin-bottom: 8px; }
+        .stat-box p { font-size: 22px; font-weight: bold; color: #1b5e20; }
+
+        .card { background: white; padding: 20px; border-radius: 8px; box-shadow: 0 2px 6px rgba(0,0,0,0.08); margin-bottom: 20px; }
+        h3.section-title { color: #1b5e20; border-bottom: 2px solid #eee; padding-bottom: 8px; margin-bottom: 15px; font-size: 16px; }
+
+        table { width: 100%; border-collapse: collapse; margin-top: 10px; }
+        table, th, td { border: 1px solid #ddd; }
+        th, td { padding: 10px; text-align: center; font-size: 14px; }
+        th { background: #e8f5e9; color: #1b5e20; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <header>
+        <div>
+            <h2>স্বাগতম, মো: রহিম মিয়া (আইডি: M-102)</h2>
+            <p style="font-size: 12px; opacity: 0.8;">সদস্য টাইপ: সাধারণ সদস্য</p>
+        </div>
+        <a href="member-login.html" class="logout-btn">লগআউট</a>
+    </header>
+
+    <!-- মূল ব্যালেন্স ও ডিপোজিট সামারি -->
+    <div class="grid">
+        <div class="stat-box">
+            <h3>💰 মূল সঞ্চয় ব্যালেন্স</h3>
+            <p>৳ ১২,৫০৮</p>
+        </div>
+        <div class="stat-box deposit">
+            <h3>📥 চলতি মাসের ডিপোজিট</h3>
+            <p>৳ ৫০০</p>
+        </div>
+        <div class="stat-box" style="border-left-color: #e65100;">
+            <h3>💳 বর্তমান ঋণ বকেয়া</h3>
+            <p>৳ ০</p>
+        </div>
+    </div>
+
+    <!-- ডিপোজিট হিস্টোরি -->
+    <div class="card">
+        <h3 class="section-title">📊 সাম্প্রতিক ডিপোজিট হিস্টোরি (Deposit History)</h3>
+        <table>
+            <thead>
+                <tr>
+                    <th>তারিখ</th>
+                    <th>বিবরণ</th>
+                    <th>জমার পরিমাণ</th>
+                    <th>অবস্থা</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>০১/১০/২০২৬</td>
+                    <td>মাসিক নিয়মিত সঞ্চয়</td>
+                    <td>৳ ৫০০</td>
+                    <td><span style="color: green; font-weight: bold;">সফল</span></td>
+                </tr>
+                <tr>
+                    <td>০১/০৯/২০২৬</td>
+                    <td>মাসিক নিয়মিত সঞ্চয়</td>
+                    <td>৳ ৫০০</td>
+                    <td><span style="color: green; font-weight: bold;">সফল</span></td>
+                </tr>
+                <tr>
+                    <td>০১/০৮/২০২৬</td>
+                    <td>মাসিক নিয়মিত সঞ্চয়</td>
+                    <td>৳ ৫০০</td>
+                    <td><span style="color: green; font-weight: bold;">সফল</span></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+</body>
+</html>
