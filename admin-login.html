@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>এডমিন লগইন - শিমুলতলা সমাজকল্যাণ সমবায় সমিতি</title>
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+        body { background: #f4f7f6; display: flex; justify-content: center; align-items: center; min-height: 100vh; padding: 15px; }
+        .login-card { background: white; width: 100%; max-width: 400px; padding: 25px; border-radius: 10px; box-shadow: 0 4px 12px rgba(0,0,0,0.1); border-top: 5px solid #d32f2f; }
+        h2 { text-align: center; color: #b71c1c; margin-bottom: 20px; font-size: 22px; }
+        .form-group { margin-bottom: 15px; }
+        label { display: block; margin-bottom: 5px; font-weight: bold; color: #333; font-size: 14px; }
+        input { width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 5px; font-size: 15px; }
+        button { width: 100%; background: #d32f2f; color: white; border: none; padding: 12px; margin-top: 10px; border-radius: 5px; font-size: 16px; font-weight: bold; cursor: pointer; }
+        button:hover { background: #b71c1c; }
+        .back-link { text-align: center; display: block; margin-top: 15px; color: #555; text-decoration: none; font-size: 14px; }
+    </style>
+</head>
+<body>
+
+<div class="login-card">
+    <h2>🔐 এডমিন প্যানেল লগইন</h2>
+    <form onsubmit="handleAdminLogin(event)">
+        <div class="form-group">
+            <label>এডমিন আইডি / ইউজার নেম:</label>
+            <input type="text" id="adminUsername" placeholder="এডমিন ইউজার নেম দিন" required>
+        </div>
+        <div class="form-group">
+            <label>পাসওয়ার্ড (Password):</label>
+            <input type="password" id="adminPassword" placeholder="পাসওয়ার্ড দিন" required>
+        </div>
+        <button type="submit">এডমিন লগইন</button>
+    </form>
+    <a href="index.html" class="back-link">← হোম পেজে ফিরে যান</a>
+</div>
+
+<script>
+    function handleAdminLogin(event) {
+        event.preventDefault();
+        window.location.href = "admin-dashboard.html";
+    }
+</script>
+
+</body>
+</html>
