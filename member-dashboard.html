@@ -6,11 +6,11 @@
     <title>মেম্বার ড্যাশবোর্ড - শিমুলতলা সমাজকল্যাণ সমবায় সমিতি</title>
     <style>
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
-        body { background: #f4f7f6; padding: 15px; }
+        body { background: #f4f7f6; padding: 15px; color: #333; }
         .container { max-width: 800px; margin: 0 auto; }
-        header { background: #1b5e20; color: white; padding: 15px; border-radius: 8px; display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
+        header { background: #1b5e20; color: white; padding: 15px; border-radius: 8px; display: flex; justify-content: space-between; align- items: center; margin-bottom: 20px; }
         header h2 { font-size: 18px; }
-        .logout-btn { background: #c62828; color: white; padding: 6px 12px; text-decoration: none; border-radius: 4px; font-size: 13px; font-weight: bold; }
+        .logout-btn { background: #c62828; color: white; padding: 6px 12px; text-decoration: none; border-radius: 4px; font-size: 13px; font-weight: bold; cursor: pointer; border: none; }
         
         .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 15px; margin-bottom: 20px; }
         .stat-box { background: white; padding: 20px; border-radius: 8px; box-shadow: 0 2px 6px rgba(0,0,0,0.08); text-align: center; border-left: 5px solid #2e7d32; }
@@ -32,21 +32,21 @@
 <div class="container">
     <header>
         <div>
-            <h2>স্বাগতম, মো: রহিম মিয়া (আইডি: M-102)</h2>
-            <p style="font-size: 12px; opacity: 0.8;">সদস্য টাইপ: সাধারণ সদস্য</p>
+            <h2 id="memberName">স্বাগতম, সদস্য</h2>
+            <p style="font-size: 12px; opacity: 0.9;" id="memberInfo">সদস্য আইডি ও টাইপ লোড হচ্ছে...</p>
         </div>
-        <a href="member-login.html" class="logout-btn">লগআউট</a>
+        <button onclick="logout()" class="logout-btn">লগআউট</button>
     </header>
 
-    <!-- মূল ব্যালেন্স ও ডিপোজিট সামারি -->
+    <!-- মূল ব্যালেন্স ও সঞ্চয় তথ্য -->
     <div class="grid">
         <div class="stat-box">
-            <h3>💰 মূল সঞ্চয় ব্যালেন্স</h3>
-            <p>৳ ১২,৫০৮</p>
+            <h3>💰 মোট সঞ্চয় ব্যালেন্স</h3>
+            <p id="totalBalance">৳ ০</p>
         </div>
         <div class="stat-box deposit">
-            <h3>📥 চলতি মাসের ডিপোজিট</h3>
-            <p>৳ ৫০০</p>
+            <h3>📱 যোগাযোগ ফোন নম্বর</h3>
+            <p id="phoneNo" style="font-size: 18px; color: #0288d1;">-</p>
         </div>
         <div class="stat-box" style="border-left-color: #e65100;">
             <h3>💳 বর্তমান ঋণ বকেয়া</h3>
@@ -56,39 +56,54 @@
 
     <!-- ডিপোজিট হিস্টোরি -->
     <div class="card">
-        <h3 class="section-title">📊 সাম্প্রতিক ডিপোজিট হিস্টোরি (Deposit History)</h3>
+        <h3 class="section-title">📊 সাম্প্রতিক সঞ্চয় হিসাব বিবরণী</h3>
         <table>
             <thead>
                 <tr>
-                    <th>তারিখ</th>
                     <th>বিবরণ</th>
-                    <th>জমার পরিমাণ</th>
+                    <th>মোট জমা পরিমাণ</th>
                     <th>অবস্থা</th>
                 </tr>
             </thead>
             <tbody>
                 <tr>
-                    <td>০১/১০/২০২৬</td>
-                    <td>মাসিক নিয়মিত সঞ্চয়</td>
-                    <td>৳ ৫০০</td>
-                    <td><span style="color: green; font-weight: bold;">সফল</span></td>
-                </tr>
-                <tr>
-                    <td>০১/০৯/২০২৬</td>
-                    <td>মাসিক নিয়মিত সঞ্চয়</td>
-                    <td>৳ ৫০০</td>
-                    <td><span style="color: green; font-weight: bold;">সফল</span></td>
-                </tr>
-                <tr>
-                    <td>০১/০৮/২০২৬</td>
-                    <td>মাসিক নিয়মিত সঞ্চয়</td>
-                    <td>৳ ৫০০</td>
-                    <td><span style="color: green; font-weight: bold;">সফল</span></td>
+                    <td>বর্তমান মোট জমা আমানত</td>
+                    <td id="tableBalance" style="font-weight: bold; color: green;">৳ ০</td>
+                    <td><span style="color: green; font-weight: bold;">সক্রিয়</span></td>
                 </tr>
             </tbody>
         </table>
     </div>
 </div>
+
+<script>
+    window.onload = function() {
+        const loggedInUser = sessionStorage.getItem('loggedInMember');
+        if (!loggedInUser) {
+            alert('অনুগ্রহ করে প্রথমে লগইন করুন।');
+            window.location.href = 'member-login.html';
+            return;
+        }
+
+        const memberData = JSON.parse(loggedInUser);
+
+        // অ্যাডমিন কোনো পরিবর্তন করে থাকলে আপডেট ডেটা লোকালস্টোরেজ থেকে আনা
+        const allMembers = JSON.parse(localStorage.getItem('somitte_members')) || [];
+        const currentMember = allMembers.find(m => m.id === memberData.id) || memberData;
+
+        // স্ক্রিনে তথ্য দেখানো
+        document.getElementById('memberName').innerText = `স্বাগতম, ${currentMember.name}`;
+        document.getElementById('memberInfo').innerText = `আইডি: ${currentMember.id} | টাইপ: ${currentMember.type}`;
+        document.getElementById('totalBalance').innerText = `৳ ${currentMember.balance}`;
+        document.getElementById('phoneNo').innerText = currentMember.phone;
+        document.getElementById('tableBalance').innerText = `৳ ${currentMember.balance}`;
+    };
+
+    function logout() {
+        sessionStorage.removeItem('loggedInMember');
+        window.location.href = 'member-login.html';
+    }
+</script>
 
 </body>
 </html>
