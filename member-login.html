@@ -1,58 +1,78 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>সদস্য লগইন - শিমুলতলা সমাজকল্যাণ সমবায় সমিতি</title>
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+        body { background: #f4f7f6; display: flex; justify-content: center; align-items: center; min-height: 100vh; padding: 15px; }
+        .login-card { background: white; width: 100%; max-width: 400px; padding: 25px; border-radius: 10px; box-shadow: 0 4px 12px rgba(0,0,0,0.1); border-top: 5px solid #2e7d32; }
+        h2 { text-align: center; color: #1b5e20; margin-bottom: 20px; font-size: 22px; }
+        .form-group { margin-bottom: 15px; }
+        label { display: block; margin-bottom: 5px; font-weight: bold; color: #333; font-size: 14px; }
+        input { width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 5px; font-size: 15px; }
+        button { width: 100%; background: #2e7d32; color: white; border: none; padding: 12px; margin-top: 10px; border-radius: 5px; font-size: 16px; font-weight: bold; cursor: pointer; }
+        button:hover { background: #1b5e20; }
+        .back-link { text-align: center; display: block; margin-top: 15px; color: #555; text-decoration: none; font-size: 14px; }
+        .error-msg { color: #d32f2f; font-size: 13px; text-align: center; margin-top: 10px; display: none; font-weight: bold; }
+    </style>
+</head>
+<body>
+
+<div class="login-card">
+    <h2>👤 সদস্য লগইন</h2>
+    <form onsubmit="handleLogin(event)">
+        <div class="form-group">
+            <label>ইউজার নেম (Username):</label>
+            <input type="text" id="username" placeholder="উদাহরণ: karim101" required autocomplete="off">
+        </div>
+        <div class="form-group">
+            <label>পাসওয়ার্ড (Password):</label>
+            <input type="password" id="password" placeholder="পাসওয়ার্ড দিন" required>
+        </div>
+        <button type="submit">লগইন করুন</button>
+        <p id="errorMsg" class="error-msg">⚠️ ভুল ইউজারনেম বা পাসওয়ার্ড দিয়েছেন!</p>
+    </form>
+    <a href="index.html" class="back-link">← হোম পেজে ফিরে যান</a>
+</div>
+
 <script>
-    let currentMemberObj = null;
-
-    // সিকিউরিটি ভেরিফিকেশন (পপআপ ছাড়া সরাসরি লগইন পেজে রিডাইরেক্ট)
+    // পেজ লোড হলেই পুরনো সব লগইন সেশন ক্লিয়ার করে দেবে
     window.onload = function() {
-        const loggedInUser = sessionStorage.getItem('loggedInMember');
-
-        if (!loggedInUser) {
-            // লগইন না থাকলে পপআপ না দেখিয়ে সরাসরি লগইন পেজে পাঠিয়ে দেবে
-            window.location.href = 'member-login.html';
-            return;
-        }
-
-        const memberData = JSON.parse(loggedInUser);
-        const allMembers = JSON.parse(localStorage.getItem('somitte_members')) || [];
-        
-        currentMemberObj = allMembers.find(m => m.id === memberData.id && m.username === memberData.username);
-
-        if (!currentMemberObj) {
-            sessionStorage.removeItem('loggedInMember');
-            window.location.href = 'member-login.html';
-            return;
-        }
-
-        // সিকিউরিটি পাসের পর পেজ দৃশ্যমান করবে
-        document.body.style.display = 'block';
-
-        // ডাটা শো করা
-        document.getElementById('memberName').innerText = `স্বাগতম, ${currentMemberObj.name}`;
-        document.getElementById('memberInfo').innerText = `আইডি: ${currentMemberObj.id} | টাইপ: ${currentMemberObj.type}`;
-        document.getElementById('totalBalance').innerText = `৳ ${currentMemberObj.balance}`;
-        document.getElementById('loanBalance').innerText = `৳ ${currentMemberObj.loan || 0}`;
-        document.getElementById('phoneNo').innerText = currentMemberObj.phone;
-        document.getElementById('tableBalance').innerText = `৳ ${currentMemberObj.balance}`;
+        sessionStorage.removeItem('loggedInMember');
     };
 
-    function showReceipt(type) {
-        if (!currentMemberObj) return;
-        const today = new Date().toLocaleDateString('bn-BD');
-        
-        document.getElementById('recDate').innerText = today;
-        document.getElementById('recName').innerText = currentMemberObj.name;
-        document.getElementById('recId').innerText = currentMemberObj.id;
-        document.getElementById('recType').innerText = type;
-        document.getElementById('recAmount').innerText = `৳ ${currentMemberObj.balance}`;
+    // ডিফল্ট সদস্য তথ্য (যদি লোকালস্টোরেজ খালি থাকে)
+    const initialMembers = [
+        { id: "M-101", name: "মো: আব্দুল করিম", username: "karim101", password: "123", phone: "01711000001", type: "সাধারণ সদস্য", balance: 15000 },
+        { id: "M-102", name: "মো: রহিম মিয়া", username: "rahim102", password: "123", phone: "01711000002", type: "সাধারণ সদস্য", balance: 12508 }
+    ];
 
-        document.getElementById('receiptModal').style.display = 'flex';
-    }
+    function handleLogin(event) {
+        event.preventDefault();
+        const user = document.getElementById('username').value.trim();
+        const pass = document.getElementById('password').value.trim();
 
-    function closeReceipt() {
-        document.getElementById('receiptModal').style.display = 'none';
-    }
+        // LocalStorage থেকে মেম্বারদের তথ্য আনা
+        let members = JSON.parse(localStorage.getItem('somitte_members'));
+        if (!members) {
+            members = initialMembers;
+            localStorage.setItem('somitte_members', JSON.stringify(initialMembers));
+        }
 
-    function logout() {
-        sessionStorage.removeItem('loggedInMember');
-        window.location.href = 'member-login.html';
+        const foundMember = members.find(m => m.username === user && m.password === pass);
+
+        if (foundMember) {
+            // সঠিক ইউজারনেম ও পাসওয়ার্ড দিয়ে সফল লগইন হলে সেশন সেট করবে
+            sessionStorage.setItem('loggedInMember', JSON.stringify(foundMember));
+            window.location.href = "member-dashboard.html";
+        } else {
+            // ভুল তথ্য দিলে লাল এরর দেখাবে
+            document.getElementById('errorMsg').style.display = 'block';
+        }
     }
 </script>
+
+</body>
+</html>
