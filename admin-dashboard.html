@@ -3,32 +3,41 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>এডমিন ড্যাশবোর্ড - শিমুলতলা সমাজকল্যাণ সমবায় সমিতি</title>
+    <title>এডমিন কন্ট্রোল প্যানেল - শিমুলতলা সমাজকল্যাণ সমবায় সমিতি</title>
     <style>
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
-        body { background: #f4f7f6; padding: 15px; }
+        body { background: #f4f7f6; padding: 15px; color: #333; }
         .container { max-width: 1000px; margin: 0 auto; }
         header { background: #b71c1c; color: white; padding: 15px 20px; border-radius: 8px; display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
         header h2 { font-size: 18px; }
         .logout-btn { background: #424242; color: white; padding: 6px 12px; text-decoration: none; border-radius: 4px; font-size: 13px; font-weight: bold; }
 
-        .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 15px; margin-bottom: 20px; }
-        .stat-box { background: white; padding: 20px; border-radius: 8px; box-shadow: 0 2px 6px rgba(0,0,0,0.08); text-align: center; border-left: 5px solid #2e7d32; }
-        .stat-box.expense { border-left-color: #c62828; }
-        .stat-box.members { border-left-color: #1565c0; }
-        .stat-box h3 { font-size: 14px; color: #666; margin-bottom: 8px; }
-        .stat-box p { font-size: 22px; font-weight: bold; color: #333; }
-
         .card { background: white; padding: 20px; border-radius: 8px; box-shadow: 0 2px 6px rgba(0,0,0,0.08); margin-bottom: 20px; }
-        h3.section-title { color: #b71c1c; border-bottom: 2px solid #eee; padding-bottom: 8px; margin-bottom: 15px; font-size: 16px; display: flex; justify-content: space-between; align-items: center; }
+        h3.section-title { color: #b71c1c; border-bottom: 2px solid #eee; padding-bottom: 8px; margin-bottom: 15px; font-size: 16px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px; }
+
+        .form-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; margin-bottom: 15px; }
+        .form-group label { display: block; margin-bottom: 5px; font-weight: bold; font-size: 13px; }
+        .form-group input, .form-group select, .form-group textarea { width: 100%; padding: 8px; border: 1px solid #ccc; border-radius: 4px; font-size: 14px; }
 
         table { width: 100%; border-collapse: collapse; margin-top: 10px; }
         table, th, td { border: 1px solid #ddd; }
-        th, td { padding: 10px; text-align: center; font-size: 14px; }
+        th, td { padding: 8px 10px; text-align: center; font-size: 13px; }
         th { background: #ffebee; color: #b71c1c; }
 
-        .btn { background: #2e7d32; color: white; border: none; padding: 6px 12px; border-radius: 4px; cursor: pointer; font-size: 13px; }
+        .btn { background: #2e7d32; color: white; border: none; padding: 7px 14px; border-radius: 4px; cursor: pointer; font-size: 13px; font-weight: bold; }
+        .btn:hover { background: #1b5e20; }
         .btn-danger { background: #c62828; }
+        .btn-danger:hover { background: #b71c1c; }
+        .btn-warning { background: #f57c00; color: white; }
+        .btn-warning:hover { background: #e65100; }
+        .btn-cancel { background: #757575; }
+
+        /* Modal Popup System */
+        .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); justify-content: center; align-items: center; padding: 15px; z-index: 1000; }
+        .modal-content { background: white; padding: 20px; border-radius: 8px; width: 100%; max-width: 500px; box-shadow: 0 4px 10px rgba(0,0,0,0.2); }
+        .modal-header { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #ddd; padding-bottom: 8px; margin-bottom: 15px; }
+        .modal-header h4 { color: #b71c1c; }
+        .close-btn { cursor: pointer; font-size: 20px; font-weight: bold; color: #888; }
     </style>
 </head>
 <body>
@@ -37,97 +46,253 @@
     <header>
         <div>
             <h2>⚙️ এডমিন কন্ট্রোল প্যানেল</h2>
-            <p style="font-size: 12px; opacity: 0.9;">শিমুলতলা সমাজকল্যাণ সমবায় সমিতি</p>
+            <p style="font-size: 12px; opacity: 0.9;">শিমুলতলা সমাজকল্যাণ সমবায় সমিতি - ম্যানেজমেন্ট</p>
         </div>
         <a href="admin-login.html" class="logout-btn">লগআউট</a>
     </header>
 
-    <!-- ড্যাশবোর্ড ওভারভিউ (আয়/ব্যয় ও তথ্য) -->
-    <div class="grid">
-        <div class="stat-box">
-            <h3>💵 মোট ক্যাশ/আয় (Cash In)</h3>
-            <p style="color: #2e7d32;">৳ ৪,৫০,০০০</p>
-        </div>
-        <div class="stat-box expense">
-            <h3>💸 মোট ব্যয়/ঋণ (Cash Out)</h3>
-            <p style="color: #c62828;">৳ ১,২০,০০০</p>
-        </div>
-        <div class="stat-box members">
-            <h3>👥 মোট নিবন্ধিত সদস্য</h3>
-            <p style="color: #1565c0;">৫০ জন</p>
+    <!-- ১. নতুন সদস্য রেজিস্ট্রেশন ফর্ম -->
+    <div class="card">
+        <h3 class="section-title">➕ নতুন সদস্য রেজিস্ট্রেশন (Member Registration)</h3>
+        <form id="registerForm" onsubmit="registerMember(event)">
+            <div class="form-grid">
+                <div class="form-group">
+                    <label>সদস্য আইডি (Member ID):</label>
+                    <input type="text" id="regId" placeholder="উদাহরণ: M-103" required>
+                </div>
+                <div class="form-group">
+                    <label>সদস্যের নাম:</label>
+                    <input type="text" id="regName" placeholder="পূর্ণ নাম দিন" required>
+                </div>
+                <div class="form-group">
+                    <label>ইউজারনেম (Username):</label>
+                    <input type="text" id="regUsername" placeholder="লগইন ইউজারনেম" required>
+                </div>
+                <div class="form-group">
+                    <label>পাসওয়ার্ড (Password):</label>
+                    <input type="password" id="regPassword" placeholder="লগইন পাসওয়ার্ড" required>
+                </div>
+                <div class="form-group">
+                    <label>ফোন নম্বর:</label>
+                    <input type="tel" id="regPhone" placeholder="017xxxxxxxx" required>
+                </div>
+                <div class="form-group">
+                    <label>সদস্য টাইপ (Member Type):</label>
+                    <select id="regType">
+                        <option value="সাধারণ সদস্য">সাধারণ সদস্য</option>
+                        <option value="কার্যনির্বাহী সদস্য">কার্যনির্বাহী সদস্য</option>
+                        <option value="শেয়ারহোল্ডার মেম্বার">শেয়ারহোল্ডার মেম্বার</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>প্রাথমিক জমা ব্যালেন্স (৳):</label>
+                    <input type="number" id="regBalance" value="0" min="0" required>
+                </div>
+            </div>
+            <button type="submit" class="btn">সদস্য নিবন্ধন করুন</button>
+        </form>
+    </div>
+
+    <!-- ২. সদস্য তালিকা, জমা পরিবর্তন ও পাসওয়ার্ড ম্যানেজমেন্ট -->
+    <div class="card">
+        <h3 class="section-title">👥 সদস্য তালিকা ও পাসওয়ার্ড/ব্যালেন্স ম্যানেজমেন্ট</h3>
+        <div style="overflow-x: auto;">
+            <table>
+                <thead>
+                    <tr>
+                        <th>আইডি</th>
+                        <th>নাম</th>
+                        <th>ইউজারনেম</th>
+                        <th>ফোন</th>
+                        <th>টাইপ</th>
+                        <th>মোট জমা ব্যালেন্স</th>
+                        <th>অ্যাকশন (এডিট / পাসওয়ার্ড)</th>
+                    </tr>
+                </thead>
+                <tbody id="memberTableBody">
+                    <!-- সদস্যদের তথ্য জাভাস্ক্রিপ্ট দিয়ে রেন্ডার হবে -->
+                </tbody>
+            </table>
         </div>
     </div>
 
-    <!-- ক্যাশবুক এন্ট্রি ও সামারি -->
+    <!-- ৩. সমিতির নোটিশ ও তথ্য আপডেট -->
     <div class="card">
-        <h3 class="section-title">📖 ক্যাশবুক হিসাব (Cashbook Summary)</h3>
-        <table>
-            <thead>
-                <tr>
-                    <th>তারিখ</th>
-                    <th>খাত / বিবরণ</th>
-                    <th>প্রকার</th>
-                    <th>পরিমাণ</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td>০৯/১০/২০২৬</td>
-                    <td>সদস্য জমা (সাপ্তাহিক ও মাসিক)</td>
-                    <td><span style="color: green; font-weight: bold;">আয়</span></td>
-                    <td>৳ ১২,৫০০</td>
-                </tr>
-                <tr>
-                    <td>০৮/১০/২০২৬</td>
-                    <td>অফিস মনিহারি ক্রয়</td>
-                    <td><span style="color: red; font-weight: bold;">ব্যয়</span></td>
-                    <td>৳ ১,২০০</td>
-                </tr>
-            </tbody>
-        </table>
+        <h3 class="section-title">📢 জরুরি নোটিশ ও সমিতি তথ্য আপডেট</h3>
+        <form onsubmit="updateNotice(event)">
+            <div class="form-group" style="margin-bottom: 12px;">
+                <label>জরুরি নোটিশ বোর্ড ১:</label>
+                <input type="text" id="noticeText1" placeholder="নোটিশ ১ লিখুন">
+            </div>
+            <div class="form-group" style="margin-bottom: 12px;">
+                <label>জরুরি নোটিশ বোর্ড ২:</label>
+                <input type="text" id="noticeText2" placeholder="নোটিশ ২ লিখুন">
+            </div>
+            <button type="submit" class="btn btn-warning">নোটিশ আপডেট করুন</button>
+        </form>
     </div>
 
-    <!-- সদস্য কন্ট্রোল ও আলাদা আলাদা লেজার -->
-    <div class="card">
-        <h3 class="section-title">
-            <span>👤 সদস্য তালিকা ও লেজার কন্ট্রোল</span>
-            <button class="btn">+ নতুন সদস্য যুক্ত করুন</button>
-        </h3>
-        <table>
-            <thead>
-                <tr>
-                    <th>সদস্য আইডি</th>
-                    <th>নাম</th>
-                    <th>ফোন নম্বর</th>
-                    <th>মোট জমা</th>
-                    <th>অ্যাকশন (লেজার)</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td>M-101</td>
-                    <td>মো: আব্দুল করিম</td>
-                    <td>০১৭১১-০০০০০১</td>
-                    <td>৳ ১৫,০০০</td>
-                    <td>
-                        <button class="btn">লেজার দেখুন</button>
-                        <button class="btn btn-danger">সম্পাদনা</button>
-                    </td>
-                </tr>
-                <tr>
-                    <td>M-102</td>
-                    <td>মো: রহিম মিয়া</td>
-                    <td>০১৭১১-০০০০০২</td>
-                    <td>৳ ১২,৫০৮</td>
-                    <td>
-                        <button class="btn">লেজার দেখুন</button>
-                        <button class="btn btn-danger">সম্পাদনা</button>
-                    </td>
-                </tr>
-            </tbody>
-        </table>
+</div>
+
+<!-- সদস্য সম্পাদনা / পাসওয়ার্ড পরিবর্তন পপআপ (Modal) -->
+<div class="modal" id="editModal">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h4>✏️ সদস্য তথ্য ও পাসওয়ার্ড আপডেট</h4>
+            <span class="close-btn" onclick="closeModal()">&times;</span>
+        </div>
+        <form onsubmit="saveMemberChanges(event)">
+            <input type="hidden" id="editIndex">
+            <div class="form-group" style="margin-bottom: 10px;">
+                <label>সদস্যের নাম:</label>
+                <input type="text" id="editName" required>
+            </div>
+            <div class="form-group" style="margin-bottom: 10px;">
+                <label>ফোন নম্বর:</label>
+                <input type="text" id="editPhone" required>
+            </div>
+            <div class="form-group" style="margin-bottom: 10px;">
+                <label>নতুন পাসওয়ার্ড (Password Management):</label>
+                <input type="text" id="editPassword" placeholder="পাসওয়ার্ড পরিবর্তন করতে এখানে নতুন পাসওয়ার্ড লিখুন">
+            </div>
+            <div class="form-group" style="margin-bottom: 10px;">
+                <label>মোট জমা ব্যালেন্স (৳):</label>
+                <input type="number" id="editBalance" required>
+            </div>
+            <div style="display: flex; gap: 10px; margin-top: 15px;">
+                <button type="submit" class="btn" style="flex: 1;">সংরক্ষণ করুন</button>
+                <button type="button" class="btn btn-cancel" onclick="closeModal()" style="flex: 1;">বাতিল</button>
+            </div>
+        </form>
     </div>
 </div>
+
+<script>
+    // ডিফল্ট ডেমো মেম্বার ডেটা
+    const initialMembers = [
+        { id: "M-101", name: "মো: আব্দুল করিম", username: "karim101", password: "123", phone: "01711000001", type: "সাধারণ সদস্য", balance: 15000 },
+        { id: "M-102", name: "মো: রহিম মিয়া", username: "rahim102", password: "123", phone: "01711000002", type: "সাধারণ সদস্য", balance: 12508 }
+    ];
+
+    // LocalStorage থেকে মেম্বার লোড করা
+    function getMembers() {
+        const stored = localStorage.getItem('somitte_members');
+        if (!stored) {
+            localStorage.setItem('somitte_members', JSON.stringify(initialMembers));
+            return initialMembers;
+        }
+        return JSON.parse(stored);
+    }
+
+    // টেবিল রেন্ডার
+    function renderMembers() {
+        const members = getMembers();
+        const tbody = document.getElementById('memberTableBody');
+        tbody.innerHTML = '';
+
+        members.forEach((m, index) => {
+            const tr = document.createElement('tr');
+            tr.innerHTML = `
+                <td><b>${m.id}</b></td>
+                <td>${m.name}</td>
+                <td><code>${m.username}</code></td>
+                <td>${m.phone}</td>
+                <td>${m.type}</td>
+                <td style="color: green; font-weight: bold;">৳ ${m.balance}</td>
+                <td>
+                    <button class="btn btn-warning" onclick="openEditModal(${index})">এডিট / পাসওয়ার্ড</button>
+                    <button class="btn btn-danger" onclick="deleteMember(${index})">মুছুন</button>
+                </td>
+            `;
+            tbody.appendChild(tr);
+        });
+    }
+
+    // নতুন সদস্য যুক্ত করা
+    function registerMember(e) {
+        e.preventDefault();
+        const members = getMembers();
+
+        const newMember = {
+            id: document.getElementById('regId').value,
+            name: document.getElementById('regName').value,
+            username: document.getElementById('regUsername').value,
+            password: document.getElementById('regPassword').value,
+            phone: document.getElementById('regPhone').value,
+            type: document.getElementById('regType').value,
+            balance: parseFloat(document.getElementById('regBalance').value) || 0
+        };
+
+        members.push(newMember);
+        localStorage.setItem('somitte_members', JSON.stringify(members));
+        alert('সফলভাবে নতুন সদস্য নিবন্ধিত হয়েছে!');
+        document.getElementById('registerForm').reset();
+        renderMembers();
+    }
+
+    // এডিট মোডাল খোলা
+    function openEditModal(index) {
+        const members = getMembers();
+        const m = members[index];
+
+        document.getElementById('editIndex').value = index;
+        document.getElementById('editName').value = m.name;
+        document.getElementById('editPhone').value = m.phone;
+        document.getElementById('editPassword').value = m.password;
+        document.getElementById('editBalance').value = m.balance;
+
+        document.getElementById('editModal').style.display = 'flex';
+    }
+
+    function closeModal() {
+        document.getElementById('editModal').style.display = 'none';
+    }
+
+    // পরিবর্তন সেভ করা
+    function saveMemberChanges(e) {
+        e.preventDefault();
+        const index = document.getElementById('editIndex').value;
+        const members = getMembers();
+
+        members[index].name = document.getElementById('editName').value;
+        members[index].phone = document.getElementById('editPhone').value;
+        members[index].password = document.getElementById('editPassword').value;
+        members[index].balance = parseFloat(document.getElementById('editBalance').value) || 0;
+
+        localStorage.setItem('somitte_members', JSON.stringify(members));
+        alert('সদস্যের তথ্য ও পাসওয়ার্ড পরিবর্তন সফল হয়েছে!');
+        closeModal();
+        renderMembers();
+    }
+
+    // সদস্য মুছে ফেলা
+    function deleteMember(index) {
+        if (confirm('আপনি কি নিশ্চিত যে এই সদস্যকে মুছে ফেলতে চান?')) {
+            const members = getMembers();
+            members.splice(index, 1);
+            localStorage.setItem('somitte_members', JSON.stringify(members));
+            renderMembers();
+        }
+    }
+
+    // নোটিশ আপডেট
+    function updateNotice(e) {
+        e.preventDefault();
+        const n1 = document.getElementById('noticeText1').value;
+        const n2 = document.getElementById('noticeText2').value;
+
+        localStorage.setItem('somitte_notice1', n1);
+        localStorage.setItem('somitte_notice2', n2);
+        alert('জরুরি নোটিশ সফলভাবে আপডেট করা হয়েছে!');
+    }
+
+    // পেজ লোড হলে রান করবে
+    window.onload = function() {
+        renderMembers();
+        document.getElementById('noticeText1').value = localStorage.getItem('somitte_notice1') || "আগামী মাসের ৫ তারিখের মধ্যে মাসিক সঞ্চয় আমানত জমা দেওয়ার জন্য অনুরোধ করা হচ্ছে।";
+        document.getElementById('noticeText2').value = localStorage.getItem('somitte_notice2') || "বার্ষিক সাধারণ সভা আগামী মাসে অনুষ্ঠিত হবে। তারিখ ও সময় শীঘ্রই জানানো হবে।";
+    };
+</script>
 
 </body>
 </html>
