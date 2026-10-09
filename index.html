@@ -3,85 +3,124 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>শিমুলতলা সমাজ কল্যাণ সমিতি</title>
+    <title>শিমুলতলা সমাজকল্যাণ সমবায় সমিতি - ইসলামপুর, জামালপুর</title>
     <style>
-        body { font-family: sans-serif; background: #f4f6f9; padding: 15px; margin: 0; }
-        .card { background: white; padding: 15px; border-radius: 10px; margin-bottom: 15px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
-        h2, h3 { color: #2c3e50; margin-top: 0; }
-        input, button { width: 100%; padding: 12px; margin: 8px 0; border: 1px solid #ccc; border-radius: 5px; box-sizing: border-box; }
-        button { background: #27ae60; color: white; border: none; font-weight: bold; font-size: 16px; }
-        .receipt { background: #e8f8f5; border-left: 5px solid #27ae60; padding: 10px; display: none; }
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+        body { background-color: #f4f7f6; color: #333; line-height: 1.6; }
+        
+        /* Header & Navigation */
+        header { background: #1b5e20; color: white; text-align: center; padding: 25px 15px; }
+        header h1 { font-size: 26px; margin-bottom: 5px; }
+        header p { font-size: 15px; opacity: 0.9; }
+        .badge { background: #4caf50; display: inline-block; padding: 3px 10px; border-radius: 12px; font-size: 13px; margin-top: 8px; }
+
+        nav { background: #2e7d32; display: flex; justify-content: center; gap: 15px; padding: 12px; flex-wrap: wrap; }
+        nav a { color: white; text-decoration: none; font-weight: bold; padding: 6px 14px; border-radius: 4px; transition: 0.3s; }
+        nav a:hover { background: #1b5e20; }
+
+        /* Container */
+        .container { max-width: 1000px; margin: 20px auto; padding: 0 15px; }
+
+        /* Section Styles */
+        .card { background: white; padding: 20px; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); margin-bottom: 20px; }
+        h2 { color: #1b5e20; border-bottom: 2px solid #e0e0e0; padding-bottom: 8px; margin-bottom: 15px; font-size: 20px; }
+
+        /* Grid Layout for Committee & Directors */
+        .profile-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; margin-top: 15px; }
+        .profile-card { background: #e8f5e9; text-align: center; padding: 15px; border-radius: 8px; border: 1px solid #c8e6c9; }
+        .profile-card img { width: 80px; height: 80px; border-radius: 50%; background: #ccc; margin-bottom: 10px; }
+        .profile-card h4 { color: #2e7d32; margin-bottom: 5px; }
+        .profile-card p { font-size: 13px; color: #555; }
+
+        /* Notice Board */
+        .notice-item { background: #fff3e0; border-left: 4px solid #ff9800; padding: 10px 15px; margin-bottom: 10px; border-radius: 0 5px 5px 0; }
+
+        /* Footer */
+        footer { text-align: center; padding: 15px; background: #1b5e20; color: white; margin-top: 30px; font-size: 14px; }
     </style>
 </head>
 <body>
 
-    <h2>🏛️ শিমুলতলা সমাজ কল্যাণ সমিতি</h2>
+    <!-- Header -->
+    <header>
+        <h1>🏛 শিমুলতলা সমাজকল্যাণ সমবায় সমিতি</h1>
+        <p>ইসলামপুর, জামালপুর</p>
+        <span class="badge">স্থাপিত: ২০২৪ ইং</span>
+    </header>
 
-    <div class="card">
-        <h3>💰 সঞ্চয় জমা (Field Officer)</h3>
-        <input type="number" id="memberId" placeholder="সদস্য ID লিখুন">
-        <input type="number" id="depositAmount" placeholder="টাকার পরিমাণ (৳)">
-        <button onclick="collectDeposit()">টাকা জমা করুন</button>
-        
-        <div id="receiptBox" class="receipt">
-            <h4>রসিদ:</h4>
-            <p id="receiptText"></p>
-        </div>
+    <!-- Navigation Menu -->
+    <nav>
+        <a href="#about">সমিতি সম্পর্কে</a>
+        <a href="#directors">পরিচালকবৃন্দ</a>
+        <a href="#committee">কমিটিবৃন্দ</a>
+        <a href="#notice">নোটিশ বোর্ড</a>
+        <a href="member-login.html" style="background: #ff9800;">সদস্য লগইন</a>
+        <a href="admin-login.html" style="background: #d32f2f;">এডমিন লগইন</a>
+    </nav>
+
+    <div class="container">
+        <!-- About Section -->
+        <section id="about" class="card">
+            <h2>📜 সমিতি সম্পর্কে</h2>
+            <p>শিমুলতলা সমাজকল্যাণ সমবায় সমিতি ২০২৪ সালে জামালপুর জেলার ইসলামপুর উপজেলায় প্রতিষ্ঠিত একটি বহুমুখী সমবায় সংগঠন। আমাদের মূল উদ্দেশ্য হলো স্থানীয় জনগণের মাঝে সঞ্চয়ের অভ্যাস গড়ে তোলা, অর্থনৈতিক আত্মনির্ভরশীলতা বৃদ্ধি করা এবং সহজ শর্তে ক্ষুদ্র ঋণ সহায়তার মাধ্যমে সমাজকল্যাণমূলক কাজে অবদান রাখা।</p>
+        </section>
+
+        <!-- Notice Board -->
+        <section id="notice" class="card">
+            <h2>📢 জরুরি নোটিশ বোর্ড</h2>
+            <div class="notice-item">
+                <strong>সকল সদস্যের দৃষ্টি আকর্ষণ:</strong> আগামী মাসের ৫ তারিখের মধ্যে মাসিক সঞ্চয় আমানত জমা দেওয়ার জন্য অনুরোধ করা হচ্ছে।
+            </div>
+            <div class="notice-item">
+                <strong>সাধারণ সভা:</strong> বার্ষিক সাধারণ সভা আগামী মাসে অনুষ্ঠিত হবে। তারিখ ও সময় শীঘ্রই জানানো হবে।
+            </div>
+        </section>
+
+        <!-- Directors Section -->
+        <section id="directors" class="card">
+            <h2>👨‍💼 পরিচালক বৃন্দ পরিচিতি</h2>
+            <div class="profile-grid">
+                <div class="profile-card">
+                    <img src="https://via.placeholder.com/80" alt="পরিচালক">
+                    <h4>জনাব মো: আব্দুর রহমান</h4>
+                    <p>ব্যবস্থাপনা পরিচালক</p>
+                    <p>ফোন: ০১৭০০-০০০০০১</p>
+                </div>
+                <div class="profile-card">
+                    <img src="https://via.placeholder.com/80" alt="পরিচালক">
+                    <h4>জনাব মো: রফিকুল ইসলাম</h4>
+                    <p>অর্থ পরিচালক</p>
+                    <p>ফোন: ০১৭০০-০০০০০২</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Committee Section -->
+        <section id="committee" class="card">
+            <h2>👥 সকল কমিটি বৃন্দ পরিচিতি</h2>
+            <div class="profile-grid">
+                <div class="profile-card">
+                    <img src="https://via.placeholder.com/80" alt="কমিটি">
+                    <h4>জনাব মো: সাইদুল ইসলাম</h4>
+                    <p>সভাপতি</p>
+                </div>
+                <div class="profile-card">
+                    <img src="https://via.placeholder.com/80" alt="কমিটি">
+                    <h4>জনাব মো: কামরুল হাসান</h4>
+                    <p>সাধারণ সম্পাদক</p>
+                </div>
+                <div class="profile-card">
+                    <img src="https://via.placeholder.com/80" alt="কমিটি">
+                    <h4>জনাব মো: শফিকুল আলম</h4>
+                    <p>ক্যাশিয়ার</p>
+                </div>
+            </div>
+        </section>
     </div>
 
-    <div class="card">
-        <h3>📊 সামগ্রিক হিসাব (Admin)</h3>
-        <button style="background:#2980b9;" onclick="getReport()">রিপোর্ট দেখুন</button>
-        <div id="reportResult"></div>
-    </div>
+    <footer>
+        <p>&copy; ২০২৪-২০২৬ শিমুলতলা সমাজকল্যাণ সমবায় সমিতি। সর্বস্বত্ব সংরক্ষিত।</p>
+    </footer>
 
-    <script>
-        const API_URL = "https://samity-backend.onrender.com";
-
-        async function collectDeposit() {
-            const memberId = document.getElementById('memberId').value;
-            const amount = document.getElementById('depositAmount').value;
-
-            if(!memberId || !amount) {
-                alert("সব তথ্য ঠিকভাবে দিন");
-                return;
-            }
-
-            try {
-                const response = await fetch(`${API_URL}/savings/deposit`, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json', 'x-user-role': 'field_officer' },
-                    body: JSON.stringify({ memberId: parseInt(memberId), amount: parseFloat(amount) })
-                });
-
-                const data = await response.json();
-                if(data.success) {
-                    document.getElementById('receiptBox').style.display = 'block';
-                    document.getElementById('receiptText').innerHTML = 
-                        `আইডি: ${data.receipt.transactionId}<br>জমা: ৳${data.receipt.depositedAmount}<br>বর্তমান সঞ্চয়: ৳${data.receipt.currentBalance}`;
-                } else {
-                    alert(data.message);
-                }
-            } catch(err) {
-                alert("সার্ভারের সাথে সংযোগ করা যায়নি।");
-            }
-        }
-
-        async function getReport() {
-            try {
-                const response = await fetch(`${API_URL}/reports/financial`, {
-                    headers: { 'x-user-role': 'admin' }
-                });
-                const data = await response.json();
-                if(data.success) {
-                    document.getElementById('reportResult').innerHTML = `
-                        <p>মোট সঞ্চয়: ৳${data.summary.totalSavingsBalance}</p>
-                    `;
-                }
-            } catch(err) {
-                alert("রিপোর্ট লোড করা যায়নি।");
-            }
-        }
-    </script>
 </body>
 </html>
