@@ -3,124 +3,136 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>শিমুলতলা সমাজকল্যাণ সমবায় সমিতি - ইসলামপুর, জামালপুর</title>
+    <title>শিমুলতলা সমাজকল্যাণ সমবায় সমিতি</title>
     <style>
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
-        body { background-color: #f4f7f6; color: #333; line-height: 1.6; }
-        
-        /* Header & Navigation */
-        header { background: #1b5e20; color: white; text-align: center; padding: 25px 15px; }
-        header h1 { font-size: 26px; margin-bottom: 5px; }
-        header p { font-size: 15px; opacity: 0.9; }
-        .badge { background: #4caf50; display: inline-block; padding: 3px 10px; border-radius: 12px; font-size: 13px; margin-top: 8px; }
+        body { background: #f4f7f6; color: #333; }
 
-        nav { background: #2e7d32; display: flex; justify-content: center; gap: 15px; padding: 12px; flex-wrap: wrap; }
-        nav a { color: white; text-decoration: none; font-weight: bold; padding: 6px 14px; border-radius: 4px; transition: 0.3s; }
-        nav a:hover { background: #1b5e20; }
+        /* Top Header */
+        header { background: #1b5e20; color: white; padding: 15px 20px; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 2px 5px rgba(0,0,0,0.1); position: sticky; top: 0; z-index: 100; }
+        .logo-area { display: flex; align-items: center; gap: 10px; }
+        .logo-area h1 { font-size: 16px; line-height: 1.2; }
+        .logo-area p { font-size: 11px; opacity: 0.9; }
 
-        /* Container */
-        .container { max-width: 1000px; margin: 20px auto; padding: 0 15px; }
+        /* Hamburger Menu Icon */
+        .menu-btn { font-size: 24px; cursor: pointer; background: none; border: none; color: white; padding: 5px; }
 
-        /* Section Styles */
-        .card { background: white; padding: 20px; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); margin-bottom: 20px; }
-        h2 { color: #1b5e20; border-bottom: 2px solid #e0e0e0; padding-bottom: 8px; margin-bottom: 15px; font-size: 20px; }
+        /* Sidebar Menu */
+        .sidebar { height: 100%; width: 0; position: fixed; z-index: 1000; top: 0; right: 0; background-color: #ffffff; overflow-x: hidden; transition: 0.3s; padding-top: 60px; box-shadow: -5px 0 15px rgba(0,0,0,0.1); }
+        .sidebar a { padding: 12px 25px; text-decoration: none; font-size: 15px; color: #1b5e20; display: block; transition: 0.2s; font-weight: bold; border-bottom: 1px solid #eee; }
+        .sidebar a:hover { background-color: #e8f5e9; }
+        .sidebar .close-btn { position: absolute; top: 15px; left: 20px; font-size: 22px; cursor: pointer; color: #c62828; border: none; background: none; }
 
-        /* Grid Layout for Committee & Directors */
-        .profile-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; margin-top: 15px; }
-        .profile-card { background: #e8f5e9; text-align: center; padding: 15px; border-radius: 8px; border: 1px solid #c8e6c9; }
-        .profile-card img { width: 80px; height: 80px; border-radius: 50%; background: #ccc; margin-bottom: 10px; }
-        .profile-card h4 { color: #2e7d32; margin-bottom: 5px; }
-        .profile-card p { font-size: 13px; color: #555; }
+        /* Hero Banner */
+        .hero { background: #2e7d32; color: white; text-align: center; padding: 30px 15px; }
+        .hero h2 { font-size: 20px; margin-bottom: 5px; }
+        .hero p { font-size: 13px; opacity: 0.9; margin-bottom: 8px; }
+        .badge { background: #ff9800; color: white; padding: 3px 10px; border-radius: 12px; font-size: 11px; font-weight: bold; display: inline-block; }
 
-        /* Notice Board */
-        .notice-item { background: #fff3e0; border-left: 4px solid #ff9800; padding: 10px 15px; margin-bottom: 10px; border-radius: 0 5px 5px 0; }
+        /* Main Container */
+        .container { max-width: 800px; margin: 20px auto; padding: 0 15px; }
+        .card { background: white; padding: 20px; border-radius: 8px; box-shadow: 0 2px 6px rgba(0,0,0,0.08); margin-bottom: 20px; border-left: 5px solid #2e7d32; }
+        .card h3 { color: #1b5e20; font-size: 16px; margin-bottom: 10px; border-bottom: 2px solid #eee; padding-bottom: 6px; }
+        .card p { font-size: 14px; line-height: 1.6; color: #444; }
 
-        /* Footer */
-        footer { text-align: center; padding: 15px; background: #1b5e20; color: white; margin-top: 30px; font-size: 14px; }
+        /* Overlay */
+        .overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.4); z-index: 500; }
     </style>
 </head>
 <body>
 
-    <!-- Header -->
-    <header>
-        <h1>🏛 শিমুলতলা সমাজকল্যাণ সমবায় সমিতি</h1>
-        <p>ইসলামপুর, জামালপুর</p>
-        <span class="badge">স্থাপিত: ২০২৪ ইং</span>
-    </header>
+<!-- Header -->
+<header>
+    <div class="logo-area">
+        <span style="font-size: 26px;">🏛</span>
+        <div>
+            <h1 id="headerTitle">শিমুলতলা সমাজকল্যাণ সমবায় সমিতি</h1>
+            <p id="headerSubtitle">ইসলামপুর, জামালপুর</p>
+        </div>
+    </div>
+    <button class="menu-btn" onclick="toggleMenu()">☰</button>
+</header>
 
-    <!-- Navigation Menu -->
-    <nav>
-        <a href="#about">সমিতি সম্পর্কে</a>
-        <a href="#directors">পরিচালকবৃন্দ</a>
-        <a href="#committee">কমিটিবৃন্দ</a>
-        <a href="#notice">নোটিশ বোর্ড</a>
-        <a href="member-login.html" style="background: #ff9800;">সদস্য লগইন</a>
-        <a href="admin-login.html" style="background: #d32f2f;">এডমিন লগইন</a>
-    </nav>
+<!-- Sidebar Menu -->
+<div id="mySidebar" class="sidebar">
+    <button class="close-btn" onclick="toggleMenu()">✖ বন্ধ করুন</button>
+    <a href="index.html">🏠 হোম পেজ</a>
+    <a href="#aboutSection">📖 সমিতি সম্পর্কে</a>
+    <a href="#noticeSection">📢 নোটিশ বোর্ড</a>
+    <a href="member-login.html" style="color: #e65100;">👤 সদস্য লগইন</a>
+    <a href="admin-login.html" style="color: #c62828;">🔐 এডমিন লগইন</a>
+</div>
+<div id="overlay" class="overlay" onclick="toggleMenu()"></div>
 
-    <div class="container">
-        <!-- About Section -->
-        <section id="about" class="card">
-            <h2>📜 সমিতি সম্পর্কে</h2>
-            <p>শিমুলতলা সমাজকল্যাণ সমবায় সমিতি ২০২৪ সালে জামালপুর জেলার ইসলামপুর উপজেলায় প্রতিষ্ঠিত একটি বহুমুখী সমবায় সংগঠন। আমাদের মূল উদ্দেশ্য হলো স্থানীয় জনগণের মাঝে সঞ্চয়ের অভ্যাস গড়ে তোলা, অর্থনৈতিক আত্মনির্ভরশীলতা বৃদ্ধি করা এবং সহজ শর্তে ক্ষুদ্র ঋণ সহায়তার মাধ্যমে সমাজকল্যাণমূলক কাজে অবদান রাখা।</p>
-        </section>
+<!-- Hero Banner -->
+<div class="hero">
+    <h2 id="heroTitle">শিমুলতলা সমাজকল্যাণ সমবায় সমিতি</h2>
+    <p id="heroLocation">ইসলামপুর, জামালপুর</p>
+    <span class="badge" id="heroEst">স্থাপিত: ২০২৪ ইং</span>
+</div>
 
-        <!-- Notice Board -->
-        <section id="notice" class="card">
-            <h2>📢 জরুরি নোটিশ বোর্ড</h2>
-            <div class="notice-item">
-                <strong>সকল সদস্যের দৃষ্টি আকর্ষণ:</strong> আগামী মাসের ৫ তারিখের মধ্যে মাসিক সঞ্চয় আমানত জমা দেওয়ার জন্য অনুরোধ করা হচ্ছে।
-            </div>
-            <div class="notice-item">
-                <strong>সাধারণ সভা:</strong> বার্ষিক সাধারণ সভা আগামী মাসে অনুষ্ঠিত হবে। তারিখ ও সময় শীঘ্রই জানানো হবে।
-            </div>
-        </section>
-
-        <!-- Directors Section -->
-        <section id="directors" class="card">
-            <h2>👨‍💼 পরিচালক বৃন্দ পরিচিতি</h2>
-            <div class="profile-grid">
-                <div class="profile-card">
-                    <img src="https://via.placeholder.com/80" alt="পরিচালক">
-                    <h4>জনাব মো: আব্দুর রহমান</h4>
-                    <p>ব্যবস্থাপনা পরিচালক</p>
-                    <p>ফোন: ০১৭০০-০০০০০১</p>
-                </div>
-                <div class="profile-card">
-                    <img src="https://via.placeholder.com/80" alt="পরিচালক">
-                    <h4>জনাব মো: রফিকুল ইসলাম</h4>
-                    <p>অর্থ পরিচালক</p>
-                    <p>ফোন: ০১৭০০-০০০০০২</p>
-                </div>
-            </div>
-        </section>
-
-        <!-- Committee Section -->
-        <section id="committee" class="card">
-            <h2>👥 সকল কমিটি বৃন্দ পরিচিতি</h2>
-            <div class="profile-grid">
-                <div class="profile-card">
-                    <img src="https://via.placeholder.com/80" alt="কমিটি">
-                    <h4>জনাব মো: সাইদুল ইসলাম</h4>
-                    <p>সভাপতি</p>
-                </div>
-                <div class="profile-card">
-                    <img src="https://via.placeholder.com/80" alt="কমিটি">
-                    <h4>জনাব মো: কামরুল হাসান</h4>
-                    <p>সাধারণ সম্পাদক</p>
-                </div>
-                <div class="profile-card">
-                    <img src="https://via.placeholder.com/80" alt="কমিটি">
-                    <h4>জনাব মো: শফিকুল আলম</h4>
-                    <p>ক্যাশিয়ার</p>
-                </div>
-            </div>
-        </section>
+<!-- Content Sections -->
+<div class="container">
+    <div class="card" id="aboutSection">
+        <h3>📜 সমিতি সম্পর্কে</h3>
+        <p id="aboutText">শিমুলতলা সমাজকল্যাণ সমবায় সমিতি ২০২৪ সালে জামালপুর জেলার ইসলামপুর উপজেলায় প্রতিষ্ঠিত একটি বহুমুখী সমবায় সংগঠন। আমাদের মূল উদ্দেশ্য হলো স্থানীয় জনগণের মাঝে সঞ্চয়ের অভ্যাস গড়ে তোলা, অর্থনৈতিক আত্মনির্ভরশীলতা বৃদ্ধি করা এবং সহজ শর্তে ক্ষুদ্র ঋণ সহায়তার মাধ্যমে সমাজকল্যাণমূলক কাজে অবদান রাখা।</p>
     </div>
 
-    <footer>
-        <p>&copy; ২০২৪-২০২৬ শিমুলতলা সমাজকল্যাণ সমবায় সমিতি। সর্বস্বত্ব সংরক্ষিত।</p>
-    </footer>
+    <div class="card" id="noticeSection">
+        <h3>📢 জরুরি নোটিশ বোর্ড</h3>
+        <p id="displayNotice1" style="margin-bottom: 8px; font-weight: bold; color: #b71c1c;">-</p>
+        <p id="displayNotice2">-</p>
+    </div>
+</div>
+
+<script>
+    function toggleMenu() {
+        const sidebar = document.getElementById("mySidebar");
+        const overlay = document.getElementById("overlay");
+        if (sidebar.style.width === "250px") {
+            sidebar.style.width = "0";
+            overlay.style.display = "none";
+        } else {
+            sidebar.style.width = "250px";
+            overlay.style.display = "block";
+        }
+    }
+
+    // এডমিন প্যানেল থেকে দেওয়া ডাইনামিক তথ্য লোড করা
+    window.onload = function() {
+        const customTitle = localStorage.getItem('somitte_name');
+        const customSub = localStorage.getItem('somitte_address');
+        const customEst = localStorage.getItem('somitte_est');
+        const customAbout = localStorage.getItem('somitte_about');
+        const n1 = localStorage.getItem('somitte_notice1');
+        const n2 = localStorage.getItem('somitte_notice2');
+
+        if(customTitle) {
+            document.getElementById('headerTitle').innerText = customTitle;
+            document.getElementById('heroTitle').innerText = customTitle;
+        }
+        if(customSub) {
+            document.getElementById('headerSubtitle').innerText = customSub;
+            document.getElementById('heroLocation').innerText = customSub;
+        }
+        if(customEst) {
+            document.getElementById('heroEst').innerText = customEst;
+        }
+        if(customAbout) {
+            document.getElementById('aboutText').innerText = customAbout;
+        }
+        if(n1) {
+            document.getElementById('displayNotice1').innerText = "📌 " + n1;
+        } else {
+            document.getElementById('displayNotice1').innerText = "📌 আগামী মাসের ৫ তারিখের মধ্যে মাসিক সঞ্চয় আমানত জমা দেওয়ার জন্য অনুরোধ করা হচ্ছে।";
+        }
+        if(n2) {
+            document.getElementById('displayNotice2').innerText = "📌 " + n2;
+        } else {
+            document.getElementById('displayNotice2').innerText = "📌 বার্ষিক সাধারণ সভা আগামী মাসে অনুষ্ঠিত হবে। তারিখ ও সময় শীঘ্রই জানানো হবে।";
+        }
+    };
+</script>
 
 </body>
 </html>
