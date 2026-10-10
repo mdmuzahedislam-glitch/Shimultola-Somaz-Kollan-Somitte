@@ -9,23 +9,23 @@
         body { background: #f4f7f6; color: #333; }
 
         /* Top Header */
-        header { background: #1b5e20; color: white; padding: 15px 20px; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 2px 5px rgba(0,0,0,0.1); position: sticky; top: 0; z-index: 100; }
-        .logo-area { display: flex; align-items: center; gap: 10px; }
-        .logo-area h1 { font-size: 16px; line-height: 1.2; }
-        .logo-area p { font-size: 11px; opacity: 0.9; }
+        header { background: #1b5e20; color: white; padding: 12px 15px; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 2px 5px rgba(0,0,0,0.1); position: sticky; top: 0; z-index: 100; }
+        .logo-area { display: flex; align-items: center; gap: 8px; max-width: 85%; }
+        .logo-area h1 { font-size: 14px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        .logo-area p { font-size: 10px; opacity: 0.85; }
 
         /* Hamburger Menu Icon */
-        .menu-btn { font-size: 24px; cursor: pointer; background: none; border: none; color: white; padding: 5px; }
+        .menu-btn { font-size: 24px; cursor: pointer; background: none; border: none; color: white; padding: 2px 5px; }
 
         /* Sidebar Menu */
         .sidebar { height: 100%; width: 0; position: fixed; z-index: 1000; top: 0; right: 0; background-color: #ffffff; overflow-x: hidden; transition: 0.3s; padding-top: 60px; box-shadow: -5px 0 15px rgba(0,0,0,0.1); }
         .sidebar a { padding: 12px 25px; text-decoration: none; font-size: 15px; color: #1b5e20; display: block; transition: 0.2s; font-weight: bold; border-bottom: 1px solid #eee; }
         .sidebar a:hover { background-color: #e8f5e9; }
-        .sidebar .close-btn { position: absolute; top: 15px; left: 20px; font-size: 22px; cursor: pointer; color: #c62828; border: none; background: none; }
+        .sidebar .close-btn { position: absolute; top: 15px; left: 20px; font-size: 18px; cursor: pointer; color: #c62828; border: none; background: none; font-weight: bold; }
 
         /* Hero Banner */
-        .hero { background: #2e7d32; color: white; text-align: center; padding: 30px 15px; }
-        .hero h2 { font-size: 20px; margin-bottom: 5px; }
+        .hero { background: #2e7d32; color: white; text-align: center; padding: 25px 15px; }
+        .hero h2 { font-size: 18px; margin-bottom: 5px; }
         .hero p { font-size: 13px; opacity: 0.9; margin-bottom: 8px; }
         .badge { background: #ff9800; color: white; padding: 3px 10px; border-radius: 12px; font-size: 11px; font-weight: bold; display: inline-block; }
 
@@ -44,7 +44,7 @@
 <!-- Header -->
 <header>
     <div class="logo-area">
-        <span style="font-size: 26px;">🏛</span>
+        <span style="font-size: 20px;">🏛</span>
         <div>
             <h1 id="headerTitle">শিমুলতলা সমাজকল্যাণ সমবায় সমিতি</h1>
             <p id="headerSubtitle">ইসলামপুর, জামালপুর</p>
