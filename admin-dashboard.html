@@ -28,7 +28,6 @@
         .btn:hover { background: #1b5e20; }
         .btn-danger { background: #c62828; }
         .btn-warning { background: #f57c00; color: white; }
-        .btn-cancel { background: #757575; color: white; }
 
         /* Modal */
         .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); justify-content: center; align-items: center; padding: 15px; z-index: 1000; }
@@ -48,9 +47,9 @@
         <a href="admin-login.html" class="logout-btn">লগআউট</a>
     </header>
 
-    <!-- ১. সমিতির হেডার ও তথ্য এডিট (Website Info Customizer) -->
+    <!-- ১. সমিতি ও ফুটার কন্টাক্ট এডিট -->
     <div class="card">
-        <h3 class="section-title">✏️ সমিতির নাম, ঠিকানা ও বিবরণ এডিট</h3>
+        <h3 class="section-title">✏️ সমিতির নাম, ঠিকানা ও কন্টাক্ট এডিট</h3>
         <form onsubmit="updateSiteInfo(event)">
             <div class="form-grid">
                 <div class="form-group">
@@ -65,6 +64,14 @@
                     <label>স্থাপিত সাল:</label>
                     <input type="text" id="siteEstInput" required>
                 </div>
+                <div class="form-group">
+                    <label>অফিশিয়াল মোবাইল নম্বর:</label>
+                    <input type="text" id="sitePhoneInput" required>
+                </div>
+                <div class="form-group">
+                    <label>অফিশিয়াল ইমেইল:</label>
+                    <input type="email" id="siteEmailInput" required>
+                </div>
             </div>
             <div class="form-group" style="margin-bottom: 12px;">
                 <label>সমিতি সম্পর্কে বিবরণ:</label>
@@ -74,7 +81,41 @@
         </form>
     </div>
 
-    <!-- ২. জরুরি নোটিশ আপডেট -->
+    <!-- ২. পরিচালকবৃন্দের তথ্য এডিট -->
+    <div class="card">
+        <h3 class="section-title">👔 পরিচালকবৃন্দের নাম ও ছবি এডিট</h3>
+        <form onsubmit="updateDirectors(event)">
+            <div class="form-grid">
+                <div class="form-group">
+                    <label>সবাপতির নাম:</label>
+                    <input type="text" id="pNameInput" required>
+                </div>
+                <div class="form-group">
+                    <label>সবাপতির ছবি (Image URL):</label>
+                    <input type="text" id="pImgInput" placeholder="https://..." required>
+                </div>
+                <div class="form-group">
+                    <label>সাধারণ সম্পাদকের নাম:</label>
+                    <input type="text" id="sNameInput" required>
+                </div>
+                <div class="form-group">
+                    <label>সম্পাদকের ছবি (Image URL):</label>
+                    <input type="text" id="sImgInput" placeholder="https://..." required>
+                </div>
+                <div class="form-group">
+                    <label>কার্যনির্বাহী সদস্যের নাম:</label>
+                    <input type="text" id="mNameInput" required>
+                </div>
+                <div class="form-group">
+                    <label>সদস্যের ছবি (Image URL):</label>
+                    <input type="text" id="mImgInput" placeholder="https://..." required>
+                </div>
+            </div>
+            <button type="submit" class="btn btn-warning">পরিচালকবৃন্দের তথ্য আপডেট করুন</button>
+        </form>
+    </div>
+
+    <!-- ৩. নোটিশ আপডেট -->
     <div class="card">
         <h3 class="section-title">📢 জরুরি নোটিশ বোর্ড আপডেট</h3>
         <form onsubmit="updateNotices(event)">
@@ -90,7 +131,7 @@
         </form>
     </div>
 
-    <!-- ৩. নতুন সদস্য রেজিস্ট্রেশন -->
+    <!-- ৪. নতুন সদস্য রেজিস্ট্রেশন -->
     <div class="card">
         <h3 class="section-title">➕ নতুন সদস্য রেজিস্ট্রেশন</h3>
         <form id="registerForm" onsubmit="registerMember(event)">
@@ -135,7 +176,7 @@
         </form>
     </div>
 
-    <!-- ৪. সদস্য তালিকা ম্যানেজমেন্ট -->
+    <!-- ৫. সদস্য তালিকা ম্যানেজমেন্ট -->
     <div class="card">
         <h3 class="section-title">👥 সদস্য তালিকা, জমা ও ঋণ ম্যানেজমেন্ট</h3>
         <div style="overflow-x: auto;">
@@ -222,7 +263,20 @@
         localStorage.setItem('somitte_address', document.getElementById('siteAddressInput').value);
         localStorage.setItem('somitte_est', document.getElementById('siteEstInput').value);
         localStorage.setItem('somitte_about', document.getElementById('siteAboutInput').value);
+        localStorage.setItem('somitte_phone', document.getElementById('sitePhoneInput').value);
+        localStorage.setItem('somitte_email', document.getElementById('siteEmailInput').value);
         alert('ওয়েবসাইটের তথ্য সফলভাবে আপডেট করা হয়েছে!');
+    }
+
+    function updateDirectors(e) {
+        e.preventDefault();
+        localStorage.setItem('somitte_pName', document.getElementById('pNameInput').value);
+        localStorage.setItem('somitte_pImg', document.getElementById('pImgInput').value);
+        localStorage.setItem('somitte_sName', document.getElementById('sNameInput').value);
+        localStorage.setItem('somitte_sImg', document.getElementById('sImgInput').value);
+        localStorage.setItem('somitte_mName', document.getElementById('mNameInput').value);
+        localStorage.setItem('somitte_mImg', document.getElementById('mImgInput').value);
+        alert('পরিচালকবৃন্দের তথ্য সফলভাবে আপডেট হয়েছে!');
     }
 
     function updateNotices(e) {
@@ -294,6 +348,16 @@
         document.getElementById('siteAddressInput').value = localStorage.getItem('somitte_address') || "ইসলামপুর, জামালপুর";
         document.getElementById('siteEstInput').value = localStorage.getItem('somitte_est') || "স্থাপিত: ২০২৪ ইং";
         document.getElementById('siteAboutInput').value = localStorage.getItem('somitte_about') || "শিমুলতলা সমাজকল্যাণ সমবায় সমিতি ২০২৪ সালে জামালপুর জেলার ইসলামপুর উপজেলায় প্রতিষ্ঠিত একটি বহুমুখী সমবায় সংগঠন।";
+        document.getElementById('sitePhoneInput').value = localStorage.getItem('somitte_phone') || "+880 1700-000000";
+        document.getElementById('siteEmailInput').value = localStorage.getItem('somitte_email') || "info@shimultola.com";
+
+        document.getElementById('pNameInput').value = localStorage.getItem('somitte_pName') || "মো: রফিকুল ইসলাম";
+        document.getElementById('pImgInput').value = localStorage.getItem('somitte_pImg') || "https://via.placeholder.com/150/1b5e20/ffffff?text=President";
+        document.getElementById('sNameInput').value = localStorage.getItem('somitte_sName') || "মো: শফিকুল আলম";
+        document.getElementById('sImgInput').value = localStorage.getItem('somitte_sImg') || "https://via.placeholder.com/150/0288d1/ffffff?text=Secretary";
+        document.getElementById('mNameInput').value = localStorage.getItem('somitte_mName') || "মো: হাবিবুর রহমান";
+        document.getElementById('mImgInput').value = localStorage.getItem('somitte_mImg') || "https://via.placeholder.com/150/f57c00/ffffff?text=Member";
+
         document.getElementById('notice1Input').value = localStorage.getItem('somitte_notice1') || "";
         document.getElementById('notice2Input').value = localStorage.getItem('somitte_notice2') || "";
     };
