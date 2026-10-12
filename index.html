@@ -99,25 +99,8 @@
 
     <div class="card" id="teamSection">
         <h3>👔 পরিচালকবৃন্দ ও পরিচালনা পর্ষদ</h3>
-        <div class="team-grid">
-            <div class="team-card">
-                <img src="https://via.placeholder.com/150/1b5e20/ffffff?text=President" alt="সভাপতি" class="team-img" id="presImg">
-                <h4 id="presName">মো: রফিকুল ইসলাম</h4>
-                <span class="role">সভাপতি</span>
-                <p>শিমুলতলা সমাজকল্যাণ সমবায় সমিতি</p>
-            </div>
-            <div class="team-card">
-                <img src="https://via.placeholder.com/150/0288d1/ffffff?text=Secretary" alt="সাধারণ সম্পাদক" class="team-img" id="secImg">
-                <h4 id="secName">মো: শফিকুল আলম</h4>
-                <span class="role">সাধারণ সম্পাদক</span>
-                <p>শিমুলতলা সমাজকল্যাণ সমবায় সমিতি</p>
-            </div>
-            <div class="team-card">
-                <img src="https://via.placeholder.com/150/f57c00/ffffff?text=Member" alt="সদস্য" class="team-img" id="memImg">
-                <h4 id="memName">মো: হাবিবুর রহমান</h4>
-                <span class="role">কার্যনির্বাহী সদস্য</span>
-                <p>শিমুলতলা সমাজকল্যাণ সমবায় সমিতি</p>
-            </div>
+        <div class="team-grid" id="teamGridContainer">
+            <!-- ডাইনামিকভাবে পরিচালকবৃন্দ এখানে লোড হবে -->
         </div>
     </div>
 
@@ -181,7 +164,6 @@
     }
     window.toggleMenu = toggleMenu;
 
-    // Firebase Realtime Listener
     onValue(ref(db, 'siteData'), (snapshot) => {
         const data = snapshot.val();
         if (data) {
@@ -202,12 +184,25 @@
             if(data.notice1) document.getElementById('displayNotice1').innerText = "📌 " + data.notice1;
             if(data.notice2) document.getElementById('displayNotice2').innerText = "📌 " + data.notice2;
 
-            if(data.pName) document.getElementById('presName').innerText = data.pName;
-            if(data.pImg) document.getElementById('presImg').src = data.pImg;
-            if(data.sName) document.getElementById('secName').innerText = data.sName;
-            if(data.sImg) document.getElementById('secImg').src = data.sImg;
-            if(data.mName) document.getElementById('memName').innerText = data.mName;
-            if(data.mImg) document.getElementById('memImg').src = data.mImg;
+            // পরিচালকবৃন্দের তালিকা রেন্ডার করা
+            const teamContainer = document.getElementById('teamGridContainer');
+            teamContainer.innerHTML = '';
+            
+            let directors = data.directors || [
+                { name: data.pName || "মো: রফিকুল ইসলাম", role: "সভাপতি", img: data.pImg || "https://via.placeholder.com/150/1b5e20/ffffff?text=President" },
+                { name: data.sName || "মো: শফিকুল আলম", role: "সাধারণ সম্পাদক", img: data.sImg || "https://via.placeholder.com/150/0288d1/ffffff?text=Secretary" },
+                { name: data.mName || "মো: হাবিবুর রহমান", role: "কার্যনির্বাহী সদস্য", img: data.mImg || "https://via.placeholder.com/150/f57c00/ffffff?text=Member" }
+            ];
+
+            directors.forEach(dir => {
+                teamContainer.innerHTML += `
+                    <div class="team-card">
+                        <img src="${dir.img || 'https://via.placeholder.com/150'}" alt="${dir.name}" class="team-img">
+                        <h4>${dir.name}</h4>
+                        <span class="role">${dir.role}</span>
+                        <p>শিমুলতলা সমাজকল্যাণ সমবায় সমিতি</p>
+                    </div>`;
+            });
         }
     });
 </script>
