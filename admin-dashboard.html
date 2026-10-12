@@ -68,35 +68,34 @@
         </form>
     </div>
 
-    <!-- ২. পরিচালকবৃন্দের নাম ও ছবি আপলোড -->
+    <!-- ২. পরিচালকবৃন্দের নতুন ঘর বা তালিকা ম্যানেজমেন্ট -->
     <div class="card">
-        <h3 class="section-title">👔 পরিচালকবৃন্দের নাম ও ছবি আপলোড</h3>
-        <form id="directorForm">
+        <h3 class="section-title">👔 পরিচালকবৃন্দ সংযোজন ও ম্যানেজমেন্ট</h3>
+        <form id="addDirectorForm" onsubmit="addNewDirector(event)">
             <div class="form-grid">
+                <div class="form-group"><label>পরিচালকের নাম:</label><input type="text" id="newDirName" required></div>
+                <div class="form-group"><label>পদবী (যেমন: সহ-সভাপতি):</label><input type="text" id="newDirRole" required></div>
                 <div class="form-group">
-                    <label>সভাপতি এর নাম:</label>
-                    <input type="text" id="pNameInput" required>
-                    <label style="margin-top:8px;">ছবি আপলোড করুন:</label>
-                    <input type="file" id="pImgFile" accept="image/*" onchange="previewFile('pImgFile', 'pPreview')">
-                    <img id="pPreview" class="preview-img" src="https://via.placeholder.com/150/1b5e20/ffffff?text=President" alt="সভাপতি">
-                </div>
-                <div class="form-group">
-                    <label>সাধারণ সম্পাদকের নাম:</label>
-                    <input type="text" id="sNameInput" required>
-                    <label style="margin-top:8px;">ছবি আপলোড করুন:</label>
-                    <input type="file" id="sImgFile" accept="image/*" onchange="previewFile('sImgFile', 'sPreview')">
-                    <img id="sPreview" class="preview-img" src="https://via.placeholder.com/150/0288d1/ffffff?text=Secretary" alt="সম্পাদক">
-                </div>
-                <div class="form-group">
-                    <label>কার্যনির্বাহী সদস্যের নাম:</label>
-                    <input type="text" id="mNameInput" required>
-                    <label style="margin-top:8px;">ছবি আপলোড করুন:</label>
-                    <input type="file" id="mImgFile" accept="image/*" onchange="previewFile('mImgFile', 'mPreview')">
-                    <img id="mPreview" class="preview-img" src="https://via.placeholder.com/150/f57c00/ffffff?text=Member" alt="সদস্য">
+                    <label>ছবি আপলোড:</label>
+                    <input type="file" id="newDirImgFile" accept="image/*" onchange="previewNewDirImg()">
                 </div>
             </div>
-            <button type="submit" class="btn btn-warning">পরিচালকবৃন্দের তথ্য ও ছবি সংরক্ষণ করুন</button>
+            <button type="submit" class="btn">নতুন পরিচালক ঘর যোগ করুন</button>
         </form>
+
+        <div style="margin-top: 20px; overflow-x: auto;">
+            <table>
+                <thead>
+                    <tr>
+                        <th>ছবি</th>
+                        <th>নাম</th>
+                        <th>পদবী</th>
+                        <th>অ্যাকশন</th>
+                    </tr>
+                </thead>
+                <tbody id="directorTableBody"></tbody>
+            </table>
+        </div>
     </div>
 
     <!-- ৩. নোটিশ বোর্ড -->
@@ -196,19 +195,18 @@
     const app = initializeApp(firebaseConfig);
     const db = getDatabase(app);
 
-    let currentData = { members: [
-        { id: "M-101", name: "মো: আব্দুল করিম", username: "karim101", password: "123", phone: "01711000001", type: "সাধারণ সদস্য", balance: 15000, loan: 5000 },
-        { id: "M-102", name: "মো: রহিম মিয়া", username: "rahim102", password: "123", phone: "01711000002", type: "সাধারণ সদস্য", balance: 12508, loan: 0 }
-    ]};
-    let pImgData = "", sImgData = "", mImgData = "";
+    let currentData = { members: [], directors: [] };
+    let newDirImgData = "https://via.placeholder.com/150/2e7d32/ffffff?text=Director";
 
     onValue(ref(db, 'siteData'), (snapshot) => {
         if(snapshot.exists()) {
             currentData = snapshot.val();
-            if(!currentData.members) {
-                currentData.members = [
-                    { id: "M-101", name: "মো: আব্দুল করিম", username: "karim101", password: "123", phone: "01711000001", type: "সাধারণ সদস্য", balance: 15000, loan: 5000 },
-                    { id: "M-102", name: "মো: রহিম মিয়া", username: "rahim102", password: "123", phone: "01711000002", type: "সাধারণ সদস্য", balance: 12508, loan: 0 }
+            if(!currentData.members) currentData.members = [];
+            if(!currentData.directors) {
+                currentData.directors = [
+                    { name: currentData.pName || "মো: রফিকুল ইসলাম", role: "সভাপতি", img: currentData.pImg || "https://via.placeholder.com/150/1b5e20/ffffff?text=President" },
+                    { name: currentData.sName || "মো: শফিকুল আলম", role: "সাধারণ সম্পাদক", img: currentData.sImg || "https://via.placeholder.com/150/0288d1/ffffff?text=Secretary" },
+                    { name: currentData.mName || "মো: হাবিবুর রহমান", role: "কার্যনির্বাহী সদস্য", img: currentData.mImg || "https://via.placeholder.com/150/f57c00/ffffff?text=Member" }
                 ];
             }
 
@@ -218,29 +216,20 @@
             document.getElementById('sitePhoneInput').value = currentData.phone || "";
             document.getElementById('siteEmailInput').value = currentData.email || "";
             document.getElementById('siteAboutInput').value = currentData.about || "";
-            document.getElementById('pNameInput').value = currentData.pName || "";
-            document.getElementById('sNameInput').value = currentData.sName || "";
-            document.getElementById('mNameInput').value = currentData.mName || "";
             document.getElementById('notice1Input').value = currentData.notice1 || "";
             document.getElementById('notice2Input').value = currentData.notice2 || "";
 
-            if(currentData.pImg) { pImgData = currentData.pImg; document.getElementById('pPreview').src = currentData.pImg; }
-            if(currentData.sImg) { sImgData = currentData.sImg; document.getElementById('sPreview').src = currentData.sImg; }
-            if(currentData.mImg) { mImgData = currentData.mImg; document.getElementById('mPreview').src = currentData.mImg; }
-
             renderMembers();
+            renderDirectors();
         }
     });
 
-    window.previewFile = function(inputId, imgId) {
-        const file = document.getElementById(inputId).files[0];
+    window.previewNewDirImg = function() {
+        const file = document.getElementById('newDirImgFile').files[0];
         if (file) {
             const reader = new FileReader();
             reader.onloadend = function() {
-                document.getElementById(imgId).src = reader.result;
-                if(inputId === 'pImgFile') pImgData = reader.result;
-                if(inputId === 'sImgFile') sImgData = reader.result;
-                if(inputId === 'mImgFile') mImgData = reader.result;
+                newDirImgData = reader.result;
             }
             reader.readAsDataURL(file);
         }
@@ -260,20 +249,6 @@
         });
     }
 
-    document.getElementById('directorForm').onsubmit = function(e) {
-        e.preventDefault();
-        currentData.pName = document.getElementById('pNameInput').value;
-        currentData.sName = document.getElementById('sNameInput').value;
-        currentData.mName = document.getElementById('mNameInput').value;
-        if(pImgData) currentData.pImg = pImgData;
-        if(sImgData) currentData.sImg = sImgData;
-        if(mImgData) currentData.mImg = mImgData;
-
-        set(ref(db, 'siteData'), currentData).then(() => {
-            alert('পরিচালকবৃন্দের তথ্য ও ছবি সফলভাবে আপডেট হয়েছে!');
-        });
-    }
-
     document.getElementById('noticeForm').onsubmit = function(e) {
         e.preventDefault();
         currentData.notice1 = document.getElementById('notice1Input').value;
@@ -282,6 +257,50 @@
         set(ref(db, 'siteData'), currentData).then(() => {
             alert('নোটিশ সফলভাবে আপডেট হয়েছে!');
         });
+    }
+
+    function renderDirectors() {
+        const tbody = document.getElementById('directorTableBody');
+        tbody.innerHTML = '';
+        if(currentData.directors) {
+            currentData.directors.forEach((d, index) => {
+                tbody.innerHTML += `
+                    <tr>
+                        <td><img src="${d.img}" class="preview-img" style="width:40px;height:40px;margin:auto;"></td>
+                        <td>${d.name}</td>
+                        <td><span style="background:#e8f5e9; color:#1b5e20; padding:2px 6px; border-radius:4px; font-weight:bold;">${d.role}</span></td>
+                        <td>
+                            <button class="btn btn-danger" onclick="delDirector(${index})">মুছুন</button>
+                        </td>
+                    </tr>`;
+            });
+        }
+    }
+
+    window.addNewDirector = function(e) {
+        e.preventDefault();
+        if(!currentData.directors) currentData.directors = [];
+        currentData.directors.push({
+            name: document.getElementById('newDirName').value.trim(),
+            role: document.getElementById('newDirRole').value.trim(),
+            img: newDirImgData
+        });
+
+        set(ref(db, 'siteData'), currentData).then(() => {
+            alert('নতুন পরিচালক ঘর সফলভাবে যোগ করা হয়েছে!');
+            document.getElementById('addDirectorForm').reset();
+            newDirImgData = "https://via.placeholder.com/150/2e7d32/ffffff?text=Director";
+            renderDirectors();
+        });
+    }
+
+    window.delDirector = function(index) {
+        if(confirm('এই পরিচালকের ঘরটি মুছে ফেলতে চান?')) {
+            currentData.directors.splice(index, 1);
+            set(ref(db, 'siteData'), currentData).then(() => {
+                renderDirectors();
+            });
+        }
     }
 
     function renderMembers() {
