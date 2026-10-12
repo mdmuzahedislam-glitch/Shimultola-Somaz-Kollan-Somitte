@@ -3,156 +3,272 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>মেম্বার ড্যাশবোর্ড - শিমুলতলা সমাজকল্যাণ সমবায় সমিতি</title>
+    <title>সদস্য ড্যাশবোর্ড - শিমুলতলা সমাজকল্যাণ সমবায় সমিতি</title>
     <style>
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
-        body { background: #f4f7f6; padding: 15px; color: #333; display: none; }
-        .container { max-width: 850px; margin: 0 auto; }
-        header { background: #1b5e20; color: white; padding: 15px; border-radius: 8px; display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
-        header h2 { font-size: 18px; }
-        .logout-btn { background: #c62828; color: white; padding: 6px 12px; border-radius: 4px; font-size: 13px; font-weight: bold; cursor: pointer; border: none; }
+        body { background: #f0f4f1; color: #333; padding-bottom: 30px; }
+
+        /* Header Bar */
+        header { background: #1b5e20; color: white; padding: 12px 20px; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 2px 8px rgba(0,0,0,0.15); position: sticky; top: 0; z-index: 100; }
+        .header-title { font-size: 16px; font-weight: bold; }
+
+        .container { max-width: 900px; margin: 20px auto; padding: 0 15px; }
+
+        /* Profile Banner Card */
+        .profile-card { background: linear-gradient(135deg, #1b5e20, #2e7d32); color: white; border-radius: 15px; padding: 25px 20px; position: relative; box-shadow: 0 6px 15px rgba(0,0,0,0.15); margin-bottom: 25px; }
+        .profile-header-content { display: flex; align-items: center; gap: 20px; flex-wrap: wrap; }
+        .user-avatar { width: 90px; height: 90px; border-radius: 50%; object-fit: cover; border: 4px solid #fff; box-shadow: 0 4px 8px rgba(0,0,0,0.2); background: #ffffff; }
+        .user-details h2 { font-size: 22px; margin-bottom: 4px; letter-spacing: 0.5px; }
+        .user-details p { font-size: 13px; opacity: 0.9; margin-bottom: 3px; }
+        .id-badge { background: #ff9800; color: white; padding: 3px 10px; border-radius: 12px; font-size: 11px; font-weight: bold; display: inline-block; margin-top: 5px; }
+
+        /* Three Dots Menu */
+        .menu-dropdown { position: absolute; top: 15px; right: 15px; }
+        .three-dots-btn { background: rgba(255,255,255,0.2); border: none; color: white; font-size: 22px; width: 38px; height: 38px; border-radius: 50%; cursor: pointer; transition: 0.2s; display: flex; align-items: center; justify-content: center; }
+        .three-dots-btn:hover { background: rgba(255,255,255,0.35); }
         
-        .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; margin-bottom: 20px; }
-        .stat-box { background: white; padding: 15px; border-radius: 8px; box-shadow: 0 2px 6px rgba(0,0,0,0.08); text-align: center; border-left: 5px solid #2e7d32; }
-        .stat-box.deposit { border-left-color: #0288d1; }
-        .stat-box.loan { border-left-color: #e65100; }
-        .stat-box h3 { font-size: 13px; color: #666; margin-bottom: 6px; }
-        .stat-box p { font-size: 20px; font-weight: bold; color: #1b5e20; }
+        .dropdown-content { display: none; position: absolute; right: 0; top: 45px; background-color: white; min-width: 190px; box-shadow: 0px 8px 16px rgba(0,0,0,0.2); border-radius: 8px; z-index: 200; overflow: hidden; }
+        .dropdown-content a { color: #333; padding: 12px 16px; text-decoration: none; display: block; font-size: 13px; font-weight: 600; border-bottom: 1px solid #f0f0f0; transition: 0.2s; }
+        .dropdown-content a:hover { background-color: #e8f5e9; color: #1b5e20; }
+        .dropdown-content a.logout-item { color: #c62828; }
+        .dropdown-content a.logout-item:hover { background-color: #ffebee; }
+        .show { display: block; }
 
-        .card { background: white; padding: 20px; border-radius: 8px; box-shadow: 0 2px 6px rgba(0,0,0,0.08); margin-bottom: 20px; }
-        h3.section-title { color: #1b5e20; border-bottom: 2px solid #eee; padding-bottom: 8px; margin-bottom: 15px; font-size: 16px; }
+        /* Financial Stats Cards */
+        .stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 15px; margin-bottom: 25px; }
+        .stat-card { background: white; padding: 20px; border-radius: 12px; box-shadow: 0 4px 10px rgba(0,0,0,0.05); text-align: center; border-bottom: 4px solid #2e7d32; transition: 0.3s; }
+        .stat-card:hover { transform: translateY(-3px); }
+        .stat-card.last-deposit { border-bottom-color: #0288d1; }
+        .stat-card.loan { border-bottom-color: #e65100; }
+        .stat-card h4 { font-size: 13px; color: #666; margin-bottom: 8px; text-transform: uppercase; }
+        .stat-card .amount { font-size: 24px; font-weight: bold; color: #2e7d32; }
+        .stat-card.last-deposit .amount { color: #0288d1; }
+        .stat-card.loan .amount { color: #e65100; }
 
+        /* Card Sections */
+        .card { background: white; padding: 22px; border-radius: 12px; box-shadow: 0 4px 10px rgba(0,0,0,0.05); margin-bottom: 25px; border-top: 4px solid #2e7d32; }
+        .card h3 { color: #1b5e20; font-size: 16px; border-bottom: 2px solid #e8f5e9; padding-bottom: 8px; margin-bottom: 15px; display: flex; align-items: center; gap: 8px; }
+        
+        .info-row { display: flex; justify-content: space-between; padding: 10px 0; border-bottom: 1px solid #f5f5f5; font-size: 14px; }
+        .info-row:last-child { border-bottom: none; }
+        .info-label { font-weight: bold; color: #555; }
+
+        /* Tables & Form Elements */
         table { width: 100%; border-collapse: collapse; margin-top: 10px; }
-        table, th, td { border: 1px solid #ddd; }
-        th, td { padding: 9px; text-align: center; font-size: 13px; }
+        table, th, td { border: 1px solid #e0e0e0; }
+        th, td { padding: 10px; text-align: center; font-size: 13px; }
         th { background: #e8f5e9; color: #1b5e20; }
 
-        .btn-receipt { background: #0288d1; color: white; border: none; padding: 5px 10px; border-radius: 4px; cursor: pointer; font-size: 12px; }
+        .form-group { margin-bottom: 12px; text-align: left; }
+        .form-group label { display: block; font-size: 13px; font-weight: bold; margin-bottom: 5px; }
+        .form-group input, .form-group textarea { width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 6px; font-size: 14px; }
+        .btn { background: #2e7d32; color: white; border: none; padding: 10px 18px; border-radius: 6px; cursor: pointer; font-size: 14px; font-weight: bold; }
+        .btn:hover { background: #1b5e20; }
 
-        /* Receipt Modal */
-        .modal { display: none; position: fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.5); justify-content:center; align-items:center; padding:15px; z-index:1000; }
-        .receipt-box { background: white; padding: 25px; border-radius: 8px; width: 100%; max-width: 450px; border: 2px solid #1b5e20; }
-        .receipt-header { text-align: center; border-bottom: 2px dashed #ccc; padding-bottom: 10px; margin-bottom: 15px; }
-        .receipt-header h3 { color: #1b5e20; font-size: 18px; }
-        .receipt-row { display: flex; justify-content: space-between; margin-bottom: 8px; font-size: 14px; }
-        .receipt-footer { text-align: center; margin-top: 20px; border-top: 2px dashed #ccc; padding-top: 10px; }
+        /* Notice Styling */
+        .notice-box { background: #fff5f5; border-left: 4px solid #d32f2f; padding: 12px; border-radius: 6px; color: #b71c1c; font-size: 14px; margin-bottom: 10px; font-weight: 500; }
     </style>
 </head>
 <body>
 
+<header>
+    <div class="header-title" id="siteHeaderTitle">🏛 শিমুলতলা সমাজকল্যাণ সমবায় সমিতি</div>
+    <span style="font-size: 12px; opacity:0.9;">সদস্য প্যানেল</span>
+</header>
+
 <div class="container">
-    <header>
-        <div>
-            <h2 id="memberName">স্বাগতম, সদস্য</h2>
-            <p style="font-size: 12px; opacity: 0.9;" id="memberInfo">সদস্য তথ্য লোড হচ্ছে...</p>
+    <!-- প্রোফাইল ব্যানার এবং থ্রি-ডট মেনু -->
+    <div class="profile-card" id="dashboardSection">
+        <div class="menu-dropdown">
+            <button class="three-dots-btn" onclick="toggleDropdown()">⋮</button>
+            <div id="myDropdown" class="dropdown-content">
+                <a href="#dashboardSection" onclick="closeDropdown()">📊 ড্যাশবোর্ড</a>
+                <a href="#balanceSection" onclick="closeDropdown()">💰 ব্যালেন্স বিবরণী</a>
+                <a href="#profileSection" onclick="closeDropdown()">👤 প্রোফাইল আইডি</a>
+                <a href="#editSection" onclick="closeDropdown()">✏️ তথ্য এডিট</a>
+                <a href="#complainSection" onclick="closeDropdown()">📩 অভিযোগ জমা দান</a>
+                <a href="#statementSection" onclick="closeDropdown()">📑 স্টেটমেন্ট</a>
+                <a href="#" class="logout-item" onclick="logoutMember()">🔒 লগ আউট</a>
+            </div>
         </div>
-        <button onclick="logout()" class="logout-btn">লগআউট</button>
-    </header>
 
-    <div class="grid">
-        <div class="stat-box">
-            <h3>💰 মোট সঞ্চয় ব্যালেন্স</h3>
-            <p id="totalBalance">৳ ০</p>
-        </div>
-        <div class="stat-box loan">
-            <h3>💳 বর্তমান বকেয়া ঋণ</h3>
-            <p id="loanBalance" style="color: #e65100;">৳ ০</p>
-        </div>
-        <div class="stat-box deposit">
-            <h3>📱 মোবাইল নম্বর</h3>
-            <p id="phoneNo" style="font-size: 16px; color: #0288d1;">-</p>
-        </div>
-    </div>
-
-    <div class="card">
-        <h3 class="section-title">📊 সঞ্চয় হিস্টোরি ও ডিজিটাল রসিদ</h3>
-        <table>
-            <thead>
-                <tr>
-                    <th>বিবরণ</th>
-                    <th>জমার পরিমাণ</th>
-                    <th>অবস্থা</th>
-                    <th>রসিদ</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td>মাসিক নিয়মিত সঞ্চয় আমানত</td>
-                    <td id="tableBalance" style="font-weight: bold; color: green;">৳ ০</td>
-                    <td><span style="color: green; font-weight: bold;">সক্রিয়</span></td>
-                    <td><button class="btn-receipt" onclick="showReceipt('মাসিক সঞ্চয় আমানত')">🧾 রসিদ দেখুন</button></td>
-                </tr>
-            </tbody>
-        </table>
-    </div>
-</div>
-
-<div class="modal" id="receiptModal">
-    <div class="receipt-box">
-        <div class="receipt-header">
-            <h3>🏛 শিমুলতলা সমাজকল্যাণ সমবায় সমিতি</h3>
-            <p style="font-size: 12px;">ইসলামপুর, জামালপুর (স্থাপিত: ২০২৪ ইং)</p>
-            <p style="font-size: 13px; font-weight: bold; margin-top: 5px; color: #0288d1;">ডিজিটাল জমা রসিদ</p>
-        </div>
-        <div class="receipt-row"><span>তারিখ:</span> <strong id="recDate"></strong></div>
-        <div class="receipt-row"><span>সদস্যের নাম:</span> <strong id="recName"></strong></div>
-        <div class="receipt-row"><span>সদস্য আইডি:</span> <strong id="recId"></strong></div>
-        <div class="receipt-row"><span>খাত:</span> <strong id="recType"></strong></div>
-        <div class="receipt-row" style="border-top: 1px solid #eee; padding-top: 5px;"><span>মোট জমা পরিমাণ:</span> <strong id="recAmount" style="color: green;"></strong></div>
-        
-        <div class="receipt-footer">
-            <p style="font-size: 11px; color: #777;">ইলেকট্রনিকভাবে প্রস্তুতকৃত রসিদ, স্বাক্ষরের প্রয়োজন নেই।</p>
-            <div style="margin-top: 15px;">
-                <button onclick="window.print()" style="background: #2e7d32; color: white; border: none; padding: 6px 12px; border-radius: 4px; cursor: pointer;">🖨 প্রিন্ট / সেভ করুন</button>
-                <button onclick="closeReceipt()" style="background: #757575; color: white; border: none; padding: 6px 12px; border-radius: 4px; cursor: pointer; margin-left: 5px;">বন্ধ করুন</button>
+        <div class="profile-header-content">
+            <img src="https://via.placeholder.com/150" alt="সদস্য ছবি" class="user-avatar" id="mAvatar">
+            <div class="user-details">
+                <h2 id="mName">সদস্যের নাম</h2>
+                <p id="mAddress">📍 ঠিকানা: লোড হচ্ছে...</p>
+                <p id="mPhone">📞 মোবাইল: লোড হচ্ছে...</p>
+                <span class="id-badge" id="mIdBadge">আইডি: ---</span>
             </div>
         </div>
     </div>
+
+    <!-- ৩টি আর্থিক তথ্য কার্ড -->
+    <div class="stats-grid" id="balanceSection">
+        <div class="stat-card">
+            <h4>বর্তমান সঞ্চয় ব্যালেন্স</h4>
+            <div class="amount" id="mBalance">৳ ০</div>
+        </div>
+        <div class="stat-card last-deposit">
+            <h4>সর্বশেষ মাসের জমা</h4>
+            <div class="amount" id="mLastDeposit">৳ ০</div>
+        </div>
+        <div class="stat-card loan">
+            <h4>বর্তমান বকেয়া ঋণ</h4>
+            <div class="amount" id="mLoan">৳ ০</div>
+        </div>
+    </div>
+
+    <!-- প্রোফাইল ডিটেইলস -->
+    <div class="card" id="profileSection">
+        <h3>👤 সদস্য প্রোফাইল বিবরণ</h3>
+        <div class="info-row"><span class="info-label">পূর্ণ নাম:</span><span id="infoName">---</span></div>
+        <div class="info-row"><span class="info-label">সদস্য আইডি:</span><span id="infoId">---</span></div>
+        <div class="info-row"><span class="info-label">ইউজারনেম:</span><span id="infoUsername">---</span></div>
+        <div class="info-row"><span class="info-label">মোবাইল নম্বর:</span><span id="infoPhone">---</span></div>
+        <div class="info-row"><span class="info-label">ঠিকানা:</span><span id="infoAddress">---</span></div>
+        <div class="info-row"><span class="info-label">সদস্যের ক্যাটাগরি:</span><span id="infoType">---</span></div>
+    </div>
+
+    <!-- স্টেটমেন্ট সেকশন -->
+    <div class="card" id="statementSection">
+        <h3>📑 মাসিক ও বাৎসরিক লেনদেন স্টেটমেন্ট</h3>
+        <div style="overflow-x: auto;">
+            <table>
+                <thead>
+                    <tr>
+                        <th>তারিখ / মাস</th>
+                        <th>বিবরণ</th>
+                        <th>জমা (৳)</th>
+                        <th>ঋণ পরিষদ (৳)</th>
+                        <th>অবস্থা</th>
+                    </tr>
+                </thead>
+                <tbody id="statementTableBody">
+                    <tr>
+                        <td colspan="5">কোনো লেনদেনের তথ্য পাওয়া যায়নি।</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- অভিযোগ জমাদান -->
+    <div class="card" id="complainSection">
+        <h3>📩 এডমিন প্যানেলে অভিযোগ বা মতামত জমা দান</h3>
+        <form id="complainForm" onsubmit="submitComplain(event)">
+            <div class="form-group">
+                <label>আপনার মতামত বা অভিযোগ বিস্তারিত লিখুন:</label>
+                <textarea id="complainText" rows="4" placeholder="এখানে আপনার সমস্যা বা মেসেজ লিখুন..." required></textarea>
+            </div>
+            <button type="submit" class="btn">অভিযোগ জমা দিন</button>
+        </form>
+    </div>
+
+    <!-- জরুরি নোটিশ -->
+    <div class="card">
+        <h3>📢 সমিতির নোটিশ বোর্ড</h3>
+        <div class="notice-box" id="mNotice1">📌 কোনো নোটিশ নেই।</div>
+        <div class="notice-box" id="mNotice2" style="border-left-color: #0288d1; color: #0288d1; background: #e1f5fe;">📌 নিয়মিত সঞ্চয় জমা দিন।</div>
+    </div>
 </div>
 
-<script>
-    let currentMemberObj = null;
+<script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/13.0.0/firebase-app.js";
+    import { getDatabase, ref, onValue, set, push } from "https://www.gstatic.com/firebasejs/13.0.0/firebase-database.js";
 
-    window.onload = function() {
-        const loggedInUser = sessionStorage.getItem('loggedInMember');
+    if (sessionStorage.getItem('memberLoggedIn') !== 'true') {
+        window.location.href = 'member-login.html';
+    }
 
-        if (!loggedInUser) {
-            window.location.replace('member-login.html');
-            return;
-        }
+    const currentMemberId = sessionStorage.getItem('currentMemberId');
 
-        currentMemberObj = JSON.parse(loggedInUser);
-
-        document.body.style.display = 'block';
-
-        document.getElementById('memberName').innerText = `স্বাগতম, ${currentMemberObj.name}`;
-        document.getElementById('memberInfo').innerText = `আইডি: ${currentMemberObj.id} | টাইপ: ${currentMemberObj.type}`;
-        document.getElementById('totalBalance').innerText = `৳ ${currentMemberObj.balance}`;
-        document.getElementById('loanBalance').innerText = `৳ ${currentMemberObj.loan || 0}`;
-        document.getElementById('phoneNo').innerText = currentMemberObj.phone;
-        document.getElementById('tableBalance').innerText = `৳ ${currentMemberObj.balance}`;
+    const firebaseConfig = {
+        apiKey: "AIzaSyCU0D4b0D2T9QcR5k7JKPNXH-l_BXdbtX4",
+        authDomain: "shimultola-somittee.firebaseapp.com",
+        databaseURL: "https://shimultola-somittee-default-rtdb.firebaseio.com",
+        projectId: "shimultola-somittee",
+        storageBucket: "shimultola-somittee.firebasestorage.app",
+        messagingSenderId: "889093640093",
+        appId: "1:889093640093:web:2092d82fadf427f6fb2974",
+        measurementId: "G-87QSPJ2M1R"
     };
 
-    function showReceipt(type) {
-        if (!currentMemberObj) return;
-        const today = new Date().toLocaleDateString('bn-BD');
-        
-        document.getElementById('recDate').innerText = today;
-        document.getElementById('recName').innerText = currentMemberObj.name;
-        document.getElementById('recId').innerText = currentMemberObj.id;
-        document.getElementById('recType').innerText = type;
-        document.getElementById('recAmount').innerText = `৳ ${currentMemberObj.balance}`;
+    const app = initializeApp(firebaseConfig);
+    const db = getDatabase(app);
 
-        document.getElementById('receiptModal').style.display = 'flex';
+    // ড্রপডাউন টগল
+    window.toggleDropdown = function() {
+        document.getElementById("myDropdown").classList.toggle("show");
     }
 
-    function closeReceipt() {
-        document.getElementById('receiptModal').style.display = 'none';
+    window.closeDropdown = function() {
+        document.getElementById("myDropdown").classList.remove("show");
     }
 
-    function logout() {
-        sessionStorage.removeItem('loggedInMember');
-        window.location.replace('member-login.html');
+    window.onclick = function(event) {
+        if (!event.target.matches('.three-dots-btn')) {
+            var dropdowns = document.getElementsByClassName("dropdown-content");
+            for (var i = 0; i < dropdowns.length; i++) {
+                var openDropdown = dropdowns[i];
+                if (openDropdown.classList.contains('show')) {
+                    openDropdown.classList.remove('show');
+                }
+            }
+        }
+    }
+
+    // ফায়ারবেস থেকে তথ্য সিঙ্ক
+    onValue(ref(db, 'siteData'), (snapshot) => {
+        if(snapshot.exists()) {
+            const data = snapshot.val();
+            if(data.name) document.getElementById('siteHeaderTitle').innerText = "🏛 " + data.name;
+            if(data.notice1) document.getElementById('mNotice1').innerText = "📌 " + data.notice1;
+            if(data.notice2) document.getElementById('mNotice2').innerText = "📌 " + data.notice2;
+
+            if(data.members) {
+                const member = data.members.find(m => m.id === currentMemberId);
+                if(member) {
+                    document.getElementById('mName').innerText = member.name;
+                    document.getElementById('mAddress').innerText = "📍 ঠিকানা: " + (member.address || data.address || "ইসলামপুর, জামালপুর");
+                    document.getElementById('mPhone').innerText = "📞 মোবাইল: " + member.phone;
+                    document.getElementById('mIdBadge').innerText = "আইডি: " + member.id;
+                    if(member.img) document.getElementById('mAvatar').src = member.img;
+
+                    document.getElementById('mBalance').innerText = "৳ " + member.balance;
+                    document.getElementById('mLastDeposit').innerText = "৳ " + (member.lastDeposit || 0);
+                    document.getElementById('mLoan').innerText = "৳ " + (member.loan || 0);
+
+                    document.getElementById('infoName').innerText = member.name;
+                    document.getElementById('infoId').innerText = member.id;
+                    document.getElementById('infoUsername').innerText = member.username;
+                    document.getElementById('infoPhone').innerText = member.phone;
+                    document.getElementById('infoAddress').innerText = member.address || data.address || "ইসলামপুর, জামালপুর";
+                    document.getElementById('infoType').innerText = member.type || "সাধারণ সদস্য";
+                }
+            }
+        }
+    });
+
+    // অভিযোগ জমাদান
+    window.submitComplain = function(e) {
+        e.preventDefault();
+        const text = document.getElementById('complainText').value.trim();
+        if(text) {
+            push(ref(db, 'complaints'), {
+                memberId: currentMemberId,
+                message: text,
+                date: new Date().toLocaleDateString('bn-BD')
+            }).then(() => {
+                alert('আপনার অভিযোগ/মতামত সফলভাবে জমা হয়েছে!');
+                document.getElementById('complainForm').reset();
+            });
+        }
+    }
+
+    window.logoutMember = function() {
+        sessionStorage.clear();
+        window.location.href = 'member-login.html';
     }
 </script>
 
