@@ -175,7 +175,7 @@
 
 <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/13.0.0/firebase-app.js";
-    import { getDatabase, ref, set, onValue } from "https://www.gstatic.com/firebasejs/13.0.0/firebase-database.js";
+    import { getDatabase, ref, update, onValue } from "https://www.gstatic.com/firebasejs/13.0.0/firebase-database.js";
 
     if (sessionStorage.getItem('adminLoggedIn') !== 'true') {
         window.location.href = 'admin-login.html';
@@ -198,11 +198,10 @@
     let currentData = { members: [], directors: [] };
     let newDirImgData = "https://via.placeholder.com/150/2e7d32/ffffff?text=Director";
 
-    // ফায়ারবেস থেকে লাইভ ডাটা লোড
+    // রিয়েলটাইম ডাটা লোড
     onValue(ref(db, 'siteData'), (snapshot) => {
         if(snapshot.exists()) {
-            const data = snapshot.val();
-            currentData = data;
+            currentData = snapshot.val();
             if(!currentData.members) currentData.members = [];
             if(!currentData.directors) currentData.directors = [];
 
@@ -220,33 +219,35 @@
         }
     });
 
-    // ১. সমিতি তথ্য সেভ
+    // ১. সমিতি তথ্য আপডেট
     document.getElementById('siteInfoForm').addEventListener('submit', (e) => {
         e.preventDefault();
-        currentData.name = document.getElementById('siteNameInput').value;
-        currentData.address = document.getElementById('siteAddressInput').value;
-        currentData.est = document.getElementById('siteEstInput').value;
-        currentData.phone = document.getElementById('sitePhoneInput').value;
-        currentData.email = document.getElementById('siteEmailInput').value;
-        currentData.about = document.getElementById('siteAboutInput').value;
+        const updates = {};
+        updates['siteData/name'] = document.getElementById('siteNameInput').value;
+        updates['siteData/address'] = document.getElementById('siteAddressInput').value;
+        updates['siteData/est'] = document.getElementById('siteEstInput').value;
+        updates['siteData/phone'] = document.getElementById('sitePhoneInput').value;
+        updates['siteData/email'] = document.getElementById('siteEmailInput').value;
+        updates['siteData/about'] = document.getElementById('siteAboutInput').value;
 
-        set(ref(db, 'siteData'), currentData)
+        update(ref(db), updates)
             .then(() => alert('ওয়েবসাইটের তথ্য সফলভাবে সংরক্ষণ হয়েছে!'))
             .catch((err) => alert('সেভ হতে সমস্যা হয়েছে: ' + err.message));
     });
 
-    // ২. নোটিশ বোর্ড সেভ
+    // ২. নোটিশ বোর্ড আপডেট
     document.getElementById('noticeForm').addEventListener('submit', (e) => {
         e.preventDefault();
-        currentData.notice1 = document.getElementById('notice1Input').value;
-        currentData.notice2 = document.getElementById('notice2Input').value;
+        const updates = {};
+        updates['siteData/notice1'] = document.getElementById('notice1Input').value;
+        updates['siteData/notice2'] = document.getElementById('notice2Input').value;
 
-        set(ref(db, 'siteData'), currentData)
+        update(ref(db), updates)
             .then(() => alert('নোটিশ সফলভাবে আপডেট হয়েছে!'))
             .catch((err) => alert('সেভ হতে সমস্যা হয়েছে: ' + err.message));
     });
 
-    // ৩. নতুন পরিচালক ছবি হ্যান্ডেল
+    // ৩. পরিচালক ছবি ও ডাটা যোগ
     document.getElementById('newDirImgFile').addEventListener('change', (e) => {
         const file = e.target.files[0];
         if (file) {
@@ -265,11 +266,13 @@
             img: newDirImgData
         });
 
-        set(ref(db, 'siteData'), currentData).then(() => {
+        const updates = {};
+        updates['siteData/directors'] = currentData.directors;
+
+        update(ref(db), updates).then(() => {
             alert('নতুন পরিচালক সফলভাবে যোগ হয়েছে!');
             document.getElementById('addDirectorForm').reset();
             newDirImgData = "https://via.placeholder.com/150/2e7d32/ffffff?text=Director";
-            renderDirectors();
         }).catch((err) => alert('সেভ হয়নি: ' + err.message));
     });
 
@@ -292,7 +295,9 @@
                     const idx = e.target.getAttribute('data-index');
                     if(confirm('এই পরিচালকের ঘরটি মুছে ফেলতে চান?')) {
                         currentData.directors.splice(idx, 1);
-                        set(ref(db, 'siteData'), currentData).then(() => renderDirectors());
+                        const updates = {};
+                        updates['siteData/directors'] = currentData.directors;
+                        update(ref(db), updates);
                     }
                 });
             });
@@ -316,10 +321,12 @@
             img: "https://via.placeholder.com/150"
         });
 
-        set(ref(db, 'siteData'), currentData).then(() => {
+        const updates = {};
+        updates['siteData/members'] = currentData.members;
+
+        update(ref(db), updates).then(() => {
             alert('সদস্য সফলভাবে নিবন্ধিত হয়েছে!');
             document.getElementById('registerForm').reset();
-            renderMembers();
         }).catch((err) => alert('সেভ হয়নি: ' + err.message));
     });
 
@@ -357,7 +364,9 @@
                     const idx = e.target.getAttribute('data-index');
                     if(confirm('এই সদস্যকে মুছে ফেলতে চান?')) {
                         currentData.members.splice(idx, 1);
-                        set(ref(db, 'siteData'), currentData).then(() => renderMembers());
+                        const updates = {};
+                        updates['siteData/members'] = currentData.members;
+                        update(ref(db), updates);
                     }
                 });
             });
@@ -375,12 +384,4 @@
         document.getElementById('editBalance').value = m.balance;
         document.getElementById('editLastDeposit').value = m.lastDeposit || 0;
         document.getElementById('editLoan').value = m.loan || 0;
-        document.getElementById('editImg').value = m.img || "";
-        document.getElementById('editModal').style.display = 'flex';
-    }
-
-    document.getElementById('closeModalBtn').addEventListener('click', () => {
-        document.getElementById('editModal').style.display = 'none';
-    });
-
-    document.getElementById
+        docume
