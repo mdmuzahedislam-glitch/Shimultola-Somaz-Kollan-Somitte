@@ -24,7 +24,7 @@
         th, td { padding: 8px 10px; text-align: center; font-size: 13px; }
         th { background: #ffebee; color: #b71c1c; }
 
-        .btn { background: #2e7d32; color: white; border: none; padding: 7px 14px; border-radius: 4px; cursor: pointer; font-size: 13px; font-weight: bold; }
+        .btn { background: #2e7d32; color: white; border: none; padding: 8px 16px; border-radius: 4px; cursor: pointer; font-size: 13px; font-weight: bold; }
         .btn:hover { background: #1b5e20; }
         .btn-danger { background: #c62828; }
         .btn-warning { background: #f57c00; color: white; }
@@ -71,13 +71,13 @@
     <!-- ২. পরিচালকবৃন্দ সংযোজন -->
     <div class="card">
         <h3 class="section-title">👔 পরিচালকবৃন্দ সংযোজন ও ম্যানেজমেন্ট</h3>
-        <form id="addDirectorForm" onsubmit="addNewDirector(event)">
+        <form id="addDirectorForm">
             <div class="form-grid">
                 <div class="form-group"><label>পরিচালকের নাম:</label><input type="text" id="newDirName" required></div>
                 <div class="form-group"><label>পদবী (যেমন: সহ-সভাপতি):</label><input type="text" id="newDirRole" required></div>
                 <div class="form-group">
                     <label>ছবি আপলোড:</label>
-                    <input type="file" id="newDirImgFile" accept="image/*" onchange="previewNewDirImg()">
+                    <input type="file" id="newDirImgFile" accept="image/*">
                 </div>
             </div>
             <button type="submit" class="btn">নতুন পরিচালক ঘর যোগ করুন</button>
@@ -111,7 +111,7 @@
     <!-- ৪. নতুন সদস্য রেজিস্ট্রেশন -->
     <div class="card">
         <h3 class="section-title">➕ নতুন সদস্য রেজিস্ট্রেশন</h3>
-        <form id="registerForm" onsubmit="registerMember(event)">
+        <form id="registerForm">
             <div class="form-grid">
                 <div class="form-group"><label>সদস্য আইডি:</label><input type="text" id="regId" placeholder="M-101" required></div>
                 <div class="form-group"><label>নাম:</label><input type="text" id="regName" placeholder="পূর্ণ নাম" required></div>
@@ -119,7 +119,7 @@
                 <div class="form-group"><label>পাসওয়ার্ড:</label><input type="text" id="regPassword" required></div>
                 <div class="form-group"><label>ফোন নম্বর:</label><input type="tel" id="regPhone" required></div>
                 <div class="form-group"><label>ঠিকানা:</label><input type="text" id="regAddress" placeholder="ইসলামপুর, জামালপুর"></div>
-                <div class="form-group"><label>জমা ব্যালেন্স (৳):</label><input type="number" id="regBalance" value="0" required></div>
+                <div class="form-group"><label>মোট জমা ব্যালেন্স (৳):</label><input type="number" id="regBalance" value="0" required></div>
                 <div class="form-group"><label>শেষ মাসের জমা (৳):</label><input type="number" id="regLastDeposit" value="0"></div>
                 <div class="form-group"><label>বকেয়া ঋণ (৳):</label><input type="number" id="regLoan" value="0" required></div>
             </div>
@@ -129,7 +129,7 @@
 
     <!-- ৫. সদস্য তালিকা -->
     <div class="card">
-        <h3 class="section-title">👥 সদস্য তালিকা ও বিস্তারিত তথ্য পরিচালনা</h3>
+        <h3 class="section-title">👥 সদস্য তালিকা ও তথ্য পরিচালনা</h3>
         <div style="overflow-x: auto;">
             <table>
                 <thead>
@@ -156,9 +156,9 @@
     <div class="modal-content">
         <div class="modal-header">
             <h4>✏️ সদস্যের বিস্তারিত তথ্য এডিট</h4>
-            <span class="close-btn" onclick="closeModal()">&times;</span>
+            <span class="close-btn" id="closeModalBtn">&times;</span>
         </div>
-        <form onsubmit="saveMemberChanges(event)">
+        <form id="editMemberForm">
             <input type="hidden" id="editIndex">
             <div class="form-group" style="margin-bottom: 10px;"><label>নাম:</label><input type="text" id="editName" required></div>
             <div class="form-group" style="margin-bottom: 10px;"><label>ফোন:</label><input type="text" id="editPhone" required></div>
@@ -167,7 +167,7 @@
             <div class="form-group" style="margin-bottom: 10px;"><label>মোট সঞ্চয় ব্যালেন্স (৳):</label><input type="number" id="editBalance" required></div>
             <div class="form-group" style="margin-bottom: 10px;"><label>সর্বশেষ মাসের জমা (৳):</label><input type="number" id="editLastDeposit"></div>
             <div class="form-group" style="margin-bottom: 10px;"><label>বকেয়া ঋণ (৳):</label><input type="number" id="editLoan" required></div>
-            <div class="form-group" style="margin-bottom: 10px;"><label>ছবি আপলোড (ফটোURL/ছবি লিংক):</label><input type="text" id="editImg" placeholder="https://..."></div>
+            <div class="form-group" style="margin-bottom: 10px;"><label>ছবি লিংক / URL:</label><input type="text" id="editImg" placeholder="https://..."></div>
             <button type="submit" class="btn" style="width: 100%; margin-top: 10px;">সংরক্ষণ করুন</button>
         </form>
     </div>
@@ -198,17 +198,13 @@
     let currentData = { members: [], directors: [] };
     let newDirImgData = "https://via.placeholder.com/150/2e7d32/ffffff?text=Director";
 
+    // ফায়ারবেস থেকে লাইভ ডাটা লোড
     onValue(ref(db, 'siteData'), (snapshot) => {
         if(snapshot.exists()) {
-            currentData = snapshot.val();
+            const data = snapshot.val();
+            currentData = data;
             if(!currentData.members) currentData.members = [];
-            if(!currentData.directors) {
-                currentData.directors = [
-                    { name: currentData.pName || "মো: রফিকুল ইসলাম", role: "সভাপতি", img: currentData.pImg || "https://via.placeholder.com/150/1b5e20/ffffff?text=President" },
-                    { name: currentData.sName || "মো: শফিকুল আলম", role: "সাধারণ সম্পাদক", img: currentData.sImg || "https://via.placeholder.com/150/0288d1/ffffff?text=Secretary" },
-                    { name: currentData.mName || "মো: হাবিবুর রহমান", role: "কার্যনির্বাহী সদস্য", img: currentData.mImg || "https://via.placeholder.com/150/f57c00/ffffff?text=Member" }
-                ];
-            }
+            if(!currentData.directors) currentData.directors = [];
 
             document.getElementById('siteNameInput').value = currentData.name || "";
             document.getElementById('siteAddressInput').value = currentData.address || "";
@@ -224,18 +220,8 @@
         }
     });
 
-    window.previewNewDirImg = function() {
-        const file = document.getElementById('newDirImgFile').files[0];
-        if (file) {
-            const reader = new FileReader();
-            reader.onloadend = function() {
-                newDirImgData = reader.result;
-            }
-            reader.readAsDataURL(file);
-        }
-    }
-
-    document.getElementById('siteInfoForm').onsubmit = function(e) {
+    // ১. সমিতি তথ্য সেভ
+    document.getElementById('siteInfoForm').addEventListener('submit', (e) => {
         e.preventDefault();
         currentData.name = document.getElementById('siteNameInput').value;
         currentData.address = document.getElementById('siteAddressInput').value;
@@ -244,40 +230,33 @@
         currentData.email = document.getElementById('siteEmailInput').value;
         currentData.about = document.getElementById('siteAboutInput').value;
 
-        set(ref(db, 'siteData'), currentData).then(() => {
-            alert('ওয়েবসাইটের তথ্য সফলভাবে আপডেট হয়েছে!');
-        });
-    }
+        set(ref(db, 'siteData'), currentData)
+            .then(() => alert('ওয়েবসাইটের তথ্য সফলভাবে সংরক্ষণ হয়েছে!'))
+            .catch((err) => alert('সেভ হতে সমস্যা হয়েছে: ' + err.message));
+    });
 
-    document.getElementById('noticeForm').onsubmit = function(e) {
+    // ২. নোটিশ বোর্ড সেভ
+    document.getElementById('noticeForm').addEventListener('submit', (e) => {
         e.preventDefault();
         currentData.notice1 = document.getElementById('notice1Input').value;
         currentData.notice2 = document.getElementById('notice2Input').value;
 
-        set(ref(db, 'siteData'), currentData).then(() => {
-            alert('নোটিশ সফলভাবে আপডেট হয়েছে!');
-        });
-    }
+        set(ref(db, 'siteData'), currentData)
+            .then(() => alert('নোটিশ সফলভাবে আপডেট হয়েছে!'))
+            .catch((err) => alert('সেভ হতে সমস্যা হয়েছে: ' + err.message));
+    });
 
-    function renderDirectors() {
-        const tbody = document.getElementById('directorTableBody');
-        tbody.innerHTML = '';
-        if(currentData.directors) {
-            currentData.directors.forEach((d, index) => {
-                tbody.innerHTML += `
-                    <tr>
-                        <td><img src="${d.img}" class="preview-img"></td>
-                        <td>${d.name}</td>
-                        <td><span style="background:#e8f5e9; color:#1b5e20; padding:2px 6px; border-radius:4px; font-weight:bold;">${d.role}</span></td>
-                        <td>
-                            <button class="btn btn-danger" onclick="delDirector(${index})">মুছুন</button>
-                        </td>
-                    </tr>`;
-            });
+    // ৩. নতুন পরিচালক ছবি হ্যান্ডেল
+    document.getElementById('newDirImgFile').addEventListener('change', (e) => {
+        const file = e.target.files[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onloadend = () => { newDirImgData = reader.result; };
+            reader.readAsDataURL(file);
         }
-    }
+    });
 
-    window.addNewDirector = function(e) {
+    document.getElementById('addDirectorForm').addEventListener('submit', (e) => {
         e.preventDefault();
         if(!currentData.directors) currentData.directors = [];
         currentData.directors.push({
@@ -287,47 +266,41 @@
         });
 
         set(ref(db, 'siteData'), currentData).then(() => {
-            alert('নতুন পরিচালক ঘর সফলভাবে যোগ করা হয়েছে!');
+            alert('নতুন পরিচালক সফলভাবে যোগ হয়েছে!');
             document.getElementById('addDirectorForm').reset();
             newDirImgData = "https://via.placeholder.com/150/2e7d32/ffffff?text=Director";
             renderDirectors();
-        });
-    }
+        }).catch((err) => alert('সেভ হয়নি: ' + err.message));
+    });
 
-    window.delDirector = function(index) {
-        if(confirm('এই পরিচালকের ঘরটি মুছে ফেলতে চান?')) {
-            currentData.directors.splice(index, 1);
-            set(ref(db, 'siteData'), currentData).then(() => {
-                renderDirectors();
-            });
-        }
-    }
-
-    function renderMembers() {
-        const tbody = document.getElementById('memberTableBody');
+    function renderDirectors() {
+        const tbody = document.getElementById('directorTableBody');
         tbody.innerHTML = '';
-        if(currentData.members) {
-            currentData.members.forEach((m, index) => {
-                tbody.innerHTML += `
-                    <tr>
-                        <td><b>${m.id}</b></td>
-                        <td><img src="${m.img || 'https://via.placeholder.com/150'}" class="preview-img"></td>
-                        <td>${m.name}</td>
-                        <td><code>${m.username}</code> / <b>${m.password}</b></td>
-                        <td>${m.phone}</td>
-                        <td style="color: green; font-weight: bold;">৳ ${m.balance}</td>
-                        <td style="color: #0288d1; font-weight: bold;">৳ ${m.lastDeposit || 0}</td>
-                        <td style="color: #e65100; font-weight: bold;">৳ ${m.loan || 0}</td>
-                        <td>
-                            <button class="btn btn-warning" onclick="openEdit(${index})">এডিট</button>
-                            <button class="btn btn-danger" onclick="delMember(${index})">মুছুন</button>
-                        </td>
-                    </tr>`;
+        if(currentData.directors) {
+            currentData.directors.forEach((d, index) => {
+                const tr = document.createElement('tr');
+                tr.innerHTML = `
+                    <td><img src="${d.img}" class="preview-img"></td>
+                    <td>${d.name}</td>
+                    <td><span style="background:#e8f5e9; color:#1b5e20; padding:2px 6px; border-radius:4px; font-weight:bold;">${d.role}</span></td>
+                    <td><button class="btn btn-danger del-dir-btn" data-index="${index}" type="button">মুছুন</button></td>`;
+                tbody.appendChild(tr);
+            });
+
+            document.querySelectorAll('.del-dir-btn').forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    const idx = e.target.getAttribute('data-index');
+                    if(confirm('এই পরিচালকের ঘরটি মুছে ফেলতে চান?')) {
+                        currentData.directors.splice(idx, 1);
+                        set(ref(db, 'siteData'), currentData).then(() => renderDirectors());
+                    }
+                });
             });
         }
     }
 
-    window.registerMember = function(e) {
+    // ৪. নতুন সদস্য নিবন্ধন
+    document.getElementById('registerForm').addEventListener('submit', (e) => {
         e.preventDefault();
         if(!currentData.members) currentData.members = [];
         currentData.members.push({
@@ -347,10 +320,52 @@
             alert('সদস্য সফলভাবে নিবন্ধিত হয়েছে!');
             document.getElementById('registerForm').reset();
             renderMembers();
-        });
+        }).catch((err) => alert('সেভ হয়নি: ' + err.message));
+    });
+
+    function renderMembers() {
+        const tbody = document.getElementById('memberTableBody');
+        tbody.innerHTML = '';
+        if(currentData.members) {
+            currentData.members.forEach((m, index) => {
+                const tr = document.createElement('tr');
+                tr.innerHTML = `
+                    <td><b>${m.id}</b></td>
+                    <td><img src="${m.img || 'https://via.placeholder.com/150'}" class="preview-img"></td>
+                    <td>${m.name}</td>
+                    <td><code>${m.username}</code> / <b>${m.password}</b></td>
+                    <td>${m.phone}</td>
+                    <td style="color: green; font-weight: bold;">৳ ${m.balance}</td>
+                    <td style="color: #0288d1; font-weight: bold;">৳ ${m.lastDeposit || 0}</td>
+                    <td style="color: #e65100; font-weight: bold;">৳ ${m.loan || 0}</td>
+                    <td>
+                        <button class="btn btn-warning edit-mem-btn" data-index="${index}" type="button">এডিট</button>
+                        <button class="btn btn-danger del-mem-btn" data-index="${index}" type="button">মুছুন</button>
+                    </td>`;
+                tbody.appendChild(tr);
+            });
+
+            document.querySelectorAll('.edit-mem-btn').forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    const idx = e.target.getAttribute('data-index');
+                    openEdit(idx);
+                });
+            });
+
+            document.querySelectorAll('.del-mem-btn').forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    const idx = e.target.getAttribute('data-index');
+                    if(confirm('এই সদস্যকে মুছে ফেলতে চান?')) {
+                        currentData.members.splice(idx, 1);
+                        set(ref(db, 'siteData'), currentData).then(() => renderMembers());
+                    }
+                });
+            });
+        }
     }
 
-    window.openEdit = function(index) {
+    // ৫. সদস্য এডিট মোডাল হ্যান্ডেল
+    function openEdit(index) {
         const m = currentData.members[index];
         document.getElementById('editIndex').value = index;
         document.getElementById('editName').value = m.name;
@@ -364,17 +379,8 @@
         document.getElementById('editModal').style.display = 'flex';
     }
 
-    window.closeModal = function() {
+    document.getElementById('closeModalBtn').addEventListener('click', () => {
         document.getElementById('editModal').style.display = 'none';
-    }
+    });
 
-    window.saveMemberChanges = function(e) {
-        e.preventDefault();
-        const index = document.getElementById('editIndex').value;
-        currentData.members[index].name = document.getElementById('editName').value;
-        currentData.members[index].phone = document.getElementById('editPhone').value;
-        currentData.members[index].address = document.getElementById('editAddress').value;
-        currentData.members[index].password = document.getElementById('editPassword').value;
-        currentData.members[index].balance = parseFloat(document.getElementById('editBalance').value) || 0;
-        currentData.members[index].lastDeposit = parseFloat(document.getElementById('editLastDeposit').value) || 0;
-        currentData.members[index].loan = parseFloat(document.getElementById('editLoan').val
+    document.getElementById
