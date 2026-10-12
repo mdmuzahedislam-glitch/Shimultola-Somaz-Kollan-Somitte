@@ -29,11 +29,11 @@
         .btn-danger { background: #c62828; }
         .btn-warning { background: #f57c00; color: white; }
 
-        .preview-img { width: 60px; height: 60px; border-radius: 50%; object-fit: cover; border: 2px solid #2e7d32; margin-top: 5px; display: block; }
+        .preview-img { width: 45px; height: 45px; border-radius: 50%; object-fit: cover; border: 2px solid #2e7d32; margin: auto; display: block; }
 
         /* Modal */
         .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); justify-content: center; align-items: center; padding: 15px; z-index: 1000; }
-        .modal-content { background: white; padding: 20px; border-radius: 8px; width: 100%; max-width: 500px; box-shadow: 0 4px 10px rgba(0,0,0,0.2); }
+        .modal-content { background: white; padding: 20px; border-radius: 8px; width: 100%; max-width: 500px; box-shadow: 0 4px 10px rgba(0,0,0,0.2); max-height: 90vh; overflow-y: auto; }
         .modal-header { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #ddd; padding-bottom: 8px; margin-bottom: 15px; }
         .close-btn { cursor: pointer; font-size: 20px; font-weight: bold; color: #888; }
     </style>
@@ -68,7 +68,7 @@
         </form>
     </div>
 
-    <!-- ২. পরিচালকবৃন্দের নতুন ঘর বা তালিকা ম্যানেজমেন্ট -->
+    <!-- ২. পরিচালকবৃন্দ সংযোজন -->
     <div class="card">
         <h3 class="section-title">👔 পরিচালকবৃন্দ সংযোজন ও ম্যানেজমেন্ট</h3>
         <form id="addDirectorForm" onsubmit="addNewDirector(event)">
@@ -113,19 +113,14 @@
         <h3 class="section-title">➕ নতুন সদস্য রেজিস্ট্রেশন</h3>
         <form id="registerForm" onsubmit="registerMember(event)">
             <div class="form-grid">
-                <div class="form-group"><label>সদস্য আইডি:</label><input type="text" id="regId" placeholder="M-103" required></div>
+                <div class="form-group"><label>সদস্য আইডি:</label><input type="text" id="regId" placeholder="M-101" required></div>
                 <div class="form-group"><label>নাম:</label><input type="text" id="regName" placeholder="পূর্ণ নাম" required></div>
                 <div class="form-group"><label>ইউজারনেম:</label><input type="text" id="regUsername" required autocomplete="off"></div>
                 <div class="form-group"><label>পাসওয়ার্ড:</label><input type="text" id="regPassword" required></div>
                 <div class="form-group"><label>ফোন নম্বর:</label><input type="tel" id="regPhone" required></div>
-                <div class="form-group">
-                    <label>টাইপ:</label>
-                    <select id="regType">
-                        <option value="সাধারণ সদস্য">সাধারণ সদস্য</option>
-                        <option value="কার্যনির্বাহী সদস্য">কার্যনির্বাহী সদস্য</option>
-                    </select>
-                </div>
+                <div class="form-group"><label>ঠিকানা:</label><input type="text" id="regAddress" placeholder="ইসলামপুর, জামালপুর"></div>
                 <div class="form-group"><label>জমা ব্যালেন্স (৳):</label><input type="number" id="regBalance" value="0" required></div>
+                <div class="form-group"><label>শেষ মাসের জমা (৳):</label><input type="number" id="regLastDeposit" value="0"></div>
                 <div class="form-group"><label>বকেয়া ঋণ (৳):</label><input type="number" id="regLoan" value="0" required></div>
             </div>
             <button type="submit" class="btn">সদস্য নিবন্ধন করুন</button>
@@ -134,16 +129,18 @@
 
     <!-- ৫. সদস্য তালিকা -->
     <div class="card">
-        <h3 class="section-title">👥 সদস্য তালিকা, জমা ও ঋণ ম্যানেজমেন্ট</h3>
+        <h3 class="section-title">👥 সদস্য তালিকা ও বিস্তারিত তথ্য পরিচালনা</h3>
         <div style="overflow-x: auto;">
             <table>
                 <thead>
                     <tr>
                         <th>আইডি</th>
+                        <th>ছবি</th>
                         <th>নাম</th>
                         <th>ইউজার / পাস</th>
                         <th>ফোন</th>
-                        <th>ব্যালেন্স</th>
+                        <th>মোট ব্যালেন্স</th>
+                        <th>শেষ জমা</th>
                         <th>ঋণ</th>
                         <th>অ্যাকশন</th>
                     </tr>
@@ -154,20 +151,23 @@
     </div>
 </div>
 
-<!-- এডিট মোডাল -->
+<!-- সদস্য এডিট মোডাল -->
 <div class="modal" id="editModal">
     <div class="modal-content">
         <div class="modal-header">
-            <h4>✏️ সদস্য তথ্য এডিট</h4>
+            <h4>✏️ সদস্যের বিস্তারিত তথ্য এডিট</h4>
             <span class="close-btn" onclick="closeModal()">&times;</span>
         </div>
         <form onsubmit="saveMemberChanges(event)">
             <input type="hidden" id="editIndex">
             <div class="form-group" style="margin-bottom: 10px;"><label>নাম:</label><input type="text" id="editName" required></div>
             <div class="form-group" style="margin-bottom: 10px;"><label>ফোন:</label><input type="text" id="editPhone" required></div>
+            <div class="form-group" style="margin-bottom: 10px;"><label>ঠিকানা:</label><input type="text" id="editAddress"></div>
             <div class="form-group" style="margin-bottom: 10px;"><label>পাসওয়ার্ড:</label><input type="text" id="editPassword" required></div>
-            <div class="form-group" style="margin-bottom: 10px;"><label>জমা ব্যালেন্স (৳):</label><input type="number" id="editBalance" required></div>
+            <div class="form-group" style="margin-bottom: 10px;"><label>মোট সঞ্চয় ব্যালেন্স (৳):</label><input type="number" id="editBalance" required></div>
+            <div class="form-group" style="margin-bottom: 10px;"><label>সর্বশেষ মাসের জমা (৳):</label><input type="number" id="editLastDeposit"></div>
             <div class="form-group" style="margin-bottom: 10px;"><label>বকেয়া ঋণ (৳):</label><input type="number" id="editLoan" required></div>
+            <div class="form-group" style="margin-bottom: 10px;"><label>ছবি আপলোড (ফটোURL/ছবি লিংক):</label><input type="text" id="editImg" placeholder="https://..."></div>
             <button type="submit" class="btn" style="width: 100%; margin-top: 10px;">সংরক্ষণ করুন</button>
         </form>
     </div>
@@ -204,9 +204,9 @@
             if(!currentData.members) currentData.members = [];
             if(!currentData.directors) {
                 currentData.directors = [
-                    { name: currentData.pName || "মুজাহিদ সরদার", role: "সভাপতি", img: currentData.pImg || "https://via.placeholder.com/150/1b5e20/ffffff?text=President" },
-                    { name: currentData.sName || "মো: নুরইসলাম", role: "সাধারণ সম্পাদক", img: currentData.sImg || "https://via.placeholder.com/150/0288d1/ffffff?text=Secretary" },
-                    { name: currentData.mName || "মো: এস.এম আসলাম", role: "কার্যনির্বাহী সদস্য", img: currentData.mImg || "https://via.placeholder.com/150/f57c00/ffffff?text=Member" }
+                    { name: currentData.pName || "মো: রফিকুল ইসলাম", role: "সভাপতি", img: currentData.pImg || "https://via.placeholder.com/150/1b5e20/ffffff?text=President" },
+                    { name: currentData.sName || "মো: শফিকুল আলম", role: "সাধারণ সম্পাদক", img: currentData.sImg || "https://via.placeholder.com/150/0288d1/ffffff?text=Secretary" },
+                    { name: currentData.mName || "মো: হাবিবুর রহমান", role: "কার্যনির্বাহী সদস্য", img: currentData.mImg || "https://via.placeholder.com/150/f57c00/ffffff?text=Member" }
                 ];
             }
 
@@ -266,7 +266,7 @@
             currentData.directors.forEach((d, index) => {
                 tbody.innerHTML += `
                     <tr>
-                        <td><img src="${d.img}" class="preview-img" style="width:40px;height:40px;margin:auto;"></td>
+                        <td><img src="${d.img}" class="preview-img"></td>
                         <td>${d.name}</td>
                         <td><span style="background:#e8f5e9; color:#1b5e20; padding:2px 6px; border-radius:4px; font-weight:bold;">${d.role}</span></td>
                         <td>
@@ -311,10 +311,12 @@
                 tbody.innerHTML += `
                     <tr>
                         <td><b>${m.id}</b></td>
+                        <td><img src="${m.img || 'https://via.placeholder.com/150'}" class="preview-img"></td>
                         <td>${m.name}</td>
                         <td><code>${m.username}</code> / <b>${m.password}</b></td>
                         <td>${m.phone}</td>
                         <td style="color: green; font-weight: bold;">৳ ${m.balance}</td>
+                        <td style="color: #0288d1; font-weight: bold;">৳ ${m.lastDeposit || 0}</td>
                         <td style="color: #e65100; font-weight: bold;">৳ ${m.loan || 0}</td>
                         <td>
                             <button class="btn btn-warning" onclick="openEdit(${index})">এডিট</button>
@@ -334,9 +336,11 @@
             username: document.getElementById('regUsername').value.trim(),
             password: document.getElementById('regPassword').value.trim(),
             phone: document.getElementById('regPhone').value.trim(),
-            type: document.getElementById('regType').value,
+            address: document.getElementById('regAddress').value.trim(),
             balance: parseFloat(document.getElementById('regBalance').value) || 0,
-            loan: parseFloat(document.getElementById('regLoan').value) || 0
+            lastDeposit: parseFloat(document.getElementById('regLastDeposit').value) || 0,
+            loan: parseFloat(document.getElementById('regLoan').value) || 0,
+            img: "https://via.placeholder.com/150"
         });
 
         set(ref(db, 'siteData'), currentData).then(() => {
@@ -351,9 +355,12 @@
         document.getElementById('editIndex').value = index;
         document.getElementById('editName').value = m.name;
         document.getElementById('editPhone').value = m.phone;
+        document.getElementById('editAddress').value = m.address || "";
         document.getElementById('editPassword').value = m.password;
         document.getElementById('editBalance').value = m.balance;
+        document.getElementById('editLastDeposit').value = m.lastDeposit || 0;
         document.getElementById('editLoan').value = m.loan || 0;
+        document.getElementById('editImg').value = m.img || "";
         document.getElementById('editModal').style.display = 'flex';
     }
 
@@ -366,26 +373,8 @@
         const index = document.getElementById('editIndex').value;
         currentData.members[index].name = document.getElementById('editName').value;
         currentData.members[index].phone = document.getElementById('editPhone').value;
+        currentData.members[index].address = document.getElementById('editAddress').value;
         currentData.members[index].password = document.getElementById('editPassword').value;
         currentData.members[index].balance = parseFloat(document.getElementById('editBalance').value) || 0;
-        currentData.members[index].loan = parseFloat(document.getElementById('editLoan').value) || 0;
-
-        set(ref(db, 'siteData'), currentData).then(() => {
-            alert('সদস্যের তথ্য আপডেট হয়েছে!');
-            closeModal();
-            renderMembers();
-        });
-    }
-
-    window.delMember = function(index) {
-        if(confirm('মুছে ফেলতে চান?')) {
-            currentData.members.splice(index, 1);
-            set(ref(db, 'siteData'), currentData).then(() => {
-                renderMembers();
-            });
-        }
-    }
-</script>
-
-</body>
-</html>
+        currentData.members[index].lastDeposit = parseFloat(document.getElementById('editLastDeposit').value) || 0;
+        currentData.members[index].loan = parseFloat(document.getElementById('editLoan').val
