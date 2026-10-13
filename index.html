@@ -3,26 +3,86 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>শিমুলতলা সমাজকল্যাণ সমবায় সমিতি</title>
+    <title>হোমপেজ - শিমুলতলা সমাজকল্যাণ সমবায় সমিতি</title>
     <style>
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
         body { background: #f4f7f6; color: #333; line-height: 1.6; }
 
-        /* হেডার ও লোগো সেকশন */
-        .site-header { background: linear-gradient(135deg, #8e0000, #b71c1c); color: white; padding: 25px 20px; text-align: center; box-shadow: 0 4px 10px rgba(0,0,0,0.15); }
-        .header-content { max-width: 1100px; margin: 0 auto; display: flex; align-items: center; justify-content: center; gap: 20px; flex-wrap: wrap; }
-        .site-logo { width: 90px; height: 90px; border-radius: 50%; border: 3px solid #fff; object-fit: cover; background: #fff; }
-        .header-text h1 { font-size: 26px; font-weight: bold; margin-bottom: 5px; }
-        .header-text p { font-size: 14px; opacity: 0.9; }
+        /* হেডার ও লোগো ব্যানার সেকশন */
+        .site-header { 
+            background: linear-gradient(135deg, #1b5e20 0%, #2e7d32 50%, #43a047 100%); 
+            color: white; 
+            padding: 25px 20px; 
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15); 
+        }
+        .header-content { 
+            max-width: 1100px; 
+            margin: 0 auto; 
+            display: flex; 
+            align-items: center; 
+            justify-content: center; 
+            gap: 20px; 
+            flex-wrap: wrap; 
+            text-align: center;
+        }
+        .site-logo { 
+            width: 85px; 
+            height: 85px; 
+            border-radius: 50%; 
+            border: 3px solid #fff; 
+            object-fit: cover; 
+            background: #fff; 
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+        }
+        .header-text h1 { font-size: 24px; font-weight: bold; margin-bottom: 5px; }
+        .header-text p { font-size: 13px; opacity: 0.95; background: rgba(255, 255, 255, 0.15); padding: 3px 12px; border-radius: 20px; display: inline-block; }
 
-        /* নেভিগেশন বার */
-        .nav-bar { background: #333; display: flex; justify-content: center; padding: 10px; gap: 15px; flex-wrap: wrap; }
-        .nav-bar a { color: white; text-decoration: none; font-size: 14px; font-weight: bold; padding: 6px 15px; border-radius: 4px; transition: 0.3s; }
-        .nav-bar a:hover { background: #b71c1c; }
+        /* ন্যাভিগেশন বার ও ড্রপডাউন মেনু */
+        .nav-bar { background: #1b5e20; border-top: 1px solid rgba(255,255,255,0.1); position: sticky; top: 0; z-index: 100; box-shadow: 0 2px 5px rgba(0,0,0,0.2); }
+        .nav-container { max-width: 1100px; margin: 0 auto; display: flex; justify-content: center; }
+        .nav-menu { list-style: none; display: flex; flex-wrap: wrap; }
+        .nav-item { position: relative; }
+        .nav-link { 
+            display: block; 
+            color: white; 
+            text-decoration: none; 
+            padding: 12px 18px; 
+            font-size: 14px; 
+            font-weight: 600; 
+            transition: 0.3s; 
+        }
+        .nav-link:hover { background: #2e7d32; }
 
-        .container { max-width: 1100px; margin: 25px auto; padding: 0 15px; }
-        .card { background: white; border-radius: 8px; padding: 20px; box-shadow: 0 2px 8px rgba(0,0,0,0.06); margin-bottom: 25px; }
-        .section-title { color: #b71c1c; border-bottom: 2px solid #b71c1c; padding-bottom: 8px; margin-bottom: 18px; font-size: 18px; }
+        /* ড্রপডাউন সাব-মেনু */
+        .dropdown-menu {
+            display: none;
+            position: absolute;
+            top: 100%;
+            left: 0;
+            background: #ffffff;
+            min-width: 180px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+            border-radius: 0 0 6px 6px;
+            list-style: none;
+            overflow: hidden;
+        }
+        .dropdown-menu a {
+            color: #333;
+            padding: 10px 15px;
+            display: block;
+            text-decoration: none;
+            font-size: 13px;
+            font-weight: 500;
+            border-bottom: 1px solid #f0f0f0;
+            transition: 0.2s;
+        }
+        .dropdown-menu a:hover { background: #e8f5e9; color: #1b5e20; }
+        .nav-item:hover .dropdown-menu { display: block; }
+
+        /* মেইন কন্টেইনার */
+        .container { max-width: 1100px; margin: 30px auto; padding: 0 15px; }
+        .card { background: white; border-radius: 10px; padding: 22px; box-shadow: 0 2px 8px rgba(0,0,0,0.06); margin-bottom: 25px; }
+        .section-title { color: #1b5e20; border-bottom: 2px solid #e8f5e9; padding-bottom: 8px; margin-bottom: 18px; font-size: 18px; }
 
         /* নোটিশ বোর্ড */
         .notice-box { background: #fffde7; border-left: 5px solid #fbc02d; padding: 12px 15px; margin-bottom: 10px; border-radius: 4px; font-size: 14px; }
@@ -30,19 +90,39 @@
         /* পরিচালক মন্ডলী গ্রিড */
         .directors-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px; }
         .director-card { background: #f9f9f9; border: 1px solid #eee; border-radius: 8px; padding: 15px; text-align: center; }
-        .director-img { width: 100px; height: 100px; border-radius: 50%; object-fit: cover; border: 3px solid #b71c1c; margin-bottom: 10px; }
+        .director-img { width: 90px; height: 90px; border-radius: 50%; object-fit: cover; border: 3px solid #2e7d32; margin-bottom: 10px; }
         .director-name { font-weight: bold; font-size: 15px; color: #333; }
         .director-role { font-size: 13px; color: #2e7d32; font-weight: 600; margin-top: 4px; }
 
-        footer { background: #222; color: #ccc; text-align: center; padding: 15px; font-size: 13px; margin-top: 30px; }
+        /* প্রফেশনাল ফুটার */
+        footer { 
+            background: #111; 
+            color: #ccc; 
+            padding: 30px 15px 15px; 
+            margin-top: 40px; 
+            font-size: 13px;
+        }
+        .footer-content { 
+            max-width: 1100px; 
+            margin: 0 auto; 
+            display: grid; 
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); 
+            gap: 25px; 
+            padding-bottom: 20px;
+            border-bottom: 1px solid #333;
+        }
+        .footer-col h4 { color: #fff; margin-bottom: 12px; font-size: 15px; border-bottom: 2px solid #2e7d32; display: inline-block; padding-bottom: 4px; }
+        .footer-col p, .footer-col a { color: #bbb; text-decoration: none; display: block; margin-bottom: 6px; }
+        .footer-col a:hover { color: #43a047; }
+        .footer-bottom { text-align: center; padding-top: 15px; color: #777; font-size: 12px; }
     </style>
 </head>
 <body>
 
-    <!-- হেডার: লোগো ও নাম একবারই থাকবে -->
+    <!-- ১. প্রফেশনাল হেডার ব্যানার (লোগো ও নাম একবারই থাকবে) -->
     <header class="site-header">
         <div class="header-content">
-            <img id="displayLogo" src="https://via.placeholder.com/100/b71c1c/ffffff?text=Logo" alt="Logo" class="site-logo">
+            <img id="displayLogo" src="https://via.placeholder.com/100/1b5e20/ffffff?text=Logo" alt="Logo" class="site-logo">
             <div class="header-text">
                 <h1 id="displayName">শিমুলতলা সমাজকল্যাণ সমবায় সমিতি</h1>
                 <p id="displaySub">স্থাপিত: <span id="displayEst">২০২৪</span> | স্থান: <span id="displayAddress">ইসলামপুর, জামালপুর</span></p>
@@ -50,15 +130,28 @@
         </div>
     </header>
 
+    <!-- ২. নেভিগেশন বার ও ড্রপডাউন মেনু সিস্টেম -->
     <nav class="nav-bar">
-        <a href="index.html">হোম</a>
-        <a href="#about">পরিচিতি</a>
-        <a href="#directors">পরিচালক মন্ডলী</a>
-        <a href="#notice">নোটিশ বোর্ড</a>
-        <a href="member-login.html">সদস্য লগইন</a>
-        <a href="admin-login.html">এডমিন লগইন</a>
+        <div class="nav-container">
+            <ul class="nav-menu">
+                <li class="nav-item"><a href="index.html" class="nav-link">হোম</a></li>
+                <li class="nav-item"><a href="#about" class="nav-link">আমাদের পরিচিতি</a></li>
+                <li class="nav-item"><a href="#directors" class="nav-link">পরিচালক মন্ডলী</a></li>
+                <li class="nav-item"><a href="#notice" class="nav-link">নোটিশ বোর্ড</a></li>
+                
+                <!-- পোর্টাল ড্রপডাউন মেনু -->
+                <li class="nav-item">
+                    <a href="#" class="nav-link">লগইন প্যানেল ▾</a>
+                    <ul class="dropdown-menu">
+                        <li><a href="member-login.html">🔑 সদস্য লগইন</a></li>
+                        <li><a href="admin-login.html">⚙️ এডমিন লগইন</a></li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
     </nav>
 
+    <!-- ৩. মূল কন্টেন্ট সেকশন -->
     <div class="container">
         <!-- নোটিশ সেকশন -->
         <div class="card" id="notice">
@@ -71,21 +164,40 @@
         <div class="card" id="about">
             <h2 class="section-title">ℹ️ আমাদের পরিচিতি</h2>
             <p id="displayAbout">আমাদের সমিতি সদস্যদের আর্থ-সামাজিক উন্নয়নে নিয়োজিত। সঞ্চয় ও ঋণ কার্যক্রমের মাধ্যমে আত্মকর্মসংস্থান সৃষ্টি আমাদের মূল লক্ষ্য।</p>
-            <br>
-            <p><b>মোবাইল:</b> <span id="displayPhone">০১৭XXXXXXXX</span> | <b>ইমেইল:</b> <span id="displayEmail">info@somitee.com</span></p>
         </div>
 
         <!-- পরিচালক মন্ডলী সেকশন -->
         <div class="card" id="directors">
             <h2 class="section-title">👔 পরিচালক মন্ডলী</h2>
             <div class="directors-grid" id="directorsContainer">
-                <!-- ডায়নামিক পরিচালক আসবে -->
+                <!-- ফায়ারবেস থেকে ডায়নামিক পরিচালক আসবে -->
             </div>
         </div>
     </div>
 
+    <!-- ৪. প্রফেশনাল ফুটার -->
     <footer>
-        &copy; ২০২৬ শিমুলতলা সমাজকল্যাণ সমবায় সমিতি | সর্বস্বত্ব সংরক্ষিত।
+        <div class="footer-content">
+            <div class="footer-col">
+                <h4 id="footerTitle">শিমুলতলা সমিতি</h4>
+                <p>সদস্যদের কল্যাণ ও আর্থ-সামাজিক উন্নয়নে আমরা সর্বদা সচেষ্ট।</p>
+            </div>
+            <div class="footer-col">
+                <h4>দ্রুত লিংক</h4>
+                <a href="#about">আমাদের কথা</a>
+                <a href="#directors">পরিচালকবৃন্দ</a>
+                <a href="#notice">নোটিশ সমূহ</a>
+            </div>
+            <div class="footer-col">
+                <h4>যোগাযোগ</h4>
+                <p><b>ফোন:</b> <span id="displayPhone">০১৭XXXXXXXX</span></p>
+                <p><b>ইমেইল:</b> <span id="displayEmail">info@somitee.com</span></p>
+                <p><b>ঠিকানা:</b> <span id="footerAddress">ইসলামপুর, জামালপুর</span></p>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            &copy; ২০২৬ শিমুলতলা সমাজকল্যাণ সমবায় সমিতি | সর্বস্বত্ব সংরক্ষিত।
+        </div>
     </footer>
 
     <script type="module">
@@ -106,13 +218,20 @@
         const app = initializeApp(firebaseConfig);
         const db = getDatabase(app);
 
+        // ফায়ারবেস থেকে রিয়েলটাইম তথ্য ডিসপ্লে
         onValue(ref(db, 'siteData'), (snapshot) => {
             if(snapshot.exists()) {
                 const data = snapshot.val();
                 if(data.logo) document.getElementById('displayLogo').src = data.logo;
-                if(data.name) document.getElementById('displayName').innerText = data.name;
+                if(data.name) {
+                    document.getElementById('displayName').innerText = data.name;
+                    document.getElementById('footerTitle').innerText = data.name;
+                }
                 if(data.est) document.getElementById('displayEst').innerText = data.est;
-                if(data.address) document.getElementById('displayAddress').innerText = data.address;
+                if(data.address) {
+                    document.getElementById('displayAddress').innerText = data.address;
+                    document.getElementById('footerAddress').innerText = data.address;
+                }
                 if(data.about) document.getElementById('displayAbout').innerText = data.about;
                 if(data.phone) document.getElementById('displayPhone').innerText = data.phone;
                 if(data.email) document.getElementById('displayEmail').innerText = data.email;
@@ -125,7 +244,7 @@
                     document.getElementById('notice2').style.display = 'block';
                 }
 
-                // পরিচালক তালিকা
+                // পরিচালক তালিকা রেন্ডার
                 const container = document.getElementById('directorsContainer');
                 container.innerHTML = '';
                 if(data.directors && data.directors.length > 0) {
