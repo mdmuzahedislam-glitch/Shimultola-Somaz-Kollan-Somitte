@@ -5,223 +5,180 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>শিমুলতলা সমাজকল্যাণ সমবায় সমিতি</title>
     <style>
-        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; scroll-behavior: smooth; }
-        body { background: #f0f4f1; color: #333; }
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+        body { background: #f4f7f6; color: #333; }
 
-        /* Top Header */
-        header { background: #1b5e20; color: white; padding: 12px 15px; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 2px 8px rgba(0,0,0,0.15); position: sticky; top: 0; z-index: 100; }
-        .logo-area { display: flex; align-items: center; gap: 8px; max-width: 85%; }
-        .logo-area h1 { font-size: 15px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-        .logo-area p { font-size: 10px; opacity: 0.85; }
+        /* আগের সেই সবুজ হেডার ও মেনু স্টাইল */
+        .site-header { 
+            background: #1b5e20; 
+            color: white; 
+            padding: 12px 15px; 
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center; 
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        .header-brand { display: flex; align-items: center; gap: 12px; }
+        .header-icon { font-size: 28px; }
+        .header-text h1 { font-size: 16px; font-weight: bold; margin-bottom: 2px; }
+        .header-text p { font-size: 11px; opacity: 0.9; }
 
-        /* Hamburger Menu */
-        .menu-btn { font-size: 24px; cursor: pointer; background: none; border: none; color: white; padding: 2px 5px; }
+        /* মেনু বার / ড্রপডাউন */
+        .menu-btn { font-size: 22px; cursor: pointer; color: white; background: none; border: none; }
+        
+        .nav-drawer {
+            display: none;
+            background: #2e7d32;
+            padding: 10px 15px;
+        }
+        .nav-drawer a {
+            display: block;
+            color: white;
+            text-decoration: none;
+            padding: 8px 0;
+            font-size: 14px;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+        .nav-drawer a:hover { color: #ffebee; }
 
-        /* Sidebar Menu */
-        .sidebar { height: 100%; width: 0; position: fixed; z-index: 1000; top: 0; right: 0; background-color: #ffffff; overflow-x: hidden; transition: 0.3s; padding-top: 60px; box-shadow: -5px 0 15px rgba(0,0,0,0.15); }
-        .sidebar a { padding: 12px 25px; text-decoration: none; font-size: 15px; color: #1b5e20; display: block; transition: 0.2s; font-weight: bold; border-bottom: 1px solid #eee; }
-        .sidebar a:hover { background-color: #e8f5e9; }
-        .sidebar .close-btn { position: absolute; top: 15px; left: 20px; font-size: 18px; cursor: pointer; color: #c62828; border: none; background: none; font-weight: bold; }
+        .container { max-width: 600px; margin: 20px auto; padding: 0 10px; }
 
-        /* Hero Banner */
-        .hero { background: linear-gradient(135deg, #1b5e20, #2e7d32); color: white; text-align: center; padding: 35px 15px; box-shadow: inset 0 -5px 10px rgba(0,0,0,0.1); }
-        .hero h2 { font-size: 20px; margin-bottom: 6px; letter-spacing: 0.5px; }
-        .hero p { font-size: 13px; opacity: 0.9; margin-bottom: 10px; }
-        .badge { background: #ff9800; color: white; padding: 4px 12px; border-radius: 15px; font-size: 11px; font-weight: bold; display: inline-block; box-shadow: 0 2px 4px rgba(0,0,0,0.2); }
+        /* পরিচালক কার্ড স্টাইল (স্ক্রিনশটের মতো হুবহু) */
+        .director-card { 
+            background: white; 
+            border: 1px solid #c8e6c9; 
+            border-radius: 10px; 
+            padding: 25px 15px; 
+            text-align: center; 
+            margin-bottom: 20px; 
+            box-shadow: 0 2px 6px rgba(0,0,0,0.05); 
+        }
+        .director-img { 
+            width: 110px; 
+            height: 110px; 
+            border-radius: 50%; 
+            object-fit: cover; 
+            border: 3px solid #2e7d32; 
+            margin: 0 auto 12px; 
+            display: block;
+        }
+        .director-name { font-weight: bold; font-size: 18px; color: #1b5e20; margin-bottom: 5px; }
+        .director-role { 
+            display: inline-block;
+            background: #ffe0b2; 
+            color: #e65100; 
+            padding: 3px 12px; 
+            border-radius: 15px; 
+            font-size: 13px; 
+            font-weight: bold; 
+            margin-bottom: 8px; 
+        }
+        .director-somitee { font-size: 13px; color: #555; }
 
-        /* Main Container */
-        .container { max-width: 900px; margin: 25px auto; padding: 0 15px; }
-        .card { background: white; padding: 22px; border-radius: 10px; box-shadow: 0 4px 12px rgba(0,0,0,0.06); margin-bottom: 25px; border-top: 4px solid #2e7d32; }
-        .card h3 { color: #1b5e20; font-size: 17px; margin-bottom: 12px; border-bottom: 2px solid #e8f5e9; padding-bottom: 8px; display: flex; align-items: center; gap: 8px; }
-        .card p { font-size: 14px; line-height: 1.7; color: #444; }
+        /* নোটিশ ও পরিচিতি কার্ড */
+        .card { background: white; border-radius: 8px; padding: 15px; box-shadow: 0 2px 6px rgba(0,0,0,0.05); margin-bottom: 20px; }
+        .section-title { color: #1b5e20; border-bottom: 2px solid #e8f5e9; padding-bottom: 6px; margin-bottom: 12px; font-size: 15px; font-weight: bold; }
+        .notice-box { background: #fffde7; border-left: 4px solid #fbc02d; padding: 10px; margin-bottom: 8px; font-size: 13px; border-radius: 4px; }
 
-        /* Notice Card Styling */
-        .notice-card { border-top-color: #d32f2f; background: #fffdfd; }
-        .notice-card h3 { color: #b71c1c; border-bottom-color: #ffebee; }
-        .notice-item { background: #fff5f5; padding: 12px; border-radius: 6px; border-left: 4px solid #d32f2f; margin-bottom: 10px; font-size: 14px; color: #b71c1c; font-weight: 600; }
-
-        /* Team / Directors Section */
-        .team-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px; margin-top: 15px; }
-        .team-card { background: #fafafa; border: 1px solid #e0e0e0; border-radius: 10px; padding: 18px; text-align: center; transition: 0.3s; }
-        .team-card:hover { transform: translateY(-4px); box-shadow: 0 6px 15px rgba(0,0,0,0.1); border-color: #2e7d32; }
-        .team-img { width: 100px; height: 100px; border-radius: 50%; object-fit: cover; margin: 0 auto 10px; border: 3px solid #2e7d32; box-shadow: 0 2px 6px rgba(0,0,0,0.15); }
-        .team-card h4 { font-size: 15px; color: #1b5e20; margin-bottom: 4px; }
-        .team-card .role { font-size: 12px; color: #e65100; font-weight: bold; background: #fff3e0; padding: 2px 8px; border-radius: 10px; display: inline-block; margin-bottom: 6px; }
-
-        /* Footer */
-        footer { background: #0f3813; color: white; padding: 30px 15px 15px; margin-top: 40px; border-top: 4px solid #ff9800; }
-        .footer-container { max-width: 900px; margin: 0 auto; display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 20px; }
-        .footer-col h4 { font-size: 16px; margin-bottom: 12px; color: #ff9800; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 5px; }
-        .footer-col p { font-size: 13px; line-height: 1.8; opacity: 0.9; }
-        .footer-bottom { text-align: center; margin-top: 25px; padding-top: 15px; border-top: 1px solid rgba(255,255,255,0.1); font-size: 12px; opacity: 0.75; }
-
-        /* Overlay */
-        .overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.4); z-index: 500; }
+        footer { text-align: center; padding: 15px; font-size: 12px; color: #777; margin-top: 20px; }
     </style>
 </head>
 <body>
 
-<!-- Header -->
-<header>
-    <div class="logo-area">
-        <span style="font-size: 22px;">🏛</span>
-        <div>
-            <h1 id="headerTitle">শিমুলতলা সমাজকল্যাণ সমবায় সমিতি</h1>
-            <p id="headerSubtitle">ইসলামপুর, জামালপুর</p>
-        </div>
-    </div>
-    <button class="menu-btn" onclick="toggleMenu()">☰</button>
-</header>
-
-<!-- Sidebar Menu -->
-<div id="mySidebar" class="sidebar">
-    <button class="close-btn" onclick="toggleMenu()">✖ বন্ধ করুন</button>
-    <a href="index.html">🏠 হোম পেজ</a>
-    <a href="#noticeSection">📢 নোটিশ বোর্ড</a>
-    <a href="#teamSection">👔 পরিচালকবৃন্দ</a>
-    <a href="#aboutSection">📖 সমিতি সম্পর্কে</a>
-    <a href="#contactSection">📞 যোগাযোগ ও ঠিকানা</a>
-    <a href="member-login.html" style="color: #e65100;">👤 সদস্য লগইন</a>
-    <a href="admin-login.html" style="color: #c62828;">🔐 এডমিন লগইন</a>
-</div>
-<div id="overlay" class="overlay" onclick="toggleMenu()"></div>
-
-<!-- Hero Banner -->
-<div class="hero">
-    <h2 id="heroTitle">শিমুলতলা সমাজকল্যাণ সমবায় সমিতি</h2>
-    <p id="heroLocation">ইসলামপুর, জামালপুর</p>
-    <span class="badge" id="heroEst">স্থাপিত: ২০২৪ ইং</span>
-</div>
-
-<!-- Content Sections -->
-<div class="container">
-    
-    <!-- ১. নোটিশ বোর্ড -->
-    <div class="card notice-card" id="noticeSection">
-        <h3>📢 জরুরি নোটিশ বোর্ড</h3>
-        <div class="notice-item" id="displayNotice1">📌 আগামী মাসের ৫ তারিখের মধ্যে মাসিক সঞ্চয় আমানত জমা দেওয়ার জন্য অনুরোধ করা হচ্ছে।</div>
-        <div class="notice-item" id="displayNotice2" style="border-left-color: #0288d1; color: #0288d1; background: #e1f5fe;">📌 বার্ষিক সাধারণ সভা আগামী মাসে অনুষ্ঠিত হবে। তারিখ ও সময় শীঘ্রই জানানো হবে।</div>
-    </div>
-
-    <!-- ২. পরিচালকবৃন্দ -->
-    <div class="card" id="teamSection">
-        <h3>👔 পরিচালকবৃন্দ ও পরিচালনা পর্ষদ</h3>
-        <div class="team-grid">
-            
-            <div class="team-card">
-                <img src="https://via.placeholder.com/150/1b5e20/ffffff?text=President" alt="সভাপতি" class="team-img" id="presImg">
-                <h4 id="presName">মো: রফিকুল ইসলাম</h4>
-                <span class="role">সভাপতি</span>
-                <p>শিমুলতলা সমাজকল্যাণ সমবায় সমিতি</p>
+    <!-- হেডার ও মেনু -->
+    <header class="site-header">
+        <div class="header-brand">
+            <span class="header-icon">🏛️</span>
+            <div class="header-text">
+                <h1 id="displayName">শিমুলতলা সমাজকল্যাণ সমবায় সমিতি</h1>
+                <p id="displayAddress">ইসলামপুর, জামালপুর</p>
             </div>
+        </div>
+        <button class="menu-btn" id="menuToggleBtn">☰</button>
+    </header>
 
-            <div class="team-card">
-                <img src="https://via.placeholder.com/150/0288d1/ffffff?text=Secretary" alt="সাধারণ সম্পাদক" class="team-img" id="secImg">
-                <h4 id="secName">মো: শফিকুল আলম</h4>
-                <span class="role">সাধারণ সম্পাদক</span>
-                <p>শিমুলতলা সমাজকল্যাণ সমবায় সমিতি</p>
-            </div>
+    <div class="nav-drawer" id="navDrawer">
+        <a href="index.html">🏠 হোমপেজ</a>
+        <a href="member-login.html">🔑 সদস্য লগইন</a>
+        <a href="admin-login.html">⚙️ এডমিন লগইন</a>
+    </div>
 
-            <div class="team-card">
-                <img src="https://via.placeholder.com/150/f57c00/ffffff?text=Member" alt="সদস্য" class="team-img" id="memImg">
-                <h4 id="memName">মো: হাবিবুর রহমান</h4>
-                <span class="role">কার্যনির্বাহী সদস্য</span>
-                <p>শিমুলতলা সমাজকল্যাণ সমবায় সমিতি</p>
-            </div>
+    <div class="container">
+        <!-- নোটিশ বোর্ড -->
+        <div class="card" id="noticeSection">
+            <div class="section-title">📢 জরুরি নোটিশ</div>
+            <div id="notice1" class="notice-box">কোনো নতুন নোটিশ নেই।</div>
+            <div id="notice2" class="notice-box" style="display:none;"></div>
+        </div>
 
+        <!-- পরিচালক মন্ডলী -->
+        <div id="directorsContainer">
+            <!-- ডায়নামিক পরিচালক কার্ড এখানে লোড হবে -->
         </div>
     </div>
 
-    <!-- ৩. সমিতি সম্পর্কে -->
-    <div class="card" id="aboutSection">
-        <h3>📖 সমিতি সম্পর্কে</h3>
-        <p id="aboutText">শিমুলতলা সমাজকল্যাণ সমবায় সমিতি ২০২৪ সালে জামালপুর জেলার ইসলামপুর উপজেলায় প্রতিষ্ঠিত একটি বহুমুখী সমবায় সংগঠন। আমাদের মূল উদ্দেশ্য হলো স্থানীয় জনগণের মাঝে সঞ্চয়ের অভ্যাস গড়ে তোলা, অর্থনৈতিক আত্মনির্ভরশীলতা বৃদ্ধি করা এবং সহজ শর্তে ক্ষুদ্র ঋণ সহায়তার মাধ্যমে সমাজকল্যাণমূলক কাজে অবদান রাখা।</p>
-    </div>
+    <footer>
+        &copy; ২০২৬ শিমুলতলা সমাজকল্যাণ সমবায় সমিতি | সর্বস্বত্ব সংরক্ষিত।
+    </footer>
 
-</div>
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+        import { getDatabase, ref, onValue } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js";
 
-<!-- ৪. অফিশিয়াল ফুটার -->
-<footer id="contactSection">
-    <div class="footer-container">
-        <div class="footer-col">
-            <h4 id="footerName">🏛 শিমুলতলা সমাজকল্যাণ সমবায় সমিতি</h4>
-            <p>একটি বিশ্বস্ত এবং নিবন্ধিত বহুমুখী সমবায় সংগঠন। স্থানীয় সমৃদ্ধি ও অর্থনৈতিক ক্ষমতায়নে আমরা নিরলসভাবে কাজ করে যাচ্ছি।</p>
-        </div>
-        <div class="footer-col">
-            <h4>📍 অফিশিয়াল ঠিকানা</h4>
-            <p id="footerAddr">🏢 ইসলামপুর প্রধান সড়ক, ইসলামপুর, জামালপুর</p>
-            <p id="footerPhone">📞 মোবাইল: +880 1700-000000</p>
-            <p id="footerEmail">✉️ ইমেইল: info@shimultola.com</p>
-        </div>
-        <div class="footer-col">
-            <h4>🔗 দ্রুত লিংক</h4>
-            <p><a href="member-login.html" style="color: #ff9800; text-decoration: none;">👤 সদস্য লগইন প্যানেল</a></p>
-            <p><a href="admin-login.html" style="color: #ffc107; text-decoration: none;">🔐 এডমিন লগইন প্যানেল</a></p>
-            <p><a href="#noticeSection" style="color: #fff; text-decoration: none;">📢 সাম্প্রতিক নোটিশসমূহ</a></p>
-        </div>
-    </div>
-    <div class="footer-bottom">
-        &copy; ২০২৪ - ২০২৬ শিমুলতলা সমাজকল্যাণ সমবায় সমিতি | সর্বস্বত্ব সংরক্ষিত।
-    </div>
-</footer>
+        // মেনু ড্রপডাউন টগল
+        document.getElementById('menuToggleBtn').addEventListener('click', () => {
+            const drawer = document.getElementById('navDrawer');
+            drawer.style.display = drawer.style.display === 'block' ? 'none' : 'block';
+        });
 
-<script>
-    function toggleMenu() {
-        const sidebar = document.getElementById("mySidebar");
-        const overlay = document.getElementById("overlay");
-        if (sidebar.style.width === "250px") {
-            sidebar.style.width = "0";
-            overlay.style.display = "none";
-        } else {
-            sidebar.style.width = "250px";
-            overlay.style.display = "block";
-        }
-    }
+        const firebaseConfig = {
+            apiKey: "AIzaSyCU0D4b0D2T9QcR5k7JKPNXH-l_BXdbtX4",
+            authDomain: "shimultola-somittee.firebaseapp.com",
+            databaseURL: "https://shimultola-somittee-default-rtdb.firebaseio.com",
+            projectId: "shimultola-somittee",
+            storageBucket: "shimultola-somittee.firebasestorage.app",
+            messagingSenderId: "889093640093",
+            appId: "1:889093640093:web:2092d82fadf427f6fb2974",
+            measurementId: "G-87QSPJ2M1R"
+        };
 
-    window.onload = function() {
-        const customTitle = localStorage.getItem('somitte_name');
-        const customSub = localStorage.getItem('somitte_address');
-        const customEst = localStorage.getItem('somitte_est');
-        const customAbout = localStorage.getItem('somitte_about');
-        const n1 = localStorage.getItem('somitte_notice1');
-        const n2 = localStorage.getItem('somitte_notice2');
+        const app = initializeApp(firebaseConfig);
+        const db = getDatabase(app);
 
-        const pName = localStorage.getItem('somitte_pName');
-        const pImg = localStorage.getItem('somitte_pImg');
-        const sName = localStorage.getItem('somitte_sName');
-        const sImg = localStorage.getItem('somitte_sImg');
-        const mName = localStorage.getItem('somitte_mName');
-        const mImg = localStorage.getItem('somitte_mImg');
+        onValue(ref(db, 'siteData'), (snapshot) => {
+            if(snapshot.exists()) {
+                const data = snapshot.val();
+                if(data.name) document.getElementById('displayName').innerText = data.name;
+                if(data.address) document.getElementById('displayAddress').innerText = data.address;
 
-        const phone = localStorage.getItem('somitte_phone');
-        const email = localStorage.getItem('somitte_email');
+                if(data.notice1) {
+                    document.getElementById('notice1').innerText = data.notice1;
+                }
+                if(data.notice2) {
+                    document.getElementById('notice2').innerText = data.notice2;
+                    document.getElementById('notice2').style.display = 'block';
+                }
 
-        if(customTitle) {
-            document.getElementById('headerTitle').innerText = customTitle;
-            document.getElementById('heroTitle').innerText = customTitle;
-            document.getElementById('footerName').innerText = "🏛 " + customTitle;
-        }
-        if(customSub) {
-            document.getElementById('headerSubtitle').innerText = customSub;
-            document.getElementById('heroLocation').innerText = customSub;
-            document.getElementById('footerAddr').innerText = "🏢 " + customSub;
-        }
-        if(customEst) document.getElementById('heroEst').innerText = customEst;
-        if(customAbout) document.getElementById('aboutText').innerText = customAbout;
-        if(n1) document.getElementById('displayNotice1').innerText = "📌 " + n1;
-        if(n2) document.getElementById('displayNotice2').innerText = "📌 " + n2;
-
-        if(pName) document.getElementById('presName').innerText = pName;
-        if(pImg) document.getElementById('presImg').src = pImg;
-        if(sName) document.getElementById('secName').innerText = sName;
-        if(sImg) document.getElementById('secImg').src = sImg;
-        if(mName) document.getElementById('memName').innerText = mName;
-        if(mImg) document.getElementById('memImg').src = mImg;
-
-        if(phone) document.getElementById('footerPhone').innerText = "📞 মোবাইল: " + phone;
-        if(email) document.getElementById('footerEmail').innerText = "✉️ ইমেইল: " + email;
-    };
-</script>
-
+                // পরিচালক তালিকা স্ক্রিনশটের ডিজাইনে রেন্ডার করা
+                const container = document.getElementById('directorsContainer');
+                container.innerHTML = '';
+                if(data.directors && data.directors.length > 0) {
+                    data.directors.forEach(d => {
+                        const div = document.createElement('div');
+                        div.className = 'director-card';
+                        div.innerHTML = `
+                            <img src="${d.img || 'https://via.placeholder.com/110'}" class="director-img">
+                            <div class="director-name">${d.name}</div>
+                            <div class="director-role">${d.role}</div>
+                            <div class="director-somitee">${data.name || 'শিমুলতলা সমাজকল্যাণ সমবায় সমিতি'}</div>
+                        `;
+                        container.appendChild(div);
+                    });
+                } else {
+                    container.innerHTML = '<div class="card"><p style="text-align:center;">কোনো পরিচালকের তথ্য পাওয়া যায়নি।</p></div>';
+                }
+            }
+        });
+    </script>
 </body>
 </html>
