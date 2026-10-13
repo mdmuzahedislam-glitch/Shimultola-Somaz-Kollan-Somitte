@@ -93,12 +93,12 @@
 <div class="container">
     <div class="card notice-card" id="noticeSection">
         <h3>📢 জরুরি নোটিশ বোর্ড</h3>
-        <div class="notice-item" id="displayNotice1">📌 নোটিশ গুলো ডায়নামিক ভাবে লোড এখানে হবে</div>
-        <div class="notice-item" id="displayNotice2" style="border-left-color: #0288d1; color: #0288d1; background: #e1f5fe;">📌 নোটিশগুলো এখানে ডায়নামিক ভাবে লোড হবে।</div>
+        <div class="notice-item" id="displayNotice1">📌 আগামী মাসের ৫ তারিখের মধ্যে মাসিক সঞ্চয় আমানত জমা দেওয়ার জন্য অনুরোধ করা হচ্ছে।</div>
+        <div class="notice-item" id="displayNotice2" style="border-left-color: #0288d1; color: #0288d1; background: #e1f5fe;">📌 বার্ষিক সাধারণ সভা আগামী মাসে অনুষ্ঠিত হবে। তারিখ ও সময় শীঘ্রই জানানো হবে।</div>
     </div>
 
     <div class="card" id="teamSection">
-        <h3>👔 পরিচালকবৃন্দ ও পরিচালনা পরিষদ</h3>
+        <h3>👔 পরিচালকবৃন্দ ও পরিচালনা পর্ষদ</h3>
         <div class="team-grid" id="teamGridContainer">
             <!-- ডাইনামিকভাবে পরিচালকবৃন্দ এখানে লোড হবে -->
         </div>
@@ -106,7 +106,7 @@
 
     <div class="card" id="aboutSection">
         <h3>📖 সমিতি সম্পর্কে</h3>
-        <p id="aboutText">ডিসক্রিপশন গুলো ডায়নামিকভাবে এখানে লোড হবে।</p>
+        <p id="aboutText">শিমুলতলা সমাজকল্যাণ সমবায় সমিতি ২০২৪ সালে জামালপুর জেলার ইসলামপুর উপজেলায় প্রতিষ্ঠিত একটি বহুমুখী সমবায় সংগঠন।</p>
     </div>
 </div>
 
@@ -114,7 +114,7 @@
     <div class="footer-container">
         <div class="footer-col">
             <h4 id="footerName">🏛 শিমুলতলা সমাজকল্যাণ সমবায় সমিতি</h4>
-            <p>সেবা দেওয়াই আমাদের লক্ষ্য হোক।</p>
+            <p>একটি বিশ্বস্ত এবং নিবন্ধিত বহুমুখী সমবায় সংগঠন।</p>
         </div>
         <div class="footer-col">
             <h4>📍 অফিশিয়াল ঠিকানা</h4>
@@ -189,9 +189,9 @@
             teamContainer.innerHTML = '';
             
             let directors = data.directors || [
-                { name: data.pName || "মুজাহিদ সরদার", role: "সভাপতি", img: data.pImg || "https://via.placeholder.com/150/1b5e20/ffffff?text=President" },
-                { name: data.sName || "মো: নুর ইসলাম", role: "সাধারণ সম্পাদক", img: data.sImg || "https://via.placeholder.com/150/0288d1/ffffff?text=Secretary" },
-                { name: data.mName || "এস এম আসলাম", role: "কার্যনির্বাহী সদস্য", img: data.mImg || "https://via.placeholder.com/150/f57c00/ffffff?text=Member" }
+                { name: data.pName || "মো: রফিকুল ইসলাম", role: "সভাপতি", img: data.pImg || "https://via.placeholder.com/150/1b5e20/ffffff?text=President" },
+                { name: data.sName || "মো: শফিকুল আলম", role: "সাধারণ সম্পাদক", img: data.sImg || "https://via.placeholder.com/150/0288d1/ffffff?text=Secretary" },
+                { name: data.mName || "মো: হাবিবুর রহমান", role: "কার্যনির্বাহী সদস্য", img: data.mImg || "https://via.placeholder.com/150/f57c00/ffffff?text=Member" }
             ];
 
             directors.forEach(dir => {
