@@ -6,48 +6,115 @@
     <title>এডমিন প্যানেল - শিমুলতলা সমাজকল্যাণ সমবায় সমিতি</title>
     <style>
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
-        body { background: #f4f7f6; padding: 15px; color: #333; }
-        .container { max-width: 1050px; margin: 0 auto; }
-        header { background: #b71c1c; color: white; padding: 15px 20px; border-radius: 8px; display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
-        header h2 { font-size: 18px; }
-        .logout-btn { background: #424242; color: white; padding: 6px 12px; text-decoration: none; border-radius: 4px; font-size: 13px; font-weight: bold; }
+        body { background: #f0f2f5; padding-bottom: 30px; color: #333; }
+        .container { max-width: 1100px; margin: 0 auto; padding: 0 15px; }
 
-        .card { background: white; padding: 20px; border-radius: 8px; box-shadow: 0 2px 6px rgba(0,0,0,0.08); margin-bottom: 20px; }
-        h3.section-title { color: #b71c1c; border-bottom: 2px solid #eee; padding-bottom: 8px; margin-bottom: 15px; font-size: 16px; }
+        /* প্রফেশনাল ও আকর্ষণীয় এডমিন ব্যানার */
+        .admin-banner {
+            background: linear-gradient(135deg, #1b5e20 0%, #2e7d32 50%, #43a047 100%);
+            color: white;
+            padding: 30px 25px;
+            border-radius: 0 0 15px 15px;
+            box-shadow: 0 6px 15px rgba(0,0,0,0.15);
+            margin-bottom: 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        .banner-brand {
+            display: flex;
+            align-items: center;
+            gap: 18px;
+        }
+
+        .banner-logo {
+            width: 75px;
+            height: 75px;
+            border-radius: 50%;
+            border: 3px solid #ffffff;
+            object-fit: cover;
+            background: #ffffff;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+        }
+
+        .banner-title h2 {
+            font-size: 22px;
+            font-weight: 700;
+            margin-bottom: 4px;
+            letter-spacing: 0.5px;
+        }
+
+        .banner-title p {
+            font-size: 13px;
+            opacity: 0.9;
+            background: rgba(255, 255, 255, 0.18);
+            padding: 3px 10px;
+            border-radius: 20px;
+            display: inline-block;
+        }
+
+        .logout-btn {
+            background: #c62828;
+            color: white;
+            text-decoration: none;
+            padding: 8px 18px;
+            border-radius: 25px;
+            font-size: 13px;
+            font-weight: bold;
+            box-shadow: 0 3px 6px rgba(0,0,0,0.2);
+            transition: 0.3s;
+        }
+
+        .logout-btn:hover {
+            background: #b71c1c;
+            transform: translateY(-2px);
+        }
+
+        .card { background: white; padding: 22px; border-radius: 10px; box-shadow: 0 2px 8px rgba(0,0,0,0.06); margin-bottom: 25px; }
+        h3.section-title { color: #1b5e20; border-bottom: 2px solid #e8f5e9; padding-bottom: 10px; margin-bottom: 18px; font-size: 17px; display: flex; align-items: center; gap: 8px; }
 
         .form-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; margin-bottom: 15px; }
-        .form-group label { display: block; margin-bottom: 5px; font-weight: bold; font-size: 13px; }
-        .form-group input, .form-group select, .form-group textarea { width: 100%; padding: 8px; border: 1px solid #ccc; border-radius: 4px; font-size: 14px; }
+        .form-group label { display: block; margin-bottom: 6px; font-weight: 600; font-size: 13px; color: #444; }
+        .form-group input, .form-group select, .form-group textarea { width: 100%; padding: 9px 12px; border: 1px solid #ccc; border-radius: 6px; font-size: 14px; outline: none; }
+        .form-group input:focus, .form-group textarea:focus { border-color: #2e7d32; }
 
         table { width: 100%; border-collapse: collapse; margin-top: 10px; }
-        table, th, td { border: 1px solid #ddd; }
-        th, td { padding: 8px 10px; text-align: center; font-size: 13px; }
-        th { background: #ffebee; color: #b71c1c; }
+        table, th, td { border: 1px solid #e0e0e0; }
+        th, td { padding: 10px; text-align: center; font-size: 13px; }
+        th { background: #e8f5e9; color: #1b5e20; font-weight: bold; }
 
-        .btn { background: #2e7d32; color: white; border: none; padding: 6px 12px; border-radius: 4px; cursor: pointer; font-size: 13px; font-weight: bold; }
+        .btn { background: #2e7d32; color: white; border: none; padding: 8px 14px; border-radius: 5px; cursor: pointer; font-size: 13px; font-weight: bold; transition: 0.2s; }
         .btn:hover { background: #1b5e20; }
         .btn-danger { background: #c62828; }
+        .btn-danger:hover { background: #b71c1c; }
         .btn-warning { background: #f57c00; color: white; }
-        .btn-info { background: #0288d1; color: white; }
+        .btn-warning:hover { background: #e65100; }
 
         .preview-img { width: 45px; height: 45px; border-radius: 50%; object-fit: cover; border: 2px solid #2e7d32; margin: auto; display: block; }
 
         /* Modal */
         .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); justify-content: center; align-items: center; padding: 15px; z-index: 1000; }
-        .modal-content { background: white; padding: 20px; border-radius: 8px; width: 100%; max-width: 600px; box-shadow: 0 4px 10px rgba(0,0,0,0.2); max-height: 90vh; overflow-y: auto; }
-        .modal-header { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #ddd; padding-bottom: 8px; margin-bottom: 15px; }
-        .close-btn { cursor: pointer; font-size: 20px; font-weight: bold; color: #888; }
+        .modal-content { background: white; padding: 22px; border-radius: 10px; width: 100%; max-width: 600px; box-shadow: 0 5px 15px rgba(0,0,0,0.2); max-height: 90vh; overflow-y: auto; }
+        .modal-header { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #ddd; padding-bottom: 10px; margin-bottom: 15px; }
+        .close-btn { cursor: pointer; font-size: 22px; font-weight: bold; color: #888; }
     </style>
 </head>
 <body>
 
+<!-- এডমিন ব্যানার সেকশন -->
 <div class="container">
-    <header>
-        <div>
-            <h2>⚙️ এডমিন কন্ট্রোল প্যানেল</h2>
-            <p style="font-size: 12px; opacity: 0.9;">শিমুলতলা সমাজকল্যাণ সমবায় সমিতি</p>
+    <header class="admin-banner">
+        <div class="banner-brand">
+            <img id="adminLogoDisplay" src="https://via.placeholder.com/100/1b5e20/ffffff?text=Logo" class="banner-logo" alt="Logo">
+            <div class="banner-title">
+                <h2 id="adminHeaderTitle">⚙️ এডমিন কন্ট্রোল প্যানেল</h2>
+                <p id="adminHeaderSub">শিমুলতলা সমাজকল্যাণ সমবায় সমিতি</p>
+            </div>
         </div>
-        <a href="admin-login.html" class="logout-btn">লগআউট</a>
+        <a href="admin-login.html" class="logout-btn">লগআউট ➔</a>
     </header>
 
     <!-- ১. সমিতি লোগো, নাম ও কন্টাক্ট এডিট -->
@@ -62,7 +129,7 @@
                 <div class="form-group"><label>ইমেইল:</label><input type="email" id="siteEmailInput" required></div>
                 <div class="form-group"><label>লোগো আপলোড (Image File):</label><input type="file" id="siteLogoFile" accept="image/*"></div>
             </div>
-            <div class="form-group" style="margin-bottom: 12px;">
+            <div class="form-group" style="margin-bottom: 15px;">
                 <label>সমিতি সম্পর্কে বিবরণ:</label>
                 <textarea id="siteAboutInput" rows="3" required></textarea>
             </div>
@@ -97,7 +164,7 @@
         <h3 class="section-title">📢 জরুরি নোটিশ আপডেট</h3>
         <form id="noticeForm">
             <div class="form-group" style="margin-bottom: 10px;"><label>নোটিশ ১:</label><input type="text" id="notice1Input"></div>
-            <div class="form-group" style="margin-bottom: 10px;"><label>নোটিশ ২:</label><input type="text" id="notice2Input"></div>
+            <div class="form-group" style="margin-bottom: 15px;"><label>নোটিশ ২:</label><input type="text" id="notice2Input"></div>
             <button type="submit" class="btn btn-warning">নোটিশ আপডেট করুন</button>
         </form>
     </div>
@@ -223,6 +290,9 @@
             if(!currentData.members) currentData.members = [];
             if(!currentData.directors) currentData.directors = [];
 
+            if(currentData.logo) document.getElementById('adminLogoDisplay').src = currentData.logo;
+            if(currentData.name) document.getElementById('adminHeaderSub').innerText = currentData.name;
+
             document.getElementById('siteNameInput').value = currentData.name || "";
             document.getElementById('siteAddressInput').value = currentData.address || "";
             document.getElementById('siteEstInput').value = currentData.est || "";
@@ -304,7 +374,6 @@
         e.preventDefault();
         const phone = document.getElementById('regPhone').value.trim();
         
-        // ইউনিক মোবাইল নম্বর চেক
         const exists = currentData.members.some(m => m.phone === phone);
         if(exists) {
             alert('এই মোবাইল নম্বর দিয়ে ইতিমধ্যে একজন সদস্য নিবন্ধিত আছেন!');
@@ -348,51 +417,4 @@
                     <button class="btn btn-danger" onclick="deleteMem(${idx})">মুছুন</button>
                 </td>
             `;
-            tbody.appendChild(tr);
-        });
-    }
-
-    window.deleteMem = function(idx) {
-        if(confirm('এই সদস্যকে সম্পূর্ণ মুছে ফেলতে চান?')) {
-            currentData.members.splice(idx, 1);
-            set(ref(db, 'siteData'), currentData);
-        }
-    };
-
-    window.openEdit = function(idx) {
-        const m = currentData.members[idx];
-        document.getElementById('editIndex').value = idx;
-        document.getElementById('editName').value = m.name;
-        document.getElementById('editPhone').value = m.phone;
-        document.getElementById('editAddress').value = m.address || "";
-        document.getElementById('editPassword').value = m.password;
-        document.getElementById('editBalance').value = m.balance;
-        document.getElementById('editLoan').value = m.loan;
-
-        document.getElementById('editModal').style.display = 'flex';
-    };
-
-    document.getElementById('closeEditModal').onclick = () => {
-        document.getElementById('editModal').style.display = 'none';
-    };
-
-    document.getElementById('editMemberForm').onsubmit = function(e) {
-        e.preventDefault();
-        const idx = document.getElementById('editIndex').value;
-        const member = currentData.members[idx];
-
-        member.name = document.getElementById('editName').value;
-        member.phone = document.getElementById('editPhone').value;
-        member.address = document.getElementById('editAddress').value;
-        member.password = document.getElementById('editPassword').value;
-        member.balance = parseFloat(document.getElementById('editBalance').value) || 0;
-        member.loan = parseFloat(document.getElementById('editLoan').value) || 0;
-
-        // নতুন সঞ্চয় জমা
-        const depAmt = parseFloat(document.getElementById('newDepAmount').value) || 0;
-        if(depAmt > 0) {
-            if(!member.history) member.history = [];
-            member.history.push({
-                date: document.getElementById('newDepDate').value || new Date().toISOString().split('T')[0],
-                month: document.getElementById('newDepMonth').value || 'মাসিক জমা',
-                amount: depAmt
+            tbody.appendChil
