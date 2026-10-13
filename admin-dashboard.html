@@ -7,7 +7,7 @@
     <style>
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
         body { background: #f4f7f6; padding: 15px; color: #333; }
-        .container { max-width: 1000px; margin: 0 auto; }
+        .container { max-width: 1050px; margin: 0 auto; }
         header { background: #b71c1c; color: white; padding: 15px 20px; border-radius: 8px; display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
         header h2 { font-size: 18px; }
         .logout-btn { background: #424242; color: white; padding: 6px 12px; text-decoration: none; border-radius: 4px; font-size: 13px; font-weight: bold; }
@@ -24,16 +24,17 @@
         th, td { padding: 8px 10px; text-align: center; font-size: 13px; }
         th { background: #ffebee; color: #b71c1c; }
 
-        .btn { background: #2e7d32; color: white; border: none; padding: 8px 16px; border-radius: 4px; cursor: pointer; font-size: 13px; font-weight: bold; }
+        .btn { background: #2e7d32; color: white; border: none; padding: 6px 12px; border-radius: 4px; cursor: pointer; font-size: 13px; font-weight: bold; }
         .btn:hover { background: #1b5e20; }
         .btn-danger { background: #c62828; }
         .btn-warning { background: #f57c00; color: white; }
+        .btn-info { background: #0288d1; color: white; }
 
         .preview-img { width: 45px; height: 45px; border-radius: 50%; object-fit: cover; border: 2px solid #2e7d32; margin: auto; display: block; }
 
         /* Modal */
         .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); justify-content: center; align-items: center; padding: 15px; z-index: 1000; }
-        .modal-content { background: white; padding: 20px; border-radius: 8px; width: 100%; max-width: 500px; box-shadow: 0 4px 10px rgba(0,0,0,0.2); max-height: 90vh; overflow-y: auto; }
+        .modal-content { background: white; padding: 20px; border-radius: 8px; width: 100%; max-width: 600px; box-shadow: 0 4px 10px rgba(0,0,0,0.2); max-height: 90vh; overflow-y: auto; }
         .modal-header { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #ddd; padding-bottom: 8px; margin-bottom: 15px; }
         .close-btn { cursor: pointer; font-size: 20px; font-weight: bold; color: #888; }
     </style>
@@ -151,12 +152,12 @@
     </div>
 </div>
 
-<!-- সদস্য এডিট মোডাল -->
+<!-- সদস্য এডিট ও নতুন স্টেটমেন্ট জমার মোডাল -->
 <div class="modal" id="editModal">
     <div class="modal-content">
         <div class="modal-header">
-            <h4>✏️ সদস্যের বিস্তারিত তথ্য এডিট</h4>
-            <span class="close-btn" id="closeModalBtn">&times;</span>
+            <h4>✏️ সদস্যের বিস্তারিত তথ্য এডিট ও জমা রেকর্ড</h4>
+            <span class="close-btn" id="closeEditModal">&times;</span>
         </div>
         <form id="editMemberForm">
             <input type="hidden" id="editIndex">
@@ -168,8 +169,42 @@
             <div class="form-group" style="margin-bottom: 10px;"><label>সর্বশেষ মাসের জমা (৳):</label><input type="number" id="editLastDeposit"></div>
             <div class="form-group" style="margin-bottom: 10px;"><label>বকেয়া ঋণ (৳):</label><input type="number" id="editLoan" required></div>
             <div class="form-group" style="margin-bottom: 10px;"><label>ছবি লিংক / URL:</label><input type="text" id="editImg" placeholder="https://..."></div>
+            
+            <hr style="margin: 15px 0;">
+            <h5 style="color:#b71c1c; margin-bottom:10px;">💳 নতুন মাসের জমা ইনপুট (স্টেটমেন্ট রেকর্ড):</h5>
+            <div class="form-grid">
+                <div class="form-group"><label>মাস/বছর:</label><input type="text" id="newDepMonth" placeholder="অক্টোবর ২০২৪"></div>
+                <div class="form-group"><label>জমার পরিমাণ (৳):</label><input type="number" id="newDepAmount" placeholder="1000"></div>
+                <div class="form-group"><label>তারিখ:</label><input type="date" id="newDepDate"></div>
+                <div class="form-group"><label>ট্রানজেকশন ID/নোট:</label><input type="text" id="newDepNote" placeholder="নগদ জমা/মেম্বার জমা"></div>
+            </div>
+
             <button type="submit" class="btn" style="width: 100%; margin-top: 10px;">সংরক্ষণ করুন</button>
         </form>
+    </div>
+</div>
+
+<!-- মাসিক স্টেটমেন্ট দেখার মোডাল -->
+<div class="modal" id="statementModal">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h4>📄 সদস্যের মাসিক জমা স্টেটমেন্ট</h4>
+            <span class="close-btn" id="closeStmtModal">&times;</span>
+        </div>
+        <div id="stmtMemberDetails" style="margin-bottom: 15px; font-size:14px; font-weight:bold;"></div>
+        <div style="overflow-x: auto;">
+            <table>
+                <thead>
+                    <tr>
+                        <th>তারিখ</th>
+                        <th>মাস</th>
+                        <th>পরিমাণ</th>
+                        <th>নোট/ID</th>
+                    </tr>
+                </thead>
+                <tbody id="stmtTableBody"></tbody>
+            </table>
+        </div>
     </div>
 </div>
 
@@ -198,24 +233,31 @@
     let currentData = { members: [], directors: [] };
     let newDirImgData = "https://via.placeholder.com/150/2e7d32/ffffff?text=Director";
 
-    // ফায়ারবেস থেকে লাইভ ডাটা লোড
+    // রিয়েলটাইম ডাটা লোড ও ইনপুট ফিল্ড অটো-ফিল
     onValue(ref(db, 'siteData'), (snapshot) => {
         if(snapshot.exists()) {
             currentData = snapshot.val();
             if(!currentData.members) currentData.members = [];
             if(!currentData.directors) currentData.directors = [];
 
-            document.getElementById('siteNameInput').value = currentData.name || "";
-            document.getElementById('siteAddressInput').value = currentData.address || "";
-            document.getElementById('siteEstInput').value = currentData.est || "";
-            document.getElementById('sitePhoneInput').value = currentData.phone || "";
-            document.getElementById('siteEmailInput').value = currentData.email || "";
-            document.getElementById('siteAboutInput').value = currentData.about || "";
+            document.getElementById('siteNameInput').value = currentData.name || "শিমুলতলা সমাজকল্যাণ সমবায় সমিতি";
+            document.getElementById('siteAddressInput').value = currentData.address || "ইসলামপুর, জামালপুর";
+            document.getElementById('siteEstInput').value = currentData.est || "২০২৪";
+            document.getElementById('sitePhoneInput').value = currentData.phone || "০১XXXXXXXXX";
+            document.getElementById('siteEmailInput').value = currentData.email || "info@somitee.com";
+            document.getElementById('siteAboutInput').value = currentData.about || "আমাদের সমিতি সকলের কল্যাণে নিয়োজিত।";
             document.getElementById('notice1Input').value = currentData.notice1 || "";
             document.getElementById('notice2Input').value = currentData.notice2 || "";
 
             renderMembers();
             renderDirectors();
+        } else {
+            document.getElementById('siteNameInput').value = "শিমুলতলা সমাজকল্যাণ সমবায় সমিতি";
+            document.getElementById('siteAddressInput').value = "ইসলামপুর, জামালপুর";
+            document.getElementById('siteEstInput').value = "২০২৪";
+            document.getElementById('sitePhoneInput').value = "০১XXXXXXXXX";
+            document.getElementById('siteEmailInput').value = "info@somitee.com";
+            document.getElementById('siteAboutInput').value = "আমাদের সমিতি সকলের কল্যাণে নিয়োজিত।";
         }
     });
 
@@ -298,10 +340,22 @@
         }
     }
 
-    // ৪. নতুন সদস্য নিবন্ধন
+    // ৪. নতুন সদস্য নিবন্ধন (স্টেটমেন্ট অ্যারে সহ)
     document.getElementById('registerForm').addEventListener('submit', (e) => {
         e.preventDefault();
         if(!currentData.members) currentData.members = [];
+        
+        const initialDeposit = parseFloat(document.getElementById('regLastDeposit').value) || 0;
+        const history = [];
+        if(initialDeposit > 0) {
+            history.push({
+                date: new Date().toISOString().split('T')[0],
+                month: "রেজিস্ট্রেশন জমা",
+                amount: initialDeposit,
+                note: "প্রারম্ভিক জমা"
+            });
+        }
+
         currentData.members.push({
             id: document.getElementById('regId').value.trim(),
             name: document.getElementById('regName').value.trim(),
@@ -310,9 +364,10 @@
             phone: document.getElementById('regPhone').value.trim(),
             address: document.getElementById('regAddress').value.trim(),
             balance: parseFloat(document.getElementById('regBalance').value) || 0,
-            lastDeposit: parseFloat(document.getElementById('regLastDeposit').value) || 0,
+            lastDeposit: initialDeposit,
             loan: parseFloat(document.getElementById('regLoan').value) || 0,
-            img: "https://via.placeholder.com/150"
+            img: "https://via.placeholder.com/150",
+            history: history
         });
 
         set(ref(db, 'siteData'), currentData).then(() => {
@@ -328,58 +383,4 @@
         if(currentData.members) {
             currentData.members.forEach((m, index) => {
                 const tr = document.createElement('tr');
-                tr.innerHTML = `
-                    <td><b>${m.id}</b></td>
-                    <td><img src="${m.img || 'https://via.placeholder.com/150'}" class="preview-img"></td>
-                    <td>${m.name}</td>
-                    <td><code>${m.username}</code> / <b>${m.password}</b></td>
-                    <td>${m.phone}</td>
-                    <td style="color: green; font-weight: bold;">৳ ${m.balance}</td>
-                    <td style="color: #0288d1; font-weight: bold;">৳ ${m.lastDeposit || 0}</td>
-                    <td style="color: #e65100; font-weight: bold;">৳ ${m.loan || 0}</td>
-                    <td>
-                        <button class="btn btn-warning edit-mem-btn" data-index="${index}" type="button">এডিট</button>
-                        <button class="btn btn-danger del-mem-btn" data-index="${index}" type="button">মুছুন</button>
-                    </td>`;
-                tbody.appendChild(tr);
-            });
-
-            document.querySelectorAll('.edit-mem-btn').forEach(btn => {
-                btn.addEventListener('click', (e) => {
-                    const idx = e.target.getAttribute('data-index');
-                    openEdit(idx);
-                });
-            });
-
-            document.querySelectorAll('.del-mem-btn').forEach(btn => {
-                btn.addEventListener('click', (e) => {
-                    const idx = e.target.getAttribute('data-index');
-                    if(confirm('এই সদস্যকে মুছে ফেলতে চান?')) {
-                        currentData.members.splice(idx, 1);
-                        set(ref(db, 'siteData'), currentData).then(() => renderMembers());
-                    }
-                });
-            });
-        }
-    }
-
-    // ৫. সদস্য এডিট মোডাল হ্যান্ডেল
-    function openEdit(index) {
-        const m = currentData.members[index];
-        document.getElementById('editIndex').value = index;
-        document.getElementById('editName').value = m.name;
-        document.getElementById('editPhone').value = m.phone;
-        document.getElementById('editAddress').value = m.address || "";
-        document.getElementById('editPassword').value = m.password;
-        document.getElementById('editBalance').value = m.balance;
-        document.getElementById('editLastDeposit').value = m.lastDeposit || 0;
-        document.getElementById('editLoan').value = m.loan || 0;
-        document.getElementById('editImg').value = m.img || "";
-        document.getElementById('editModal').style.display = 'flex';
-    }
-
-    document.getElementById('closeModalBtn').addEventListener('click', () => {
-        document.getElementById('editModal').style.display = 'none';
-    });
-
-    document.getElementById('editMemberForm').addEventList
+                                                                                                                                
