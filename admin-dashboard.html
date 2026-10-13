@@ -3,11 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>এডমিন কন্ট্রোল প্যানেল - শিমুলতলা সমাজকল্যাণ সমবায় সমিতি</title>
+    <title>এডমিন প্যানেল - শিমুলতলা সমাজকল্যাণ সমবায় সমিতি</title>
     <style>
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
         body { background: #f4f7f6; padding: 15px; color: #333; }
-        .container { max-width: 1000px; margin: 0 auto; }
+        .container { max-width: 1050px; margin: 0 auto; }
         header { background: #b71c1c; color: white; padding: 15px 20px; border-radius: 8px; display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
         header h2 { font-size: 18px; }
         .logout-btn { background: #424242; color: white; padding: 6px 12px; text-decoration: none; border-radius: 4px; font-size: 13px; font-weight: bold; }
@@ -24,11 +24,19 @@
         th, td { padding: 8px 10px; text-align: center; font-size: 13px; }
         th { background: #ffebee; color: #b71c1c; }
 
-        .btn { background: #2e7d32; color: white; border: none; padding: 7px 14px; border-radius: 4px; cursor: pointer; font-size: 13px; font-weight: bold; }
+        .btn { background: #2e7d32; color: white; border: none; padding: 6px 12px; border-radius: 4px; cursor: pointer; font-size: 13px; font-weight: bold; }
         .btn:hover { background: #1b5e20; }
         .btn-danger { background: #c62828; }
         .btn-warning { background: #f57c00; color: white; }
-        .preview-img { width: 60px; height: 60px; border-radius: 50%; object-fit: cover; border: 2px solid #2e7d32; margin-top: 5px; display: block; }
+        .btn-info { background: #0288d1; color: white; }
+
+        .preview-img { width: 45px; height: 45px; border-radius: 50%; object-fit: cover; border: 2px solid #2e7d32; margin: auto; display: block; }
+
+        /* Modal */
+        .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); justify-content: center; align-items: center; padding: 15px; z-index: 1000; }
+        .modal-content { background: white; padding: 20px; border-radius: 8px; width: 100%; max-width: 600px; box-shadow: 0 4px 10px rgba(0,0,0,0.2); max-height: 90vh; overflow-y: auto; }
+        .modal-header { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #ddd; padding-bottom: 8px; margin-bottom: 15px; }
+        .close-btn { cursor: pointer; font-size: 20px; font-weight: bold; color: #888; }
     </style>
 </head>
 <body>
@@ -42,8 +50,9 @@
         <a href="admin-login.html" class="logout-btn">লগআউট</a>
     </header>
 
+    <!-- ১. সমিতি লোগো, নাম ও কন্টাক্ট এডিট -->
     <div class="card">
-        <h3 class="section-title">✏️ সমিতির নাম, ঠিকানা ও কন্টাক্ট এডিট</h3>
+        <h3 class="section-title">✏️ সমিতির লোগো, নাম, ঠিকানা ও কন্টাক্ট এডিট</h3>
         <form id="siteInfoForm">
             <div class="form-grid">
                 <div class="form-group"><label>সমিতির নাম:</label><input type="text" id="siteNameInput" required></div>
@@ -51,58 +60,121 @@
                 <div class="form-group"><label>স্থাপিত সাল:</label><input type="text" id="siteEstInput" required></div>
                 <div class="form-group"><label>মোবাইল নম্বর:</label><input type="text" id="sitePhoneInput" required></div>
                 <div class="form-group"><label>ইমেইল:</label><input type="email" id="siteEmailInput" required></div>
+                <div class="form-group"><label>লোগো আপলোড (Image File):</label><input type="file" id="siteLogoFile" accept="image/*"></div>
             </div>
             <div class="form-group" style="margin-bottom: 12px;">
                 <label>সমিতি সম্পর্কে বিবরণ:</label>
                 <textarea id="siteAboutInput" rows="3" required></textarea>
             </div>
-            <button type="submit" class="btn btn-warning">ওয়েবসাইটের তথ্য সংরক্ষণ করুন</button>
+            <button type="submit" class="btn btn-warning">ওয়েবসাইটের মূল তথ্য সংরক্ষণ করুন</button>
         </form>
     </div>
 
+    <!-- ২. পরিচালকবৃন্দ সংযোজন -->
     <div class="card">
-        <h3 class="section-title">👔 পরিচালকবৃন্দের নাম ও ছবি আপলোড</h3>
-        <form id="directorForm">
+        <h3 class="section-title">👔 পরিচালক মন্ডলী যোগ ও ম্যানেজমেন্ট</h3>
+        <form id="addDirectorForm">
             <div class="form-grid">
-                <div class="form-group">
-                    <label>সভাপতির নাম:</label>
-                    <input type="text" id="pNameInput" required>
-                    <label style="margin-top:8px;">ছবি আপলোড:</label>
-                    <input type="file" id="pImgFile" accept="image/*" onchange="previewFile('pImgFile', 'pPreview')">
-                    <img id="pPreview" class="preview-img" src="https://via.placeholder.com/150/1b5e20/ffffff?text=President">
-                </div>
-                <div class="form-group">
-                    <label>সাধারণ সম্পাদকের নাম:</label>
-                    <input type="text" id="sNameInput" required>
-                    <label style="margin-top:8px;">ছবি আপলোড:</label>
-                    <input type="file" id="sImgFile" accept="image/*" onchange="previewFile('sImgFile', 'sPreview')">
-                    <img id="sPreview" class="preview-img" src="https://via.placeholder.com/150/0288d1/ffffff?text=Secretary">
-                </div>
-                <div class="form-group">
-                    <label>কার্যনির্বাহী সদস্যের নাম:</label>
-                    <input type="text" id="mNameInput" required>
-                    <label style="margin-top:8px;">ছবি আপলোড:</label>
-                    <input type="file" id="mImgFile" accept="image/*" onchange="previewFile('mImgFile', 'mPreview')">
-                    <img id="mPreview" class="preview-img" src="https://via.placeholder.com/150/f57c00/ffffff?text=Member">
-                </div>
+                <div class="form-group"><label>পরিচালকের নাম:</label><input type="text" id="newDirName" required></div>
+                <div class="form-group"><label>পদবী (যেমন: সভাপতি/সহ-সভাপতি):</label><input type="text" id="newDirRole" required></div>
+                <div class="form-group"><label>ছবি আপলোড:</label><input type="file" id="newDirImgFile" accept="image/*"></div>
             </div>
-            <button type="submit" class="btn btn-warning">পরিচালকবৃন্দের তথ্য ও ছবি সংরক্ষণ করুন</button>
+            <button type="submit" class="btn">নতুন পরিচালক যোগ করুন</button>
         </form>
+
+        <div style="margin-top: 20px; overflow-x: auto;">
+            <table>
+                <thead>
+                    <tr><th>ছবি</th><th>নাম</th><th>পদবী</th><th>অ্যাকশন</th></tr>
+                </thead>
+                <tbody id="directorTableBody"></tbody>
+            </table>
+        </div>
     </div>
 
+    <!-- ৩. নোটিশ বোর্ড -->
     <div class="card">
-        <h3 class="section-title">📢 জরুরি নোটিশ বোর্ড আপডেট</h3>
+        <h3 class="section-title">📢 জরুরি নোটিশ আপডেট</h3>
         <form id="noticeForm">
             <div class="form-group" style="margin-bottom: 10px;"><label>নোটিশ ১:</label><input type="text" id="notice1Input"></div>
             <div class="form-group" style="margin-bottom: 10px;"><label>নোটিশ ২:</label><input type="text" id="notice2Input"></div>
             <button type="submit" class="btn btn-warning">নোটিশ আপডেট করুন</button>
         </form>
     </div>
+
+    <!-- ৪. নতুন সদস্য রেজিস্ট্রেশন -->
+    <div class="card">
+        <h3 class="section-title">➕ নতুন সদস্য নিবন্ধিত করুন</h3>
+        <form id="registerForm">
+            <div class="form-grid">
+                <div class="form-group"><label>সদস্য আইডি:</label><input type="text" id="regId" placeholder="M-101" required></div>
+                <div class="form-group"><label>নাম:</label><input type="text" id="regName" placeholder="পূর্ণ নাম" required></div>
+                <div class="form-group"><label>মোবাইল (লগইন ইউজারনেম):</label><input type="tel" id="regPhone" required></div>
+                <div class="form-group"><label>লগইন পাসওয়ার্ড:</label><input type="text" id="regPassword" required></div>
+                <div class="form-group"><label>ঠিকানা:</label><input type="text" id="regAddress"></div>
+                <div class="form-group"><label>প্রারম্ভিক জমা ব্যালেন্স (৳):</label><input type="number" id="regBalance" value="0" required></div>
+                <div class="form-group"><label>বকেয়া ঋণ (৳):</label><input type="number" id="regLoan" value="0" required></div>
+            </div>
+            <button type="submit" class="btn">সদস্য নিবন্ধন করুন</button>
+        </form>
+    </div>
+
+    <!-- ৫. সদস্য তালিকা -->
+    <div class="card">
+        <h3 class="section-title">👥 সদস্য তালিকা ও এডিট প্যানেল</h3>
+        <div style="overflow-x: auto;">
+            <table>
+                <thead>
+                    <tr>
+                        <th>আইডি</th><th>ছবি</th><th>নাম</th><th>মোবাইল / পাসওয়ার্ড</th><th>জমা ব্যালেন্স</th><th>ঋণ</th><th>অ্যাকশন</th>
+                    </tr>
+                </thead>
+                <tbody id="memberTableBody"></tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<!-- সদস্য তথ্য, সঞ্চয় ও লোন এডিট মোডাল -->
+<div class="modal" id="editModal">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h4>✏️ সদস্য এডিট ও লেনদেন আপডেট</h4>
+            <span class="close-btn" id="closeEditModal">&times;</span>
+        </div>
+        <form id="editMemberForm">
+            <input type="hidden" id="editIndex">
+            <div class="form-group" style="margin-bottom: 10px;"><label>নাম:</label><input type="text" id="editName" required></div>
+            <div class="form-group" style="margin-bottom: 10px;"><label>মোবাইল:</label><input type="text" id="editPhone" required></div>
+            <div class="form-group" style="margin-bottom: 10px;"><label>ঠিকানা:</label><input type="text" id="editAddress"></div>
+            <div class="form-group" style="margin-bottom: 10px;"><label>পাসওয়ার্ড:</label><input type="text" id="editPassword" required></div>
+            <div class="form-group" style="margin-bottom: 10px;"><label>মোট জমা ব্যালেন্স (৳):</label><input type="number" id="editBalance" required></div>
+            <div class="form-group" style="margin-bottom: 10px;"><label>বকেয়া ঋণ (৳):</label><input type="number" id="editLoan" required></div>
+            
+            <hr style="margin: 15px 0;">
+            <h5 style="color:#2e7d32; margin-bottom:8px;">➕ নতুন মাসের সঞ্চয় জমা রেকর্ড করুন:</h5>
+            <div class="form-grid">
+                <div class="form-group"><label>মাস:</label><input type="text" id="newDepMonth" placeholder="অক্টোবর ২০২৬"></div>
+                <div class="form-group"><label>জমার পরিমাণ (৳):</label><input type="number" id="newDepAmount"></div>
+                <div class="form-group"><label>তারিখ:</label><input type="date" id="newDepDate"></div>
+            </div>
+
+            <hr style="margin: 15px 0;">
+            <h5 style="color:#c62828; margin-bottom:8px;">💳 লোনের কিস্তি জমা রেকর্ড করুন:</h5>
+            <div class="form-grid">
+                <div class="form-group"><label>কিস্তি নং/মাস:</label><input type="text" id="newLoanInstNo" placeholder="১ম কিস্তি"></div>
+                <div class="form-group"><label>কিস্তির পরিমাণ (৳):</label><input type="number" id="newLoanInstAmount"></div>
+                <div class="form-group"><label>তারিখ:</label><input type="date" id="newLoanInstDate"></div>
+            </div>
+
+            <button type="submit" class="btn" style="width: 100%; margin-top: 15px;">সবকিছু সেভ ও আপডেট করুন</button>
+        </form>
+    </div>
 </div>
 
 <script type="module">
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/13.0.0/firebase-app.js";
-    import { getDatabase, ref, set, onValue } from "https://www.gstatic.com/firebasejs/13.0.0/firebase-database.js";
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+    import { getDatabase, ref, set, onValue } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js";
 
     if (sessionStorage.getItem('adminLoggedIn') !== 'true') {
         window.location.href = 'admin-login.html';
@@ -122,45 +194,51 @@
     const app = initializeApp(firebaseConfig);
     const db = getDatabase(app);
 
-    let currentData = {};
-    let pImgData = "", sImgData = "", mImgData = "";
+    let currentData = { members: [], directors: [] };
+    let logoData = "", dirImgData = "";
+
+    // লোগো ফাইল রিডার
+    document.getElementById('siteLogoFile').addEventListener('change', (e) => {
+        const file = e.target.files[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onloadend = () => { logoData = reader.result; };
+            reader.readAsDataURL(file);
+        }
+    });
+
+    // পরিচালক ছবি রিডার
+    document.getElementById('newDirImgFile').addEventListener('change', (e) => {
+        const file = e.target.files[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onloadend = () => { dirImgData = reader.result; };
+            reader.readAsDataURL(file);
+        }
+    });
 
     onValue(ref(db, 'siteData'), (snapshot) => {
         if(snapshot.exists()) {
             currentData = snapshot.val();
+            if(!currentData.members) currentData.members = [];
+            if(!currentData.directors) currentData.directors = [];
+
             document.getElementById('siteNameInput').value = currentData.name || "";
             document.getElementById('siteAddressInput').value = currentData.address || "";
             document.getElementById('siteEstInput').value = currentData.est || "";
             document.getElementById('sitePhoneInput').value = currentData.phone || "";
             document.getElementById('siteEmailInput').value = currentData.email || "";
             document.getElementById('siteAboutInput').value = currentData.about || "";
-            document.getElementById('pNameInput').value = currentData.pName || "";
-            document.getElementById('sNameInput').value = currentData.sName || "";
-            document.getElementById('mNameInput').value = currentData.mName || "";
             document.getElementById('notice1Input').value = currentData.notice1 || "";
             document.getElementById('notice2Input').value = currentData.notice2 || "";
 
-            if(currentData.pImg) { pImgData = currentData.pImg; document.getElementById('pPreview').src = currentData.pImg; }
-            if(currentData.sImg) { sImgData = currentData.sImg; document.getElementById('sPreview').src = currentData.sImg; }
-            if(currentData.mImg) { mImgData = currentData.mImg; document.getElementById('mPreview').src = currentData.mImg; }
+            renderMembers();
+            renderDirectors();
         }
     });
 
-    window.previewFile = function(inputId, imgId) {
-        const file = document.getElementById(inputId).files[0];
-        if (file) {
-            const reader = new FileReader();
-            reader.onloadend = function() {
-                document.getElementById(imgId).src = reader.result;
-                if(inputId === 'pImgFile') pImgData = reader.result;
-                if(inputId === 'sImgFile') sImgData = reader.result;
-                if(inputId === 'mImgFile') mImgData = reader.result;
-            }
-            reader.readAsDataURL(file);
-        }
-    }
-
-    document.getElementById('siteInfoForm').onsubmit = function(e) {
+    // ১. সমিতি সাইট ইনফো সেভ
+    document.getElementById('siteInfoForm').addEventListener('submit', (e) => {
         e.preventDefault();
         currentData.name = document.getElementById('siteNameInput').value;
         currentData.address = document.getElementById('siteAddressInput').value;
@@ -168,36 +246,153 @@
         currentData.phone = document.getElementById('sitePhoneInput').value;
         currentData.email = document.getElementById('siteEmailInput').value;
         currentData.about = document.getElementById('siteAboutInput').value;
+        if(logoData) currentData.logo = logoData;
 
-        set(ref(db, 'siteData'), currentData).then(() => {
-            alert('ওয়েবসাইটের তথ্য সফলভাবে আপডেট হয়েছে!');
-        });
-    }
+        set(ref(db, 'siteData'), currentData)
+            .then(() => alert('সমিতির মূল তথ্য সফলভাবে সেভ হয়েছে!'))
+            .catch(err => alert('এরর: ' + err.message));
+    });
 
-    document.getElementById('directorForm').onsubmit = function(e) {
+    // ২. নতুন পরিচালক যোগ
+    document.getElementById('addDirectorForm').addEventListener('submit', (e) => {
         e.preventDefault();
-        currentData.pName = document.getElementById('pNameInput').value;
-        currentData.sName = document.getElementById('sNameInput').value;
-        currentData.mName = document.getElementById('mNameInput').value;
-        if(pImgData) currentData.pImg = pImgData;
-        if(sImgData) currentData.sImg = sImgData;
-        if(mImgData) currentData.mImg = mImgData;
+        currentData.directors.push({
+            name: document.getElementById('newDirName').value,
+            role: document.getElementById('newDirRole').value,
+            img: dirImgData || "https://via.placeholder.com/100"
+        });
 
         set(ref(db, 'siteData'), currentData).then(() => {
-            alert('পরিচালকবৃন্দের তথ্য ও ছবি সফলভাবে আপডেট হয়েছে!');
+            alert('নতুন পরিচালক সফলভাবে যুক্ত করা হয়েছে!');
+            document.getElementById('addDirectorForm').reset();
+            dirImgData = "";
+        });
+    });
+
+    function renderDirectors() {
+        const tbody = document.getElementById('directorTableBody');
+        tbody.innerHTML = '';
+        currentData.directors.forEach((d, idx) => {
+            const tr = document.createElement('tr');
+            tr.innerHTML = `
+                <td><img src="${d.img}" class="preview-img"></td>
+                <td>${d.name}</td>
+                <td><b>${d.role}</b></td>
+                <td><button class="btn btn-danger" onclick="deleteDir(${idx})">মুছুন</button></td>
+            `;
+            tbody.appendChild(tr);
         });
     }
 
-    document.getElementById('noticeForm').onsubmit = function(e) {
+    window.deleteDir = function(idx) {
+        if(confirm('এই পরিচালকের ঘরটি মুছে ফেলতে চান?')) {
+            currentData.directors.splice(idx, 1);
+            set(ref(db, 'siteData'), currentData);
+        }
+    };
+
+    // ৩. নোটিশ আপডেট
+    document.getElementById('noticeForm').addEventListener('submit', (e) => {
         e.preventDefault();
         currentData.notice1 = document.getElementById('notice1Input').value;
         currentData.notice2 = document.getElementById('notice2Input').value;
+        set(ref(db, 'siteData'), currentData).then(() => alert('নোটিশ বোর্ড আপডেট হয়েছে!'));
+    });
+
+    // ৪. সদস্য নিবন্ধন
+    document.getElementById('registerForm').addEventListener('submit', (e) => {
+        e.preventDefault();
+        const phone = document.getElementById('regPhone').value.trim();
+        
+        // ইউনিক মোবাইল নম্বর চেক
+        const exists = currentData.members.some(m => m.phone === phone);
+        if(exists) {
+            alert('এই মোবাইল নম্বর দিয়ে ইতিমধ্যে একজন সদস্য নিবন্ধিত আছেন!');
+            return;
+        }
+
+        currentData.members.push({
+            id: document.getElementById('regId').value,
+            name: document.getElementById('regName').value,
+            phone: phone,
+            username: phone,
+            password: document.getElementById('regPassword').value,
+            address: document.getElementById('regAddress').value,
+            balance: parseFloat(document.getElementById('regBalance').value) || 0,
+            loan: parseFloat(document.getElementById('regLoan').value) || 0,
+            img: "https://via.placeholder.com/100",
+            history: [],
+            loanHistory: []
+        });
 
         set(ref(db, 'siteData'), currentData).then(() => {
-            alert('নোটিশ সফলভাবে আপডেট হয়েছে!');
+            alert('সদস্য রেজিস্ট্রেশন সম্পূর্ণ হয়েছে!');
+            document.getElementById('registerForm').reset();
+        });
+    });
+
+    function renderMembers() {
+        const tbody = document.getElementById('memberTableBody');
+        tbody.innerHTML = '';
+        currentData.members.forEach((m, idx) => {
+            const tr = document.createElement('tr');
+            tr.innerHTML = `
+                <td><b>${m.id}</b></td>
+                <td><img src="${m.img || 'https://via.placeholder.com/100'}" class="preview-img"></td>
+                <td>${m.name}</td>
+                <td><code>${m.phone}</code> / <b>${m.password}</b></td>
+                <td style="color:green; font-weight:bold;">৳ ${m.balance}</td>
+                <td style="color:#c62828; font-weight:bold;">৳ ${m.loan}</td>
+                <td>
+                    <button class="btn btn-warning" onclick="openEdit(${idx})">এডিট / জমা</button>
+                    <button class="btn btn-danger" onclick="deleteMem(${idx})">মুছুন</button>
+                </td>
+            `;
+            tbody.appendChild(tr);
         });
     }
-</script>
 
-</body>
-</html>
+    window.deleteMem = function(idx) {
+        if(confirm('এই সদস্যকে সম্পূর্ণ মুছে ফেলতে চান?')) {
+            currentData.members.splice(idx, 1);
+            set(ref(db, 'siteData'), currentData);
+        }
+    };
+
+    window.openEdit = function(idx) {
+        const m = currentData.members[idx];
+        document.getElementById('editIndex').value = idx;
+        document.getElementById('editName').value = m.name;
+        document.getElementById('editPhone').value = m.phone;
+        document.getElementById('editAddress').value = m.address || "";
+        document.getElementById('editPassword').value = m.password;
+        document.getElementById('editBalance').value = m.balance;
+        document.getElementById('editLoan').value = m.loan;
+
+        document.getElementById('editModal').style.display = 'flex';
+    };
+
+    document.getElementById('closeEditModal').onclick = () => {
+        document.getElementById('editModal').style.display = 'none';
+    };
+
+    document.getElementById('editMemberForm').onsubmit = function(e) {
+        e.preventDefault();
+        const idx = document.getElementById('editIndex').value;
+        const member = currentData.members[idx];
+
+        member.name = document.getElementById('editName').value;
+        member.phone = document.getElementById('editPhone').value;
+        member.address = document.getElementById('editAddress').value;
+        member.password = document.getElementById('editPassword').value;
+        member.balance = parseFloat(document.getElementById('editBalance').value) || 0;
+        member.loan = parseFloat(document.getElementById('editLoan').value) || 0;
+
+        // নতুন সঞ্চয় জমা
+        const depAmt = parseFloat(document.getElementById('newDepAmount').value) || 0;
+        if(depAmt > 0) {
+            if(!member.history) member.history = [];
+            member.history.push({
+                date: document.getElementById('newDepDate').value || new Date().toISOString().split('T')[0],
+                month: document.getElementById('newDepMonth').value || 'মাসিক জমা',
+                amount: depAmt
