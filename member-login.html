@@ -69,7 +69,6 @@
             if (snapshot.exists()) {
                 const members = snapshot.val();
                 
-                // এডমিন প্যানেলের ইউজারনেম এবং পাসওয়ার্ডের সাথে নিখُুঁত ম্যাচিং
                 const foundMember = members.find(m => {
                     if(!m) return false;
                     const mUser = String(m.username || m.phone || "").trim();
@@ -78,7 +77,7 @@
                 });
 
                 if (foundMember) {
-                    sessionStorage.setItem('memberPhone', foundMember.phone || foundMember.username);
+                    sessionStorage.setItem('loggedInUser', foundMember.username);
                     window.location.href = 'member-dashboard.html';
                 } else {
                     errorMsg.style.display = 'block';
