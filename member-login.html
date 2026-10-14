@@ -13,6 +13,12 @@
         .form-group label { display: block; margin-bottom: 6px; font-weight: bold; color: #333; font-size: 14px; }
         .form-group input { width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 5px; font-size: 15px; outline: none; }
         .form-group input:focus { border-color: #2e7d32; }
+
+        /* পাসওয়ার্ড ভিউ বাটনের স্টাইল */
+        .password-container { position: relative; display: flex; align-items: center; }
+        .password-container input { padding-right: 40px; }
+        .toggle-password { position: absolute; right: 12px; background: none; border: none; cursor: pointer; font-size: 16px; color: #666; }
+
         .btn { width: 100%; background: #2e7d32; color: white; border: none; padding: 12px; border-radius: 5px; font-size: 15px; font-weight: bold; cursor: pointer; transition: 0.2s; }
         .btn:hover { background: #1b5e20; }
         .back-link { text-align: center; display: block; margin-top: 15px; color: #555; text-decoration: none; font-size: 14px; }
@@ -31,13 +37,31 @@
         </div>
         <div class="form-group">
             <label>পাসওয়ার্ড (Password):</label>
-            <input type="password" id="password" placeholder="পাসওয়ার্ড দিন" required>
+            <div class="password-container">
+                <input type="password" id="password" placeholder="পাসওয়ার্ড দিন" required>
+                <button type="button" class="toggle-password" id="togglePasswordBtn" onclick="togglePasswordVisibility()">👁️</button>
+            </div>
         </div>
         <button type="submit" class="btn">লগইন করুন</button>
         <p id="errorMsg">⚠️ ভুল ইউজারনেম বা পাসওয়ার্ড দিয়েছেন!</p>
     </form>
     <a href="index.html" class="back-link">← হোম পেজে ফিরে যান</a>
 </div>
+
+<script>
+    // পাসওয়ার্ড দেখানোর বা লুকানোর ফাংশন
+    function togglePasswordVisibility() {
+        const passwordInput = document.getElementById('password');
+        const toggleBtn = document.getElementById('togglePasswordBtn');
+        if (passwordInput.type === 'password') {
+            passwordInput.type = 'text';
+            toggleBtn.innerText = '🙈';
+        } else {
+            passwordInput.type = 'password';
+            toggleBtn.innerText = '👁️';
+        }
+    }
+</script>
 
 <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
