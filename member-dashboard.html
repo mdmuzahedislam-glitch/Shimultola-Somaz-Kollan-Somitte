@@ -52,7 +52,7 @@
             <h3 id="memName">লোড হচ্ছে...</h3>
             <p><b>সদস্য নম্বর (ID):</b> <span id="memId">-</span></p>
             <p><b>মোবাইল নম্বর:</b> <span id="memPhone">-</span></p>
-            <p><b>ঠিকানা:</b> <span id="memAddress">-</span></p>
+            <p><b>ধরন:</b> <span id="memType">সাধারণ সদস্য</span></p>
         </div>
     </div>
 
@@ -136,7 +136,8 @@
     const app = initializeApp(firebaseConfig);
     const db = getDatabase(app);
 
-    document.getElementById('logoutBtn').addEventListener('click', () => {
+    document.getElementById('logoutBtn').addEventListener('click', (e) => {
+        e.preventDefault();
         sessionStorage.clear();
         window.location.href = 'member-login.html';
     });
@@ -144,53 +145,60 @@
     onValue(ref(db, 'siteData/members'), (snapshot) => {
         if (snapshot.exists()) {
             const members = snapshot.val();
-            const currentMember = members.find(m => m.phone === loggedPhone || m.username === loggedPhone);
+            const currentMember = members.find(m => m && (m.phone === loggedPhone || m.username === loggedPhone));
 
             if (currentMember) {
-                document.getElementById('memName').innerText = currentMember.name;
-                document.getElementById('memId').innerText = currentMember.id;
-                document.getElementById('memPhone').innerText = currentMember.phone;
-                document.getElementById('memAddress').innerText = currentMember.address || "উল্লেখ নেই";
-                document.getElementById('memImg').src = currentMember.img || "https://via.placeholder.com/100";
+                document.getElementById('memName').innerText = currentMember.name || "সদস্য";
+                document.getElementById('memId').innerText = currentMember.id || "-";
+                document.getElementById('memPhone').innerText = currentMember.phone || "-";
+                document.getElementById('memType').innerText = currentMember.type || "সাধারণ সদস্য";
+                document.getElementById('memImg').src = currentMember.img || "https://via.placeholder.com/100/1b5e20/ffffff?text=User";
                 
                 document.getElementById('memBalance').innerText = `৳ ${currentMember.balance || 0}`;
-                document.getElementById('memLastDeposit').innerText = `৳ ${currentMember.lastDeposit || 0}`;
                 document.getElementById('memLoan').innerText = `৳ ${currentMember.loan || 0}`;
 
                 // সঞ্চয় জমা লেজার
                 const depBody = document.getElementById('depositTableBody');
                 depBody.innerHTML = '';
-                if (currentMember.history && currentMember.history.length > 0) {
-                    currentMember.history.forEach(item => {
+                const depositsList = currentMember.deposits || currentMember.history || [];
+
+                if (depositsList.length > 0) {
+                    const lastDep = depositsList[depositsList.length - 1];
+                    document.getElementById('memLastDeposit').innerText = `৳ ${lastDep.amount || 0}`;
+
+                    depositsList.slice().reverse().forEach(item => {
                         const tr = document.createElement('tr');
                         tr.innerHTML = `
-                            <td>${item.date}</td>
-                            <td><b>${item.month}</b></td>
-                            <td style="color:green; font-weight:bold;">৳ ${item.amount}</td>
+                            <td>${item.date || '-'}</td>
+                            <td><b>${item.month || '-'}</b></td>
+                            <td style="color:green; font-weight:bold;">৳ ${item.amount || 0}</td>
                             <td>${item.note || '-'}</td>
                         `;
                         depBody.appendChild(tr);
                     });
                 } else {
+                    document.getElementById('memLastDeposit').innerText = `৳ ০`;
                     depBody.innerHTML = '<tr><td colspan="4">কোনো জমার রেকর্ড পাওয়া যায়নি।</td></tr>';
                 }
 
                 // লোন কিস্তি লেজার
                 const loanBody = document.getElementById('loanTableBody');
                 loanBody.innerHTML = '';
-                if (currentMember.loanHistory && currentMember.loanHistory.length > 0) {
-                    currentMember.loanHistory.forEach(item => {
+                const loansList = currentMember.loans || currentMember.loanHistory || [];
+
+                if (loansList.length > 0) {
+                    loansList.slice().reverse().forEach(item => {
                         const tr = document.createElement('tr');
                         tr.innerHTML = `
-                            <td>${item.date}</td>
+                            <td>${item.date || '-'}</td>
                             <td><b>${item.installmentNo || 'কিস্তি'}</b></td>
-                            <td style="color:#c62828; font-weight:bold;">৳ ${item.amount}</td>
+                            <td style="color:#c62828; font-weight:bold;">৳ ${item.amount || 0}</td>
                             <td>${item.note || '-'}</td>
                         `;
                         loanBody.appendChild(tr);
                     });
                 } else {
-                    loanBody.innerHTML = '<tr><td colspan="4">কোনো কিস্তির রেকর্ড পাওয়া যায়নি।</td></tr>';
+                    loanBody.innerHTML = '<tr><td colspan="4">কোনো কিস্তি পরিশোধের রেকর্ড পাওয়া যায়নি।</td></tr>';
                 }
             }
         }
