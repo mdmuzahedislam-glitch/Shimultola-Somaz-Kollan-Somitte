@@ -162,7 +162,6 @@
         </div>
     </div>
 </div>
-
 <!-- এডিট মোডাল -->
 <div class="modal" id="editModal">
     <div class="modal-content">
@@ -377,4 +376,168 @@
                 const imgUrl = m.img || "https://via.placeholder.com/150/1b5e20/ffffff?text=User";
                 tbody.innerHTML += `
                     <tr>
-                        <td><img src="${imgUrl}" class="
+                        <td><img src="${imgUrl}" class="preview-img" style="width:38px;height:38px;"></td>
+                        <td><b>${m.id}</b></td>
+                        <td>${m.name}</td>
+                        <td><code>${m.username}</code> / <b>${m.password}</b></td>
+                        <td>${m.phone}</td>
+                        <td style="color: green; font-weight: bold;">৳ ${m.balance}</td>
+                        <td style="color: #e65100; font-weight: bold;">৳ ${m.loan || 0}</td>
+                        <td>
+                            <button class="btn btn-info" style="margin-bottom: 2px;" onclick="openTransModal(${index})">জমা/কিস্তি এন্ট্রি</button>
+                            <button class="btn btn-warning" onclick="openEdit(${index})">এডিট</button>
+                            <button class="btn btn-danger" onclick="delMember(${index})">মুছুন</button>
+                        </td>
+                    </tr>`;
+            });
+        }
+    }
+
+    window.registerMember = function(e) {
+        e.preventDefault();
+        if(!currentData.members) currentData.members = [];
+        currentData.members.push({
+            id: document.getElementById('regId').value.trim(),
+            name: document.getElementById('regName').value.trim(),
+            username: document.getElementById('regUsername').value.trim(),
+            password: document.getElementById('regPassword').value.trim(),
+            phone: document.getElementById('regPhone').value.trim(),
+            type: document.getElementById('regType').value,
+            balance: parseFloat(document.getElementById('regBalance').value) || 0,
+            loan: parseFloat(document.getElementById('regLoan').value) || 0,
+            img: regMemberImgData,
+            deposits: [],
+            loans: []
+        });
+
+        set(ref(db, 'siteData'), currentData).then(() => {
+            alert('সদস্য সফলভাবে নিবন্ধিত হয়েছে!');
+            document.getElementById('registerForm').reset();
+            regMemberImgData = "https://via.placeholder.com/150/1b5e20/ffffff?text=User";
+            renderMembers();
+        });
+    }
+
+    window.openEdit = function(index) {
+        const m = currentData.members[index];
+        editMemberImgData = m.img || null;
+        document.getElementById('editIndex').value = index;
+        document.getElementById('editName').value = m.name;
+        document.getElementById('editPhone').value = m.phone;
+        document.getElementById('editPassword').value = m.password;
+        document.getElementById('editBalance').value = m.balance;
+        document.getElementById('editLoan').value = m.loan || 0;
+        document.getElementById('editModal').style.display = 'flex';
+    }
+
+    window.closeModal = function() {
+        document.getElementById('editModal').style.display = 'none';
+    }
+
+    window.saveMemberChanges = function(e) {
+        e.preventDefault();
+        const index = document.getElementById('editIndex').value;
+        currentData.members[index].name = document.getElementById('editName').value;
+        currentData.members[index].phone = document.getElementById('editPhone').value;
+        currentData.members[index].password = document.getElementById('editPassword').value;
+        currentData.members[index].balance = parseFloat(document.getElementById('editBalance').value) || 0;
+        currentData.members[index].loan = parseFloat(document.getElementById('editLoan').value) || 0;
+        if(editMemberImgData) {
+            currentData.members[index].img = editMemberImgData;
+        }
+
+        set(ref(db, 'siteData'), currentData).then(() => {
+            alert('সদস্যের তথ্য আপডেট হয়েছে!');
+            closeModal();
+            renderMembers();
+        });
+    }
+
+    window.delMember = function(index) {
+        if(confirm('মুছে ফেলতে চান?')) {
+            currentData.members.splice(index, 1);
+            set(ref(db, 'siteData'), currentData).then(() => {
+                renderMembers();
+            });
+        }
+    }
+
+    window.openTransModal = function(index) {
+        const m = currentData.members[index];
+        document.getElementById('transMemberIndex').value = index;
+        document.getElementById('transMemberName').innerText = `💳 ${m.name} (${m.id}) - এন্ট্রি`;
+        switchTransTab('deposit');
+        document.getElementById('transactionModal').style.display = 'flex';
+    }
+
+    window.closeTransModal = function() {
+        document.getElementById('transactionModal').style.display = 'none';
+    }
+
+    window.switchTransTab = function(tab) {
+        if(tab === 'deposit') {
+            document.getElementById('depositForm').style.display = 'block';
+            document.getElementById('loanForm').style.display = 'none';
+            document.getElementById('btnDepositTab').classList.add('active');
+            document.getElementById('btnLoanTab').classList.remove('active');
+        } else {
+            document.getElementById('depositForm').style.display = 'none';
+            document.getElementById('loanForm').style.display = 'block';
+            document.getElementById('btnDepositTab').classList.remove('active');
+            document.getElementById('btnLoanTab').classList.add('active');
+        }
+    }
+
+    window.addDepositRecord = function(e) {
+        e.preventDefault();
+        const index = document.getElementById('transMemberIndex').value;
+        const member = currentData.members[index];
+        if(!member.deposits) member.deposits = [];
+
+        const amount = parseFloat(document.getElementById('depAmount').value) || 0;
+        const record = {
+            date: document.getElementById('depDate').value,
+            month: document.getElementById('depMonth').value.trim(),
+            amount: amount,
+            note: document.getElementById('depNote').value.trim() || 'মাসিক সঞ্চয় জমা'
+        };
+
+        member.deposits.push(record);
+        member.balance = (parseFloat(member.balance) || 0) + amount;
+
+        set(ref(db, 'siteData'), currentData).then(() => {
+            alert('সঞ্চয় জমা রেকর্ড সফলভাবে সংরক্ষণ করা হয়েছে!');
+            document.getElementById('depositForm').reset();
+            closeTransModal();
+            renderMembers();
+        });
+    }
+
+    window.addLoanRecord = function(e) {
+        e.preventDefault();
+        const index = document.getElementById('transMemberIndex').value;
+        const member = currentData.members[index];
+        if(!member.loans) member.loans = [];
+
+        const amount = parseFloat(document.getElementById('loanAmount').value) || 0;
+        const record = {
+            date: document.getElementById('loanDate').value,
+            installmentNo: document.getElementById('loanNum').value.trim(),
+            amount: amount,
+            note: document.getElementById('loanNote').value.trim() || 'ঋণ কিস্তি পরিশোধ'
+        };
+
+        member.loans.push(record);
+        member.loan = Math.max(0, (parseFloat(member.loan) || 0) - amount);
+
+        set(ref(db, 'siteData'), currentData).then(() => {
+            alert('কিস্তি পরিশোধ রেকর্ড সফলভাবে সংরক্ষণ করা হয়েছে!');
+            document.getElementById('loanForm').reset();
+            closeTransModal();
+            renderMembers();
+        });
+    }
+</script>
+
+</body>
+</html>
