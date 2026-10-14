@@ -26,15 +26,15 @@
     <h2>🔑 সদস্য লগইন প্যানেল</h2>
     <form id="loginForm">
         <div class="form-group">
-            <label>মোবাইল নম্বর (ইউজারনেম):</label>
-            <input type="text" id="username" placeholder="আপনার মোবাইল নম্বর দিন" required autocomplete="off">
+            <label>ইউজারনেম (Username):</label>
+            <input type="text" id="username" placeholder="আপনার ইউজারনেম দিন" required autocomplete="off">
         </div>
         <div class="form-group">
-            <label>পাসওয়ার্ড:</label>
+            <label>পাসওয়ার্ড (Password):</label>
             <input type="password" id="password" placeholder="পাসওয়ার্ড দিন" required>
         </div>
         <button type="submit" class="btn">লগইন করুন</button>
-        <p id="errorMsg">⚠️ ভুল মোবাইল নম্বর বা পাসওয়ার্ড দিয়েছেন!</p>
+        <p id="errorMsg">⚠️ ভুল ইউজারনেম বা পাসওয়ার্ড দিয়েছেন!</p>
     </form>
     <a href="index.html" class="back-link">← হোম পেজে ফিরে যান</a>
 </div>
@@ -68,14 +68,13 @@
         get(child(dbRef, 'siteData/members')).then((snapshot) => {
             if (snapshot.exists()) {
                 const members = snapshot.val();
-                console.log("Database Members:", members); // কনসোলে মেম্বার ডাটা চেক করার জন্য
-
-                // ফায়ারবেসের যেকোনো ফরম্যাটের সাথে ম্যাচ করানোর জন্য নরমাল চেক
+                
+                // এডমিন প্যানেলের ইউজারনেম এবং পাসওয়ার্ডের সাথে নিখُুঁত ম্যাচিং
                 const foundMember = members.find(m => {
                     if(!m) return false;
-                    const mPhone = String(m.phone || m.username || "").trim();
+                    const mUser = String(m.username || m.phone || "").trim();
                     const mPass = String(m.password || "").trim();
-                    return (mPhone === inputUser && mPass === inputPass);
+                    return (mUser === inputUser && mPass === inputPass);
                 });
 
                 if (foundMember) {
@@ -86,11 +85,10 @@
                 }
             } else {
                 errorMsg.style.display = 'block';
-                alert('ডাটাবেজে কোনো সদস্যের তথ্য পাওয়া যায়নি!');
             }
         }).catch((error) => {
             console.error(error);
-            alert('সার্ভার কানেকশনে সমস্যা হয়েছে।');
+            alert('লগইন সার্ভারে সংযোগ করতে সমস্যা হয়েছে।');
         });
     });
 </script>
