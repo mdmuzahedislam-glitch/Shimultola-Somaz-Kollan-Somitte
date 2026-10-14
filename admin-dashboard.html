@@ -35,7 +35,7 @@
 
         /* Modal */
         .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); justify-content: center; align-items: center; padding: 15px; z-index: 1000; overflow-y: auto; }
-        .modal-content { background: white; padding: 20px; border-radius: 8px; width: 100%; max-width: 600px; box-shadow: 0 4px 10px rgba(0,0,0,0.2); max-height: 90vh; overflow-y: auto; }
+        .modal-content { background: white; padding: 20px; border-radius: 8px; width: 100%; max-width: 650px; box-shadow: 0 4px 10px rgba(0,0,0,0.2); max-height: 90vh; overflow-y: auto; }
         .modal-header { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #ddd; padding-bottom: 8px; margin-bottom: 15px; }
         .close-btn { cursor: pointer; font-size: 20px; font-weight: bold; color: #888; }
 
@@ -73,13 +73,13 @@
         </form>
     </div>
 
-    <!-- ২. পরিচালকবৃন্দের নতুন ঘর বা তালিকা ম্যানেজমেন্ট -->
+    <!-- ২. পরিচালকবৃন্দের ম্যানেজমেন্ট -->
     <div class="card">
         <h3 class="section-title">👔 পরিচালকবৃন্দ সংযোজন ও ম্যানেজমেন্ট</h3>
         <form id="addDirectorForm" onsubmit="addNewDirector(event)">
             <div class="form-grid">
                 <div class="form-group"><label>পরিচালকের নাম:</label><input type="text" id="newDirName" required></div>
-                <div class="form-group"><label>পদবী (যেমন: সহ-সভাপতি):</label><input type="text" id="newDirRole" required></div>
+                <div class="form-group"><label>পদবী:</label><input type="text" id="newDirRole" required></div>
                 <div class="form-group">
                     <label>ছবি আপলোড:</label>
                     <input type="file" id="newDirImgFile" accept="image/*" onchange="previewNewDirImg()">
@@ -163,7 +163,7 @@
     </div>
 </div>
 
-<!-- এডিট মোডাল -->
+<!-- সদস্য এডিট মোডাল -->
 <div class="modal" id="editModal">
     <div class="modal-content">
         <div class="modal-header">
@@ -186,7 +186,7 @@
     </div>
 </div>
 
-<!-- জমা ও কিস্তি লেনদেন মোডাল -->
+<!-- জমা ও কিস্তি লেনদেন এবং এডিট মোডাল -->
 <div class="modal" id="transactionModal">
     <div class="modal-content">
         <div class="modal-header">
@@ -195,24 +195,24 @@
         </div>
         
         <div style="display: flex; gap: 10px; margin-bottom: 15px;">
-            <button class="tab-btn active" id="btnDepositTab" onclick="switchTransTab('deposit')">📜 সঞ্চয় জমা এন্ট্রি</button>
-            <button class="tab-btn" id="btnLoanTab" onclick="switchTransTab('loan')">💳 কিস্তি পরিশোধ এন্ট্রি</button>
+            <button class="tab-btn active" id="btnDepositTab" onclick="switchTransTab('deposit')">📜 সঞ্চয় জমা এন্ট্রি ও স্টেটমেন্ট</button>
+            <button class="tab-btn" id="btnLoanTab" onclick="switchTransTab('loan')">💳 কিস্তি পরিশোধ এন্ট্রি ও স্টেটমেন্ট</button>
         </div>
 
         <input type="hidden" id="transMemberIndex">
 
-        <!-- সঞ্চয় জমা ফর্ম -->
+        <!-- সঞ্চয় জমা অংশ -->
         <div id="depositSection">
             <form id="depositForm" onsubmit="addDepositRecord(event)">
                 <div class="form-group" style="margin-bottom: 10px;"><label>তারিখ:</label><input type="date" id="depDate" required></div>
-                <div class="form-group" style="margin-bottom: 10px;"><label>মাস (যেমন: জানুয়ারী ২০২৬):</label><input type="text" id="depMonth" placeholder="মাস ও বছর" required></div>
+                <div class="form-group" style="margin-bottom: 10px;"><label>মাস (যেমন: August):</label><input type="text" id="depMonth" placeholder="August" required></div>
                 <div class="form-group" style="margin-bottom: 10px;"><label>জমার পরিমাণ (৳):</label><input type="number" id="depAmount" placeholder="৫০০" required></div>
-                <div class="form-group" style="margin-bottom: 10px;"><label>নোট / বিবরণ:</label><input type="text" id="depNote" placeholder="মাসিক সঞ্চয় জমা"></div>
-                <button type="submit" class="btn" style="width: 100%; margin-top: 10px;">জমা যুক্ত করুন</button>
+                <div class="form-group" style="margin-bottom: 10px;"><label>নোট / বিবরণ:</label><input type="text" id="depNote" placeholder="Aug-26 (Bkash)"></div>
+                <button type="submit" class="btn" style="width: 100%; margin-top: 10px;">নতুন জমা যুক্ত করুন</button>
             </form>
 
-            <h5 style="margin-top: 20px; color: #b71c1c;">📋 পূর্বের সঞ্চয় জমার রেকর্ড (ভুল সংশোধন করতে মুছুন):</h5>
-            <div style="max-height: 200px; overflow-y: auto; margin-top: 8px;">
+            <h5 style="margin-top: 20px; color: #b71c1c;">📋 সঞ্চয় জমা স্টেটমেন্ট (এডিট ও ডিলিট অপশন):</h5>
+            <div style="max-height: 220px; overflow-y: auto; margin-top: 8px;">
                 <table>
                     <thead>
                         <tr>
@@ -220,7 +220,7 @@
                             <th>মাস</th>
                             <th>টাকা</th>
                             <th>বিবরণ</th>
-                            <th>মুছুন</th>
+                            <th>অ্যাকশন</th>
                         </tr>
                     </thead>
                     <tbody id="depositHistoryTable"></tbody>
@@ -228,18 +228,18 @@
             </div>
         </div>
 
-        <!-- লোনের কিস্তি ফর্ম -->
+        <!-- লোনের কিস্তি অংশ -->
         <div id="loanSection" style="display: none;">
             <form id="loanForm" onsubmit="addLoanRecord(event)">
                 <div class="form-group" style="margin-bottom: 10px;"><label>তারিখ:</label><input type="date" id="loanDate" required></div>
-                <div class="form-group" style="margin-bottom: 10px;"><label>কিস্তি নম্বর (যেমন: কিস্তি #০১):</label><input type="text" id="loanNum" placeholder="কিস্তি #০১" required></div>
+                <div class="form-group" style="margin-bottom: 10px;"><label>কিস্তি নম্বর:</label><input type="text" id="loanNum" placeholder="কিস্তি #০১" required></div>
                 <div class="form-group" style="margin-bottom: 10px;"><label>পরিশোধের পরিমাণ (৳):</label><input type="number" id="loanAmount" placeholder="১০০০" required></div>
                 <div class="form-group" style="margin-bottom: 10px;"><label>নোট / বিবরণ:</label><input type="text" id="loanNote" placeholder="ঋণ কিস্তি পরিশোধ"></div>
-                <button type="submit" class="btn btn-warning" style="width: 100%; margin-top: 10px;">কিস্তি জমা যুক্ত করুন</button>
+                <button type="submit" class="btn btn-warning" style="width: 100%; margin-top: 10px;">নতুন কিস্তি যুক্ত করুন</button>
             </form>
 
-            <h5 style="margin-top: 20px; color: #b71c1c;">📋 পূর্বের কিস্তি পরিশোধের রেকর্ড:</h5>
-            <div style="max-height: 200px; overflow-y: auto; margin-top: 8px;">
+            <h5 style="margin-top: 20px; color: #b71c1c;">📋 কিস্তি পরিশোধ স্টেটমেন্ট (এডিট ও ডিলিট অপশন):</h5>
+            <div style="max-height: 220px; overflow-y: auto; margin-top: 8px;">
                 <table>
                     <thead>
                         <tr>
@@ -247,7 +247,7 @@
                             <th>কিস্তি</th>
                             <th>টাকা</th>
                             <th>বিবরণ</th>
-                            <th>মুছুন</th>
+                            <th>অ্যাকশন</th>
                         </tr>
                     </thead>
                     <tbody id="loanHistoryTable"></tbody>
@@ -255,8 +255,41 @@
             </div>
         </div>
     </div>
-                    </div>
-                    <script type="module">
+</div>
+
+<!-- ট্রানজেকশন/স্টেটমেন্ট এডিট পপআপ মোডাল -->
+<div class="modal" id="editTransModal" style="z-index: 1050;">
+    <div class="modal-content" style="max-width: 450px;">
+        <div class="modal-header">
+            <h4 id="editTransTitle">✏️ স্টেটমেন্ট এডিট করুন</h4>
+            <span class="close-btn" onclick="closeEditTransModal()">&times;</span>
+        </div>
+        <form onsubmit="saveTransactionEdit(event)">
+            <input type="hidden" id="editTransMemberIdx">
+            <input type="hidden" id="editTransItemIdx">
+            <input type="hidden" id="editTransType">
+            
+            <div class="form-group" style="margin-bottom: 10px;">
+                <label>তারিখ:</label>
+                <input type="date" id="editTransDate" required>
+            </div>
+            <div class="form-group" style="margin-bottom: 10px;">
+                <label id="editTransLabel2">মাস / কিস্তি নম্বর:</label>
+                <input type="text" id="editTransField2" required>
+            </div>
+            <div class="form-group" style="margin-bottom: 10px;">
+                <label>পরিমাণ (৳):</label>
+                <input type="number" id="editTransAmount" required>
+            </div>
+            <div class="form-group" style="margin-bottom: 10px;">
+                <label>নোট / বিবরণ:</label>
+                <input type="text" id="editTransNote">
+            </div>
+            <button type="submit" class="btn btn-warning" style="width: 100%; margin-top: 10px;">আপডেট আপডেট করুন</button>
+        </form>
+    </div>
+</div>
+<script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/13.0.0/firebase-app.js";
     import { getDatabase, ref, set, onValue } from "https://www.gstatic.com/firebasejs/13.0.0/firebase-database.js";
 
@@ -506,7 +539,7 @@
     window.openTransModal = function(index) {
         const m = currentData.members[index];
         document.getElementById('transMemberIndex').value = index;
-        document.getElementById('transMemberName').innerText = `💳 ${m.name} (${m.id}) - এন্ট্রি ও ইতিহাস`;
+        document.getElementById('transMemberName').innerText = `💳 ${m.name} (${m.id}) - এন্ট্রি ও স্টেটমেন্ট`;
         switchTransTab('deposit');
         renderTransactionHistory(index);
         document.getElementById('transactionModal').style.display = 'flex';
@@ -546,7 +579,10 @@
                         <td>${d.month || '-'}</td>
                         <td style="color:green;font-weight:bold;">৳ ${d.amount}</td>
                         <td>${d.note || '-'}</td>
-                        <td><button class="btn btn-danger btn-sm" onclick="deleteDepositRecord(${index}, ${dIdx})">মুছুন</button></td>
+                        <td>
+                            <button class="btn btn-warning btn-sm" onclick="openEditTransModal(${index}, ${dIdx}, 'deposit')">এডিট</button>
+                            <button class="btn btn-danger btn-sm" onclick="deleteDepositRecord(${index}, ${dIdx})">মুছুন</button>
+                        </td>
                     </tr>`;
             });
         } else {
@@ -564,14 +600,16 @@
                         <td>${l.installmentNo || 'কিস্তি'}</td>
                         <td style="color:#c62828;font-weight:bold;">৳ ${l.amount}</td>
                         <td>${l.note || '-'}</td>
-                        <td><button class="btn btn-danger btn-sm" onclick="deleteLoanRecord(${index}, ${lIdx})">মুছুন</button></td>
+                        <td>
+                            <button class="btn btn-warning btn-sm" onclick="openEditTransModal(${index}, ${lIdx}, 'loan')">এডিট</button>
+                            <button class="btn btn-danger btn-sm" onclick="deleteLoanRecord(${index}, ${lIdx})">মুছুন</button>
+                        </td>
                     </tr>`;
             });
         } else {
             loanTbody.innerHTML = '<tr><td colspan="5">কোনো কিস্তির রেকর্ড নেই</td></tr>';
         }
     }
-
     window.addDepositRecord = function(e) {
         e.preventDefault();
         const index = document.getElementById('transMemberIndex').value;
@@ -622,6 +660,76 @@
         });
     }
 
+    /* স্টেটমেন্ট এডিট ফাংশনসমূহ */
+    window.openEditTransModal = function(mIdx, itemIdx, type) {
+        const member = currentData.members[mIdx];
+        document.getElementById('editTransMemberIdx').value = mIdx;
+        document.getElementById('editTransItemIdx').value = itemIdx;
+        document.getElementById('editTransType').value = type;
+
+        if(type === 'deposit') {
+            const dep = (member.deposits || member.history || [])[itemIdx];
+            document.getElementById('editTransTitle').innerText = '✏️ সঞ্চয় জমা স্টেটমেন্ট এডিট';
+            document.getElementById('editTransLabel2').innerText = 'মাস:';
+            document.getElementById('editTransDate').value = dep.date || '';
+            document.getElementById('editTransField2').value = dep.month || '';
+            document.getElementById('editTransAmount').value = dep.amount || 0;
+            document.getElementById('editTransNote').value = dep.note || '';
+        } else {
+            const loan = (member.loans || member.loanHistory || [])[itemIdx];
+            document.getElementById('editTransTitle').innerText = '✏️ কিস্তি পরিশোধ স্টেটমেন্ট এডিট';
+            document.getElementById('editTransLabel2').innerText = 'কিস্তি নম্বর:';
+            document.getElementById('editTransDate').value = loan.date || '';
+            document.getElementById('editTransField2').value = loan.installmentNo || '';
+            document.getElementById('editTransAmount').value = loan.amount || 0;
+            document.getElementById('editTransNote').value = loan.note || '';
+        }
+
+        document.getElementById('editTransModal').style.display = 'flex';
+    }
+
+    window.closeEditTransModal = function() {
+        document.getElementById('editTransModal').style.display = 'none';
+    }
+
+    window.saveTransactionEdit = function(e) {
+        e.preventDefault();
+        const mIdx = document.getElementById('editTransMemberIdx').value;
+        const itemIdx = document.getElementById('editTransItemIdx').value;
+        const type = document.getElementById('editTransType').value;
+        const member = currentData.members[mIdx];
+
+        const newDate = document.getElementById('editTransDate').value;
+        const newField2 = document.getElementById('editTransField2').value.trim();
+        const newAmount = parseFloat(document.getElementById('editTransAmount').value) || 0;
+        const newNote = document.getElementById('editTransNote').value.trim();
+
+        if(type === 'deposit') {
+            const list = member.deposits || member.history || [];
+            const oldAmount = parseFloat(list[itemIdx].amount) || 0;
+            const diff = newAmount - oldAmount;
+
+            list[itemIdx] = { date: newDate, month: newField2, amount: newAmount, note: newNote };
+            member.deposits = list;
+            member.balance = (parseFloat(member.balance) || 0) + diff;
+        } else {
+            const list = member.loans || member.loanHistory || [];
+            const oldAmount = parseFloat(list[itemIdx].amount) || 0;
+            const diff = newAmount - oldAmount;
+
+            list[itemIdx] = { date: newDate, installmentNo: newField2, amount: newAmount, note: newNote };
+            member.loans = list;
+            member.loan = Math.max(0, (parseFloat(member.loan) || 0) - diff);
+        }
+
+        set(ref(db, 'siteData'), currentData).then(() => {
+            alert('স্টেটমেন্টের তথ্য সফলভাবে আপডেট করা হয়েছে!');
+            closeEditTransModal();
+            renderMembers();
+            renderTransactionHistory(mIdx);
+        });
+    }
+
     window.deleteDepositRecord = function(mIdx, dIdx) {
         if(confirm('আপনি কি নিশ্চিত যে এই জমার রেকর্ডটি মুছে ফেলতে চান?')) {
             const member = currentData.members[mIdx];
@@ -633,7 +741,7 @@
             member.balance = Math.max(0, (parseFloat(member.balance) || 0) - deletedAmount);
 
             set(ref(db, 'siteData'), currentData).then(() => {
-                alert('রেকর্ডটি সফলভাবে মুছে ফেলা হয়েছে এবং মোট ব্যালেন্স সমন্বয় করা হয়েছে!');
+                alert('রেকর্ডটি মুছে ফেলা হয়েছে এবং মোট ব্যালেন্স সমন্বয় করা হয়েছে!');
                 renderMembers();
                 renderTransactionHistory(mIdx);
             });
@@ -651,7 +759,7 @@
             member.loan = (parseFloat(member.loan) || 0) + deletedAmount;
 
             set(ref(db, 'siteData'), currentData).then(() => {
-                alert('রেকর্ডটি সফলভাবে মুছে ফেলা হয়েছে এবং ঋণ সমন্বয় করা হয়েছে!');
+                alert('রেকর্ডটি মুছে ফেলা হয়েছে এবং ঋণ সমন্বয় করা হয়েছে!');
                 renderMembers();
                 renderTransactionHistory(mIdx);
             });
@@ -661,3 +769,4 @@
 
 </body>
 </html>
+                
