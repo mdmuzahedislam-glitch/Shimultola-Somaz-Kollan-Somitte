@@ -33,7 +33,10 @@
     </style>
 </head>
 <body>
-
+<div id="loadingMessage" style="text-align: center; padding: 40px; font-size: 16px; color: #666; font-weight: bold;">
+    🔄 তথ্য লোড হচ্ছে, অনুগ্রহ করে অপেক্ষা করুন...
+</div>
+    
 <div class="container">
     <header>
         <div>
@@ -149,6 +152,7 @@
             const member = members.find(m => m.username === loggedInUsername);
 
             if (member) {
+               document.getElementById('loadingMessage').style.display = 'none';
                 // স্বাগতম বার্তা আপডেট
                 document.getElementById('welcomeHeader').innerText = `👤 স্বাগতম, ${member.name}!`;
 
