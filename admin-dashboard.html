@@ -29,6 +29,8 @@
         .btn-danger { background: #c62828; }
         .btn-warning { background: #f57c00; color: white; }
         .btn-info { background: #0288d1; color: white; }
+        .btn-purple { background: #6a1b9a; color: white; }
+        .btn-purple:hover { background: #4a148c; }
         .btn-sm { padding: 4px 8px; font-size: 11px; }
 
         .preview-img { width: 50px; height: 50px; border-radius: 50%; object-fit: cover; border: 2px solid #2e7d32; margin: auto; display: block; }
@@ -41,6 +43,16 @@
 
         .tab-btn { padding: 8px 12px; cursor: pointer; border: none; background: #eee; font-weight: bold; border-radius: 4px; font-size: 12px; }
         .tab-btn.active { background: #b71c1c; color: white; }
+
+        /* Profile Card Styling */
+        .profile-header { text-align: center; margin-bottom: 15px; border-bottom: 1px solid #eee; padding-bottom: 15px; }
+        .profile-avatar { width: 90px; height: 90px; border-radius: 50%; object-fit: cover; border: 3px solid #2e7d32; margin: 0 auto 10px; display: block; }
+        .profile-details-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 10px; background: #f9f9f9; padding: 12px; border-radius: 6px; margin-bottom: 15px; font-size: 13px; text-align: left; }
+        .profile-details-grid div { padding: 4px 0; }
+        .profile-stat-box { display: flex; gap: 10px; margin-bottom: 15px; }
+        .stat-card { flex: 1; padding: 12px; border-radius: 6px; text-align: center; color: white; font-weight: bold; }
+        .stat-green { background: #2e7d32; }
+        .stat-red { background: #c62828; }
     </style>
 </head>
 <body>
@@ -140,9 +152,26 @@
         </form>
     </div>
 
-    <!-- ৫. সদস্য তালিকা -->
+    <!-- ৫. সদস্য তালিকা ও সর্বমোট সামারি -->
     <div class="card">
         <h3 class="section-title">👥 সদস্য তালিকা, জমা ও ঋণ ম্যানেজমেন্ট</h3>
+
+        <!-- সর্বমোট হিসাবের সামারি বক্স -->
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; margin-bottom: 15px;">
+            <div style="background: #e8f5e9; border: 1px solid #c8e6c9; border-left: 5px solid #2e7d32; padding: 12px; border-radius: 6px; text-align: center;">
+                <span style="font-size: 12px; color: #555; font-weight: bold;">মোট সদস্য সংখ্যা</span>
+                <h3 id="totalMemberCount" style="color: #2e7d32; margin-top: 4px; font-size: 20px;">০ জন</h3>
+            </div>
+            <div style="background: #e8f5e9; border: 1px solid #c8e6c9; border-left: 5px solid #1b5e20; padding: 12px; border-radius: 6px; text-align: center;">
+                <span style="font-size: 12px; color: #555; font-weight: bold;">সর্বমোট জমা ব্যালেন্স</span>
+                <h3 id="totalAllBalance" style="color: #1b5e20; margin-top: 4px; font-size: 20px;">৳ ০</h3>
+            </div>
+            <div style="background: #ffebee; border: 1px solid #ffcdd2; border-left: 5px solid #c62828; padding: 12px; border-radius: 6px; text-align: center;">
+                <span style="font-size: 12px; color: #555; font-weight: bold;">সর্বমোট বকেয়া ঋণ</span>
+                <h3 id="totalAllLoan" style="color: #c62828; margin-top: 4px; font-size: 20px;">৳ ০</h3>
+            </div>
+        </div>
+
         <div style="overflow-x: auto;">
             <table>
                 <thead>
@@ -158,6 +187,66 @@
                     </tr>
                 </thead>
                 <tbody id="memberTableBody"></tbody>
+            </table>
+        </div>
+    </div>
+</div>
+<!-- সদস্য প্রোফাইল ভিউ মোডাল -->
+<div class="modal" id="viewProfileModal">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h4>👤 সদস্য প্রোফাইল বিবরণ</h4>
+            <span class="close-btn" onclick="closeViewProfileModal()">&times;</span>
+        </div>
+        <div class="profile-header">
+            <img id="viewProfImg" src="" class="profile-avatar" alt="সদস্যের ছবি">
+            <h3 id="viewProfName" style="color: #b71c1c;"></h3>
+            <p id="viewProfType" style="font-size: 12px; color: #666; font-weight: bold; margin-top: 3px;"></p>
+        </div>
+        <div class="profile-details-grid">
+            <div><b>সদস্য আইডি:</b> <span id="viewProfId"></span></div>
+            <div><b>মোবাইল নম্বর:</b> <span id="viewProfPhone"></span></div>
+            <div><b>ইউজারনেম:</b> <span id="viewProfUser"></span></div>
+            <div><b>পাসওয়ার্ড:</b> <span id="viewProfPass"></span></div>
+        </div>
+        <div class="profile-stat-box">
+            <div class="stat-card stat-green">
+                <div style="font-size: 11px;">মোট জমা ব্যালেন্স</div>
+                <div style="font-size: 18px; margin-top: 4px;" id="viewProfBalance">৳ ০</div>
+            </div>
+            <div class="stat-card stat-red">
+                <div style="font-size: 11px;">বকেয়া ঋণ</div>
+                <div style="font-size: 18px; margin-top: 4px;" id="viewProfLoan">৳ ০</div>
+            </div>
+        </div>
+
+        <h5 style="color: #b71c1c; border-bottom: 1px solid #ddd; padding-bottom: 5px; margin-bottom: 8px;">📜 সঞ্চয় জমা স্টেটমেন্ট</h5>
+        <div style="max-height: 150px; overflow-y: auto; margin-bottom: 15px;">
+            <table>
+                <thead>
+                    <tr>
+                        <th>তারিখ</th>
+                        <th>মাস</th>
+                        <th>টাকা</th>
+                        <th>বিবরণ</th>
+                    </tr>
+                </thead>
+                <tbody id="viewProfDepositTable"></tbody>
+            </table>
+        </div>
+
+        <h5 style="color: #b71c1c; border-bottom: 1px solid #ddd; padding-bottom: 5px; margin-bottom: 8px;">💳 কিস্তি পরিশোধ স্টেটমেন্ট</h5>
+        <div style="max-height: 150px; overflow-y: auto;">
+            <table>
+                <thead>
+                    <tr>
+                        <th>তারিখ</th>
+                        <th>কিস্তি নম্বর</th>
+                        <th>টাকা</th>
+                        <th>বিবরণ</th>
+                    </tr>
+                </thead>
+                <tbody id="viewProfLoanTable"></tbody>
             </table>
         </div>
     </div>
@@ -186,7 +275,7 @@
     </div>
 </div>
 
-<!-- জমা ও কিস্তি লেনদেন এবং এডিট মোডাল -->
+<!-- জমা ও কিস্তি লেনদেন মোডাল -->
 <div class="modal" id="transactionModal">
     <div class="modal-content">
         <div class="modal-header">
@@ -285,11 +374,10 @@
                 <label>নোট / বিবরণ:</label>
                 <input type="text" id="editTransNote">
             </div>
-            <button type="submit" class="btn btn-warning" style="width: 100%; margin-top: 10px;">আপডেট আপডেট করুন</button>
+            <button type="submit" class="btn btn-warning" style="width: 100%; margin-top: 10px;">আপডেট করুন</button>
         </form>
     </div>
-</div>
-<script type="module">
+       <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/13.0.0/firebase-app.js";
     import { getDatabase, ref, set, onValue } from "https://www.gstatic.com/firebasejs/13.0.0/firebase-database.js";
 
@@ -315,6 +403,11 @@
     let newDirImgData = "https://via.placeholder.com/150/2e7d32/ffffff?text=Director";
     let regMemberImgData = "https://via.placeholder.com/150/1b5e20/ffffff?text=User";
     let editMemberImgData = null;
+
+    // টাকার অঙ্কে কমা ফরম্যাট করার ফাংশন (যেমন: 44,110)
+    function formatMoney(amount) {
+        return Number(amount || 0).toLocaleString('en-IN');
+    }
 
     onValue(ref(db, 'siteData'), (snapshot) => {
         if(snapshot.exists()) {
@@ -445,9 +538,19 @@
     function renderMembers() {
         const tbody = document.getElementById('memberTableBody');
         tbody.innerHTML = '';
+        
+        let totalBal = 0;
+        let totalLn = 0;
+
         if(currentData.members) {
             currentData.members.forEach((m, index) => {
                 const imgUrl = m.img || "https://via.placeholder.com/150/1b5e20/ffffff?text=User";
+                const memberBal = parseFloat(m.balance) || 0;
+                const memberLoan = parseFloat(m.loan) || 0;
+
+                totalBal += memberBal;
+                totalLn += memberLoan;
+
                 tbody.innerHTML += `
                     <tr>
                         <td><img src="${imgUrl}" class="preview-img" style="width:38px;height:38px;"></td>
@@ -455,16 +558,80 @@
                         <td>${m.name}</td>
                         <td><code>${m.username}</code> / <b>${m.password}</b></td>
                         <td>${m.phone}</td>
-                        <td style="color: green; font-weight: bold;">৳ ${m.balance}</td>
-                        <td style="color: #e65100; font-weight: bold;">৳ ${m.loan || 0}</td>
+                        <td style="color: green; font-weight: bold;">৳ ${formatMoney(memberBal)}</td>
+                        <td style="color: #e65100; font-weight: bold;">৳ ${formatMoney(memberLoan)}</td>
                         <td>
+                            <button class="btn btn-purple" style="margin-bottom: 2px;" onclick="openViewProfileModal(${index})">প্রোফাইল</button>
                             <button class="btn btn-info" style="margin-bottom: 2px;" onclick="openTransModal(${index})">জমা/কিস্তি এন্ট্রি</button>
                             <button class="btn btn-warning" onclick="openEdit(${index})">এডিট</button>
                             <button class="btn btn-danger" onclick="delMember(${index})">মুছুন</button>
                         </td>
                     </tr>`;
             });
+
+            // সর্বমোট হিসাবের তথ্য আপডেট
+            document.getElementById('totalMemberCount').innerText = `${currentData.members.length} জন`;
+            document.getElementById('totalAllBalance').innerText = `৳ ${formatMoney(totalBal)}`;
+            document.getElementById('totalAllLoan').innerText = `৳ ${formatMoney(totalLn)}`;
         }
+    }
+
+    /* প্রোফাইল ভিউ দেখার ফাংশন */
+    window.openViewProfileModal = function(index) {
+        const m = currentData.members[index];
+        if(!m) return;
+
+        document.getElementById('viewProfImg').src = m.img || "https://via.placeholder.com/150/1b5e20/ffffff?text=User";
+        document.getElementById('viewProfName').innerText = m.name;
+        document.getElementById('viewProfType').innerText = m.type || 'সাধারণ সদস্য';
+        document.getElementById('viewProfId').innerText = m.id;
+        document.getElementById('viewProfPhone').innerText = m.phone;
+        document.getElementById('viewProfUser').innerText = m.username;
+        document.getElementById('viewProfPass').innerText = m.password;
+        document.getElementById('viewProfBalance').innerText = `৳ ${formatMoney(m.balance)}`;
+        document.getElementById('viewProfLoan').innerText = `৳ ${formatMoney(m.loan)}`;
+
+        // জমা টেবিল
+        const depTbody = document.getElementById('viewProfDepositTable');
+        depTbody.innerHTML = '';
+        const deposits = m.deposits || m.history || [];
+        if(deposits.length > 0) {
+            deposits.forEach(d => {
+                depTbody.innerHTML += `
+                    <tr>
+                        <td>${d.date || '-'}</td>
+                        <td>${d.month || '-'}</td>
+                        <td style="color:green;font-weight:bold;">৳ ${formatMoney(d.amount)}</td>
+                        <td>${d.note || '-'}</td>
+                    </tr>`;
+            });
+        } else {
+            depTbody.innerHTML = '<tr><td colspan="4">কোনো জমার রেকর্ড নেই</td></tr>';
+        }
+
+        // ঋণ টেবিল
+        const loanTbody = document.getElementById('viewProfLoanTable');
+        loanTbody.innerHTML = '';
+        const loans = m.loans || m.loanHistory || [];
+        if(loans.length > 0) {
+            loans.forEach(l => {
+                loanTbody.innerHTML += `
+                    <tr>
+                        <td>${l.date || '-'}</td>
+                        <td>${l.installmentNo || 'কিস্তি'}</td>
+                        <td style="color:#c62828;font-weight:bold;">৳ ${formatMoney(l.amount)}</td>
+                        <td>${l.note || '-'}</td>
+                    </tr>`;
+            });
+        } else {
+            loanTbody.innerHTML = '<tr><td colspan="4">কোনো কিস্তির রেকর্ড নেই</td></tr>';
+        }
+
+        document.getElementById('viewProfileModal').style.display = 'flex';
+    }
+
+    window.closeViewProfileModal = function() {
+        document.getElementById('viewProfileModal').style.display = 'none';
     }
 
     window.registerMember = function(e) {
@@ -577,7 +744,7 @@
                     <tr>
                         <td>${d.date || '-'}</td>
                         <td>${d.month || '-'}</td>
-                        <td style="color:green;font-weight:bold;">৳ ${d.amount}</td>
+                        <td style="color:green;font-weight:bold;">৳ ${formatMoney(d.amount)}</td>
                         <td>${d.note || '-'}</td>
                         <td>
                             <button class="btn btn-warning btn-sm" onclick="openEditTransModal(${index}, ${dIdx}, 'deposit')">এডিট</button>
@@ -598,7 +765,7 @@
                     <tr>
                         <td>${l.date || '-'}</td>
                         <td>${l.installmentNo || 'কিস্তি'}</td>
-                        <td style="color:#c62828;font-weight:bold;">৳ ${l.amount}</td>
+                        <td style="color:#c62828;font-weight:bold;">৳ ${formatMoney(l.amount)}</td>
                         <td>${l.note || '-'}</td>
                         <td>
                             <button class="btn btn-warning btn-sm" onclick="openEditTransModal(${index}, ${lIdx}, 'loan')">এডিট</button>
@@ -610,6 +777,7 @@
             loanTbody.innerHTML = '<tr><td colspan="5">কোনো কিস্তির রেকর্ড নেই</td></tr>';
         }
     }
+
     window.addDepositRecord = function(e) {
         e.preventDefault();
         const index = document.getElementById('transMemberIndex').value;
@@ -635,7 +803,7 @@
         });
     }
 
-    window.addLoanRecord = function(e) {
+     window.addLoanRecord = function(e) {
         e.preventDefault();
         const index = document.getElementById('transMemberIndex').value;
         const member = currentData.members[index];
@@ -728,9 +896,8 @@
             renderMembers();
             renderTransactionHistory(mIdx);
         });
-    }
-
-    window.deleteDepositRecord = function(mIdx, dIdx) {
+           }
+           window.deleteDepositRecord = function(mIdx, dIdx) {
         if(confirm('আপনি কি নিশ্চিত যে এই জমার রেকর্ডটি মুছে ফেলতে চান?')) {
             const member = currentData.members[mIdx];
             const list = member.deposits || member.history || [];
@@ -769,4 +936,3 @@
 
 </body>
 </html>
-                
