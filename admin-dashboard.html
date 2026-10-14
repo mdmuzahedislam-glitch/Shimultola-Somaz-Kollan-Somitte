@@ -80,6 +80,10 @@
             <div class="form-group" style="margin-bottom: 12px;">
                 <label>সমিতি সম্পর্কে বিবরণ:</label>
                 <textarea id="siteAboutInput" rows="3" required></textarea>
+                <div class="form-group" style="margin-bottom: 12px;">
+    <label>সমিতির নিয়ম-কানুন:</label>
+    <textarea id="siteRulesInput" rows="4" placeholder="সমিতির নিয়ম-কানুন এখানে লিখুন..."></textarea>
+                </div>
             </div>
             <button type="submit" class="btn btn-warning">ওয়েবসাইটের তথ্য সংরক্ষণ করুন</button>
         </form>
@@ -429,7 +433,8 @@
             document.getElementById('siteAboutInput').value = currentData.about || "";
             document.getElementById('notice1Input').value = currentData.notice1 || "";
             document.getElementById('notice2Input').value = currentData.notice2 || "";
-
+            document.getElementById('siteRulesInput').value = currentData.rules || "";
+           
             renderMembers();
             renderDirectors();
             
@@ -474,6 +479,7 @@
         currentData.est = document.getElementById('siteEstInput').value;
         currentData.phone = document.getElementById('sitePhoneInput').value;
         currentData.email = document.getElementById('siteEmailInput').value;
+        currentData.rules = document.getElementById('siteRulesInput').value;
         currentData.about = document.getElementById('siteAboutInput').value;
 
         set(ref(db, 'siteData'), currentData).then(() => {
