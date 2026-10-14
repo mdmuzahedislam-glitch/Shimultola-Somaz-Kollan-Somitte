@@ -112,7 +112,16 @@
             </table>
         </div>
     </div>
+
+    <!-- সমিতির নিয়ম-কানুন সেকশন -->
+    <div class="card">
+        <h3 class="section-title">📜 সমিতির নিয়ম-কানুন</h3>
+        <div id="rulesContent" style="white-space: pre-line; line-height: 1.6; font-size: 14px; color: #444; background: #f9f9f9; padding: 12px; border-radius: 6px; border-left: 4px solid #1b5e20;">
+            কোনো নিয়ম-কানুন যুক্ত করা হয়নি।
+        </div>
+    </div>
 </div>
+
 <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/13.0.0/firebase-app.js";
     import { getDatabase, ref, onValue } from "https://www.gstatic.com/firebasejs/13.0.0/firebase-database.js";
@@ -146,14 +155,16 @@
             const data = snapshot.val();
             document.getElementById('loadingMessage').style.display = 'none';
             const members = data.members || [];
-            if(data.rules) {
-            document.getElementById('rulesContent').innerText = data.rules;
+            
+            if (data.rules) {
+                document.getElementById('rulesContent').innerText = data.rules;
             }
             
             const member = members.find(m => m.username === loggedInUsername);
 
             if (member) {
-               document.getElementById('loadingMessage').style.display = 'none';
+                document.getElementById('loadingMessage').style.display = 'none';
+                
                 // স্বাগতম বার্তা আপডেট
                 document.getElementById('welcomeHeader').innerText = `👤 স্বাগতম, ${member.name}!`;
 
@@ -163,7 +174,7 @@
                 document.getElementById('memberPhone').innerText = member.phone;
                 document.getElementById('memberType').innerText = member.type || 'সাধারণ সদস্য';
                 
-                if(member.img) {
+                if (member.img) {
                     document.getElementById('memberImg').src = member.img;
                 }
 
@@ -227,13 +238,6 @@
         sessionStorage.removeItem('loggedInUser');
         window.location.href = 'member-login.html';
     }
-    <!-- সমিতির নিয়ম-কানুন সেকশন -->
-<div class="card">
-    <h3 class="section-title">📜 সমিতির নিয়ম-কানুন</h3>
-    <div id="rulesContent" style="white-space: pre-line; line-height: 1.6; font-size: 14px; color: #444; background: #f9f9f9; padding: 12px; border-radius: 6px; border-left: 4px solid #1b5e20;">
-        কোনো নিয়ম-কানুন যুক্ত করা হয়নি।
-    </div>
-</div>
 </script>
 
 </body>
