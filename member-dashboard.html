@@ -12,10 +12,16 @@
         header h2 { font-size: 18px; }
         .logout-btn { background: #b71c1c; color: white; padding: 6px 14px; text-decoration: none; border-radius: 4px; font-size: 13px; font-weight: bold; }
 
-        .profile-card { background: white; padding: 20px; border-radius: 8px; box-shadow: 0 2px 6px rgba(0,0,0,0.08); margin-bottom: 20px; display: flex; align-items: center; gap: 20px; flex-wrap: wrap; }
+        .profile-card { background: white; padding: 20px; border-radius: 8px; box-shadow: 0 2px 6px rgba(0,0,0,0.08); margin-bottom: 20px; display: flex; align-items: center; justify-content: space-between; gap: 20px; flex-wrap: wrap; }
+        .profile-left { display: flex; align-items: center; gap: 20px; flex-wrap: wrap; }
         .profile-img { width: 90px; height: 90px; border-radius: 50%; object-fit: cover; border: 3px solid #1b5e20; }
         .profile-info h3 { color: #1b5e20; margin-bottom: 5px; font-size: 20px; }
         .profile-info p { font-size: 14px; color: #555; margin-bottom: 3px; }
+
+        /* পয়েন্ট বক্স ডিজাইন */
+        .points-box { border: 2px solid #c62828; border-radius: 12px; padding: 12px 20px; text-align: center; min-width: 110px; background: #fff5f5; }
+        .points-box h4 { font-size: 13px; color: #c62828; margin-bottom: 4px; font-weight: bold; }
+        .points-box .points-val { font-size: 22px; font-weight: bold; color: #1b5e20; }
 
         .stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 15px; margin-bottom: 20px; }
         .stat-card { background: white; padding: 20px; border-radius: 8px; box-shadow: 0 2px 6px rgba(0,0,0,0.08); text-align: center; border-top: 4px solid #1b5e20; }
@@ -29,6 +35,7 @@
         table, th, td { border: 1px solid #ddd; }
         th, td { padding: 9px 12px; text-align: center; font-size: 13px; }
         th { background: #e8f5e9; color: #1b5e20; }
+        tfoot td { background: #f9f9f9; font-weight: bold; font-size: 14px; }
         .no-data { text-align: center; color: #777; padding: 15px; font-size: 13px; }
     </style>
 </head>
@@ -46,23 +53,30 @@
         <a href="#" onclick="logout()" class="logout-btn">লগআউট</a>
     </header>
 
-    <!-- সদস্যের প্রোফাইল কার্ড -->
+    <!-- সদস্যের প্রোফাইল কার্ড (পয়েন্ট বক্সসহ) -->
     <div class="profile-card">
-        <img id="memberImg" src="https://via.placeholder.com/150/1b5e20/ffffff?text=User" alt="প্রোফাইল ছবি" class="profile-img">
-        <div class="profile-info">
-            <h3 id="memberName">লোড হচ্ছে...</h3>
-            <p><b>সদস্য নম্বর (ID):</b> <span id="memberId">--</span></p>
-            <p><b>মোবাইল নম্বর:</b> <span id="memberPhone">--</span></p>
-            <p><b>ধরন:</b> <span id="memberType">সাধারণ সদস্য</span></p>
+        <div class="profile-left">
+            <img id="memberImg" src="https://via.placeholder.com/150/1b5e20/ffffff?text=User" alt="প্রোফাইল ছবি" class="profile-img">
+            <div class="profile-info">
+                <h3 id="memberName">লোড হচ্ছে...</h3>
+                <p><b>সদস্য নম্বর (ID):</b> <span id="memberId">--</span></p>
+                <p><b>মোবাইল নম্বর:</b> <span id="memberPhone">--</span></p>
+                <p><b>ধরন:</b> <span id="memberType">সাধারণ সদস্য</span></p>
+            </div>
+        </div>
+        <div class="points-box">
+            <h4>পয়েন্ট</h4>
+            <div class="points-val" id="memberPoints">০</div>
         </div>
     </div>
 
-    <!-- ব্যালেন্স ও ঋণ কার্ড -->
+    <!-- ব্যালেন্স ও ঋণ কার্ড (ব্যালেন্স হাইড/শো ফিচারসহ) -->
     <div class="stats-grid">
-        <div class="stat-card">
-            <h4>মোট জমা ব্যালেন্স</h4>
-            <div class="amount" id="totalBalance">৳ ০</div>
+        <div class="stat-card" onclick="toggleBalance()" style="cursor: pointer;" title="ক্লিক করে ব্যালেন্স দেখুন/লুকান">
+            <h4>মোট জমা ব্যালেন্স <span style="font-size: 11px; color: #888;">(👁️ ক্লিক করুন)</span></h4>
+            <div class="amount" id="totalBalance">৳ ••••</div>
         </div>
+        
         <div class="stat-card">
             <h4>শেষ মাসের জমা</h4>
             <div class="amount" id="lastDeposit">৳ ০</div>
@@ -89,6 +103,13 @@
                 <tbody id="depositTableBody">
                     <tr><td colspan="4" class="no-data">তথ্য লোড হচ্ছে...</td></tr>
                 </tbody>
+                <tfoot>
+                    <tr>
+                        <td colspan="2" style="text-align: right; color: #1b5e20;">সর্বমোট জমা:</td>
+                        <td id="totalDepositSum" style="color: #1b5e20; font-weight: bold;">৳ ০</td>
+                        <td>-</td>
+                    </tr>
+                </tfoot>
             </table>
         </div>
     </div>
@@ -109,6 +130,13 @@
                 <tbody id="loanTableBody">
                     <tr><td colspan="4" class="no-data">কোনো কিস্তি পরিশোধের রেকর্ড পাওয়া যায়নি।</td></tr>
                 </tbody>
+                <tfoot>
+                    <tr>
+                        <td colspan="2" style="text-align: right; color: #c62828;">সর্বমোট পরিশোধিত লোন:</td>
+                        <td id="totalLoanPaidSum" style="color: #c62828; font-weight: bold;">৳ ০</td>
+                        <td>-</td>
+                    </tr>
+                </tfoot>
             </table>
         </div>
     </div>
@@ -145,10 +173,24 @@
     const app = initializeApp(firebaseConfig);
     const db = getDatabase(app);
 
-    // টাকার অঙ্কে কমা ফরম্যাট ফাংশন (যেমন: 44,110)
+    let isBalanceHidden = true;
+    let actualBalance = 0;
+
+    // টাকার অঙ্কে কমা ফরম্যাট ফাংশন
     function formatMoney(amount) {
         return Number(amount || 0).toLocaleString('en-IN');
     }
+
+    // ব্যালেন্স হাইড/শো টগল ফাংশন
+    window.toggleBalance = function() {
+        isBalanceHidden = !isBalanceHidden;
+        const balanceElem = document.getElementById('totalBalance');
+        if (isBalanceHidden) {
+            balanceElem.innerText = '৳ ••••';
+        } else {
+            balanceElem.innerText = `৳ ${formatMoney(actualBalance)}`;
+        }
+    };
 
     onValue(ref(db, 'siteData'), (snapshot) => {
         if (snapshot.exists()) {
@@ -168,64 +210,77 @@
                 // স্বাগতম বার্তা আপডেট
                 document.getElementById('welcomeHeader').innerText = `👤 স্বাগতম, ${member.name}!`;
 
-                // প্রোফাইল তথ্য সেট
+                // প্রোফাইল তথ্য ও পয়েন্ট সেট
                 document.getElementById('memberName').innerText = member.name;
                 document.getElementById('memberId').innerText = member.id;
                 document.getElementById('memberPhone').innerText = member.phone;
                 document.getElementById('memberType').innerText = member.type || 'সাধারণ সদস্য';
+                document.getElementById('memberPoints').innerText = member.points || 0;
                 
                 if (member.img) {
                     document.getElementById('memberImg').src = member.img;
                 }
 
-                const balance = parseFloat(member.balance) || 0;
+                actualBalance = parseFloat(member.balance) || 0;
                 const loan = parseFloat(member.loan) || 0;
 
-                document.getElementById('totalBalance').innerText = `৳ ${formatMoney(balance)}`;
+                // হাইড/শো লজিক অনুযায়ী ব্যালেন্স সেট
+                if (isBalanceHidden) {
+                    document.getElementById('totalBalance').innerText = '৳ ••••';
+                } else {
+                    document.getElementById('totalBalance').innerText = `৳ ${formatMoney(actualBalance)}`;
+                }
                 document.getElementById('totalLoan').innerText = `৳ ${formatMoney(loan)}`;
 
-                // সঞ্চয় জমা টেবিল রেন্ডার
+                // সঞ্চয় জমা টেবিল রেন্ডার ও যোগফল হিসাব
                 const depBody = document.getElementById('depositTableBody');
                 depBody.innerHTML = '';
                 const deposits = member.deposits || member.history || [];
+                let totalDepositSum = 0;
                 
                 if (deposits.length > 0) {
                     deposits.forEach(d => {
+                        const amt = parseFloat(d.amount) || 0;
+                        totalDepositSum += amt;
                         depBody.innerHTML += `
                             <tr>
                                 <td>${d.date || '-'}</td>
                                 <td>${d.month || '-'}</td>
-                                <td style="color: #1b5e20; font-weight: bold;">৳ ${formatMoney(d.amount)}</td>
+                                <td style="color: #1b5e20; font-weight: bold;">৳ ${formatMoney(amt)}</td>
                                 <td>${d.note || 'মাসিক সঞ্চয় জমা'}</td>
                             </tr>`;
                     });
                     
-                    // শেষ মাসের জমা দেখানো
                     const lastDep = deposits[deposits.length - 1];
                     document.getElementById('lastDeposit').innerText = `৳ ${formatMoney(lastDep.amount)}`;
                 } else {
                     depBody.innerHTML = `<tr><td colspan="4" class="no-data">কোনো জমার রেকর্ড পাওয়া যায়নি।</td></tr>`;
                     document.getElementById('lastDeposit').innerText = `৳ ০`;
                 }
+                document.getElementById('totalDepositSum').innerText = `৳ ${formatMoney(totalDepositSum)}`;
 
-                // লোনের কিস্তি টেবিল রেন্ডার
+                // লোনের কিস্তি টেবিল রেন্ডার ও যোগফল হিসাব
                 const loanBody = document.getElementById('loanTableBody');
                 loanBody.innerHTML = '';
                 const loans = member.loans || member.loanHistory || [];
+                let totalLoanPaidSum = 0;
 
                 if (loans.length > 0) {
                     loans.forEach(l => {
+                        const amt = parseFloat(l.amount) || 0;
+                        totalLoanPaidSum += amt;
                         loanBody.innerHTML += `
                             <tr>
                                 <td>${l.date || '-'}</td>
                                 <td>${l.installmentNo || 'কিস্তি'}</td>
-                                <td style="color: #c62828; font-weight: bold;">৳ ${formatMoney(l.amount)}</td>
+                                <td style="color: #c62828; font-weight: bold;">৳ ${formatMoney(amt)}</td>
                                 <td>${l.note || 'ঋণ কিস্তি পরিশোধ'}</td>
                             </tr>`;
                     });
                 } else {
                     loanBody.innerHTML = `<tr><td colspan="4" class="no-data">কোনো কিস্তি পরিশোধের রেকর্ড পাওয়া যায়নি।</td></tr>`;
                 }
+                document.getElementById('totalLoanPaidSum').innerText = `৳ ${formatMoney(totalLoanPaidSum)}`;
 
             } else {
                 alert('সদস্যের তথ্য খুঁজে পাওয়া যায়নি!');
@@ -242,3 +297,4 @@
 
 </body>
 </html>
+    
