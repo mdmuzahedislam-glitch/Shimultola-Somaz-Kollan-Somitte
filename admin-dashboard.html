@@ -557,21 +557,20 @@
         const tbody = document.getElementById('memberTableBody');
         tbody.innerHTML = '';
         
-        let totalBal = 0;
+                let totalBal = 0;
         let totalLn = 0;
+        let totalPointsSum = 0; // সবার মোট পয়েন্ট জমানোর জন্য লুপের বাইরে রাখা হলো
 
         if(currentData.members) {
             currentData.members.forEach((m, index) => {
                 const imgUrl = m.img || "https://via.placeholder.com/150/1b5e20/ffffff?text=User";
                 const memberBal = parseFloat(m.balance) || 0;
                 const memberLoan = parseFloat(m.loan) || 0;
+                const memberPoints = parseInt(m.points) || 0;
 
                 totalBal += memberBal;
-                let totalPoints = 0; // মোট পয়েন্টের ভেরিয়েবল
                 totalLn += memberLoan;
-
-                // প্রতিটি সদস্যের পয়েন্ট যোগ করার লজিক
-                totalPoints += parseInt(m.points) || 0;
+                totalPointsSum += memberPoints; // প্রতি সদস্যের পয়েন্ট যোগ হচ্ছে
 
                 tbody.innerHTML += `
                     <tr>
@@ -581,7 +580,7 @@
                         <td><code>${m.username}</code> / <b>${m.password}</b></td>
                         <td>${m.phone}</td>
                         <td style="color: green; font-weight: bold;">৳ ${formatMoney(memberBal)}</td>
-                        <td>${m.points || 0}</td>
+                        <td>${memberPoints}</td>
                         <td style="color: #e65100; font-weight: bold;">৳ ${formatMoney(memberLoan)}</td>
                         <td>
                             <button class="btn btn-purple" style="margin-bottom: 2px;" onclick="openViewProfileModal(${index})">প্রোফাইল</button>
@@ -595,8 +594,8 @@
             // সর্বমোট হিসাবের তথ্য আপডেট
             document.getElementById('totalMemberCount').innerText = `${currentData.members.length} জন`;
             document.getElementById('totalAllBalance').innerText = `৳ ${formatMoney(totalBal)}`;
-            document.getElementById('totalAllMembersPoints').innerText = `${totalPoints} pt`; // সর্বমোট পয়েন্ট আপডেট
-            document.getElementById('totalAllLoan').innerText = `৳ ${formatMoney(totalLn)}`;
+            document.getElementById('totalAllMembersPoints').innerText = `${totalPointsSum} pt`; // সর্বমোট পয়েন্ট কার্ড আপডেট
+            document.getElementById('totalAllLoan').innerText = `৳ ${formatMoney(totalLn)}`; // বকেয়া ঋণ সঠিকভাবে শো করবে
         }
      }
 
