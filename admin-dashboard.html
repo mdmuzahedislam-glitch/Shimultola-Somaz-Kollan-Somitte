@@ -212,7 +212,8 @@
             <div><b>মোবাইল নম্বর:</b> <span id="viewProfPhone"></span></div>
             <div><b>ইউজারনেম:</b> <span id="viewProfUser"></span></div>
             <div><b>পাসওয়ার্ড:</b> <span id="viewProfPass"></span></div>
-        </div>
+            <div><b>পয়েন্ট:</b> <span id="viewProfPoints">০</span></div>
+      </div>
         <div class="profile-stat-box">
             <div class="stat-card stat-green">
                 <div style="font-size: 11px;">মোট জমা ব্যালেন্স</div>
@@ -300,6 +301,10 @@
                 <div class="form-group" style="margin-bottom: 10px;"><label>তারিখ:</label><input type="date" id="depDate" required></div>
                 <div class="form-group" style="margin-bottom: 10px;"><label>মাস (যেমন: August):</label><input type="text" id="depMonth" placeholder="August" required></div>
                 <div class="form-group" style="margin-bottom: 10px;"><label>জমার পরিমাণ (৳):</label><input type="number" id="depAmount" placeholder="৫০০" required></div>
+                <div class="form-group" style="margin-bottom: 10px;">
+                <label>পয়েন্ট (পয়েন্ট যোগ করুন):</label>
+                <input type="number" id="depositPointsInput" placeholder="যেমন: ১০">
+        </div>
                 <div class="form-group" style="margin-bottom: 10px;"><label>নোট / বিবরণ:</label><input type="text" id="depNote" placeholder="Aug-26 (Bkash)"></div>
                 <button type="submit" class="btn" style="width: 100%; margin-top: 10px;">নতুন জমা যুক্ত করুন</button>
             </form>
@@ -596,7 +601,8 @@
         document.getElementById('viewProfPass').innerText = m.password;
         document.getElementById('viewProfBalance').innerText = `৳ ${formatMoney(m.balance)}`;
         document.getElementById('viewProfLoan').innerText = `৳ ${formatMoney(m.loan)}`;
-
+        document.getElementById('viewProfPoints').innerText = m.points || 0;
+           
         // জমা টেবিল
         const depTbody = document.getElementById('viewProfDepositTable');
         depTbody.innerHTML = '';
@@ -801,6 +807,9 @@
         member.deposits.push(record);
         member.balance = (parseFloat(member.balance) || 0) + amount;
 
+        const pts = parseInt(document.getElementById('depositPointsInput').value) || 0;
+        member.points = (parseInt(member.points) || 0) + pts;
+           
         set(ref(db, 'siteData'), currentData).then(() => {
             alert('সঞ্চয় জমা রেকর্ড সফলভাবে সংরক্ষণ করা হয়েছে!');
             document.getElementById('depositForm').reset();
