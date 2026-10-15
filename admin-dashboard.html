@@ -186,6 +186,7 @@
                         <th>ইউজার / পাস</th>
                         <th>ফোন</th>
                         <th>ব্যালেন্স</th>
+                        <th>পয়েন্ট</th>
                         <th>ঋণ</th>
                         <th>অ্যাকশন</th>
                     </tr>
@@ -570,6 +571,7 @@
                         <td><code>${m.username}</code> / <b>${m.password}</b></td>
                         <td>${m.phone}</td>
                         <td style="color: green; font-weight: bold;">৳ ${formatMoney(memberBal)}</td>
+                        <td>${m.points || 0}</td>
                         <td style="color: #e65100; font-weight: bold;">৳ ${formatMoney(memberLoan)}</td>
                         <td>
                             <button class="btn btn-purple" style="margin-bottom: 2px;" onclick="openViewProfileModal(${index})">প্রোফাইল</button>
@@ -858,6 +860,7 @@
             document.getElementById('editTransField2').value = dep.month || '';
             document.getElementById('editTransAmount').value = dep.amount || 0;
             document.getElementById('editTransNote').value = dep.note || '';
+            document.getElementById('editTransPoints').value = dep.points || 0;
         } else {
             const loan = (member.loans || member.loanHistory || [])[itemIdx];
             document.getElementById('editTransTitle').innerText = '✏️ কিস্তি পরিশোধ স্টেটমেন্ট এডিট';
@@ -876,42 +879,47 @@
     }
 
     window.saveTransactionEdit = function(e) {
-        e.preventDefault();
-        const mIdx = document.getElementById('editTransMemberIdx').value;
-        const itemIdx = document.getElementById('editTransItemIdx').value;
-        const type = document.getElementById('editTransType').value;
-        const member = currentData.members[mIdx];
+    e.preventDefault();
+    const mIdx = document.getElementById('editTransMemberIdx').value;
+    const itemIdx = document.getElementById('editTransItemIdx').value;
+    const type = document.getElementById('editTransType').value;
+    const member = currentData.members[mIdx];
 
-        const newDate = document.getElementById('editTransDate').value;
-        const newField2 = document.getElementById('editTransField2').value.trim();
-        const newAmount = parseFloat(document.getElementById('editTransAmount').value) || 0;
-        const newNote = document.getElementById('editTransNote').value.trim();
+    const newDate = document.getElementById('editTransDate').value;
+    const newField2 = document.getElementById('editTransField2').value.trim();
+    const newAmount = parseFloat(document.getElementById('editTransAmount').value) || 0;
+    const newPoints = parseInt(document.getElementById('editTransPoints').value) || 0;
+    const newNote = document.getElementById('editTransNote').value.trim();
 
-        if(type === 'deposit') {
-            const list = member.deposits || member.history || [];
-            const oldAmount = parseFloat(list[itemIdx].amount) || 0;
-            const diff = newAmount - oldAmount;
+    if(type === 'deposit') {
+        const list = member.deposits || member.history || [];
+        const oldAmount = parseFloat(list[itemIdx].amount) || 0;
+        const diff = newAmount - oldAmount;
 
-            list[itemIdx] = { date: newDate, month: newField2, amount: newAmount, note: newNote };
-            member.deposits = list;
-            member.balance = (parseFloat(member.balance) || 0) + diff;
-        } else {
-            const list = member.loans || member.loanHistory || [];
-            const oldAmount = parseFloat(list[itemIdx].amount) || 0;
-            const diff = newAmount - oldAmount;
+        const oldPoints = parseInt(list[itemIdx].points) || 0;
+        member.points = (parseInt(member.points) || 0) - oldPoints + newPoints;
 
-            list[itemIdx] = { date: newDate, installmentNo: newField2, amount: newAmount, note: newNote };
-            member.loans = list;
-            member.loan = Math.max(0, (parseFloat(member.loan) || 0) - diff);
-        }
+        list[itemIdx] = { date: newDate, month: newField2, amount: newAmount, points: newPoints, note: newNote };
+        member.deposits = list;
+        member.balance = (parseFloat(member.balance) || 0) + diff;
+    } else {
+        const list = member.loans || member.loanHistory || [];
+        const oldAmount = parseFloat(list[itemIdx].amount) || 0;
+        const diff = newAmount - oldAmount;
 
-        set(ref(db, 'siteData'), currentData).then(() => {
-            alert('স্টেটমেন্টের তথ্য সফলভাবে আপডেট করা হয়েছে!');
-            closeEditTransModal();
-            renderMembers();
-            renderTransactionHistory(mIdx);
-        });
-           }
+        list[itemIdx] = { date: newDate, installmentNo: newField2, amount: newAmount, note: newNote };
+        member.loans = list;
+        member.loan = Math.max(0, (parseFloat(member.loan) || 0) - diff);
+    }
+
+    set(ref(db, 'siteData'), currentData).then(() => {
+        alert('স্টেটমেন্টের তথ্য সফলভাবে আপডেট করা হয়েছে!');
+        closeEditTransModal();
+        renderMembers();
+        renderTransactionHistory(mIdx);
+    });
+            }
+                         
            window.deleteDepositRecord = function(mIdx, dIdx) {
         if(confirm('আপনি কি নিশ্চিত যে এই জমার রেকর্ডটি মুছে ফেলতে চান?')) {
             const member = currentData.members[mIdx];
