@@ -567,7 +567,11 @@
                 const memberLoan = parseFloat(m.loan) || 0;
 
                 totalBal += memberBal;
+                let totalPoints = 0; // মোট পয়েন্টের ভেরিয়েবল
                 totalLn += memberLoan;
+
+                // প্রতিটি সদস্যের পয়েন্ট যোগ করার লজিক
+                totalPoints += parseInt(m.points) || 0;
 
                 tbody.innerHTML += `
                     <tr>
@@ -591,9 +595,10 @@
             // সর্বমোট হিসাবের তথ্য আপডেট
             document.getElementById('totalMemberCount').innerText = `${currentData.members.length} জন`;
             document.getElementById('totalAllBalance').innerText = `৳ ${formatMoney(totalBal)}`;
+            document.getElementById('totalAllMembersPoints').innerText = `${totalPoints} pt`; // সর্বমোট পয়েন্ট আপডেট
             document.getElementById('totalAllLoan').innerText = `৳ ${formatMoney(totalLn)}`;
         }
-    }
+     }
 
     /* প্রোফাইল ভিউ দেখার ফাংশন */
     window.openViewProfileModal = function(index) {
@@ -617,16 +622,19 @@
         const deposits = m.deposits || m.history || [];
         if(deposits.length > 0) {
             deposits.forEach(d => {
-                depTbody.innerHTML += `
+                deptBody.innerHTML += `
                     <tr>
-                        <td>${d.date || '-'}</td>
-                        <td>${d.month || '-'}</td>
-                        <td style="color:green;font-weight:bold;">৳ ${formatMoney(d.amount)}</td>
-                        <td>${d.note || '-'}</td>
+                            <td>${d.date || '-'}</td>
+                            <td>${d.month || '-'}</td>
+                            <td style="color:green; font-weight:bold;">৳ ${formatMoney(d.amount)}</td>
+                            <td style="color:#1b5e20; font-weight:bold;">${d.points || 0} pt</td>
+                            <td>${d.note || '-'}</td>
+                    
                     </tr>`;
+                
             });
         } else {
-            depTbody.innerHTML = '<tr><td colspan="4">কোনো জমার রেকর্ড নেই</td></tr>';
+            depTbody.innerHTML = '<tr><td colspan="5">কোনো জমার রেকর্ড নেই</td></tr>';
         }
 
         // ঋণ টেবিল
