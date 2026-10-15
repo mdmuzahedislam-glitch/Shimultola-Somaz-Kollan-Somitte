@@ -97,16 +97,18 @@
                         <th>তারিখ</th>
                         <th>মাস</th>
                         <th>জমার পরিমাণ</th>
+                        <th>পয়েন্ট</th>
                         <th>নোট/বিবরণ</th>
                     </tr>
                 </thead>
                 <tbody id="depositTableBody">
-                    <tr><td colspan="4" class="no-data">তথ্য লোড হচ্ছে...</td></tr>
+                    <tr><td colspan="5" class="no-data">তথ্য লোড হচ্ছে...</td></tr>
                 </tbody>
                 <tfoot>
                     <tr>
                         <td colspan="2" style="text-align: right; color: #1b5e20;">সর্বমোট জমা:</td>
                         <td id="totalDepositSum" style="color: #1b5e20; font-weight: bold;">৳ ০</td>
+                        <td id="totalDepositPointsSum" style="color: #1b5e20; font-weight: bold;">০ pt</td>
                         <td>-</td>
                     </tr>
                 </tfoot>
@@ -237,16 +239,20 @@
                 depBody.innerHTML = '';
                 const deposits = member.deposits || member.history || [];
                 let totalDepositSum = 0;
+                let totalDepositPointsSum = 0;
                 
                 if (deposits.length > 0) {
                     deposits.forEach(d => {
                         const amt = parseFloat(d.amount) || 0;
+                        const pts = parseInt(d.points) || 0;
                         totalDepositSum += amt;
+                        totalDepositPointsSum += pts;
                         depBody.innerHTML += `
                             <tr>
                                 <td>${d.date || '-'}</td>
                                 <td>${d.month || '-'}</td>
                                 <td style="color: #1b5e20; font-weight: bold;">৳ ${formatMoney(amt)}</td>
+                                <td style="color: #1b5e20; font-weight: bold;">${pts} pt</td>
                                 <td>${d.note || 'মাসিক সঞ্চয় জমা'}</td>
                             </tr>`;
                     });
@@ -254,10 +260,11 @@
                     const lastDep = deposits[deposits.length - 1];
                     document.getElementById('lastDeposit').innerText = `৳ ${formatMoney(lastDep.amount)}`;
                 } else {
-                    depBody.innerHTML = `<tr><td colspan="4" class="no-data">কোনো জমার রেকর্ড পাওয়া যায়নি।</td></tr>`;
+                    depBody.innerHTML = `<tr><td colspan="5" class="no-data">কোনো জমার রেকর্ড পাওয়া যায়নি।</td></tr>`;
                     document.getElementById('lastDeposit').innerText = `৳ ০`;
                 }
                 document.getElementById('totalDepositSum').innerText = `৳ ${formatMoney(totalDepositSum)}`;
+                document.getElementById('totalDepositPointsSum').innerText = `${totalDepositPointsSum} pt`;
 
                 // লোনের কিস্তি টেবিল রেন্ডার ও যোগফল হিসাব
                 const loanBody = document.getElementById('loanTableBody');
@@ -297,4 +304,3 @@
 
 </body>
 </html>
-    
