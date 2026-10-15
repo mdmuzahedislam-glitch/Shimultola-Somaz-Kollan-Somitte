@@ -35,7 +35,6 @@
 
         .preview-img { width: 50px; height: 50px; border-radius: 50%; object-fit: cover; border: 2px solid #2e7d32; margin: auto; display: block; }
 
-        /* Modal */
         .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); justify-content: center; align-items: center; padding: 15px; z-index: 1000; overflow-y: auto; }
         .modal-content { background: white; padding: 20px; border-radius: 8px; width: 100%; max-width: 650px; box-shadow: 0 4px 10px rgba(0,0,0,0.2); max-height: 90vh; overflow-y: auto; }
         .modal-header { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #ddd; padding-bottom: 8px; margin-bottom: 15px; }
@@ -44,7 +43,6 @@
         .tab-btn { padding: 8px 12px; cursor: pointer; border: none; background: #eee; font-weight: bold; border-radius: 4px; font-size: 12px; }
         .tab-btn.active { background: #b71c1c; color: white; }
 
-        /* Profile Card Styling */
         .profile-header { text-align: center; margin-bottom: 15px; border-bottom: 1px solid #eee; padding-bottom: 15px; }
         .profile-avatar { width: 90px; height: 90px; border-radius: 50%; object-fit: cover; border: 3px solid #2e7d32; margin: 0 auto 10px; display: block; }
         .profile-details-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 10px; background: #f9f9f9; padding: 12px; border-radius: 6px; margin-bottom: 15px; font-size: 13px; text-align: left; }
@@ -56,7 +54,6 @@
     </style>
 </head>
 <body>
-
 <div class="container">
     <header>
         <div>
@@ -66,7 +63,6 @@
         <a href="admin-login.html" class="logout-btn">লগআউট</a>
     </header>
 
-    <!-- ১. সমিতি ও কন্টাক্ট এডিট -->
     <div class="card">
         <h3 class="section-title">✏️ সমিতির নাম, ঠিকানা ও কন্টাক্ট এডিট</h3>
         <form id="siteInfoForm">
@@ -81,15 +77,14 @@
                 <label>সমিতি সম্পর্কে বিবরণ:</label>
                 <textarea id="siteAboutInput" rows="3" required></textarea>
                 <div class="form-group" style="margin-bottom: 12px;">
-    <label>সমিতির নিয়ম-কানুন:</label>
-    <textarea id="siteRulesInput" rows="4" placeholder="সমিতির নিয়ম-কানুন এখানে লিখুন..."></textarea>
+                    <label>সমিতির নিয়ম-কানুন:</label>
+                    <textarea id="siteRulesInput" rows="4" placeholder="সমিতির নিয়ম-কানুন এখানে লিখুন..."></textarea>
                 </div>
             </div>
             <button type="submit" class="btn btn-warning">ওয়েবসাইটের তথ্য সংরক্ষণ করুন</button>
         </form>
     </div>
 
-    <!-- ২. পরিচালকবৃন্দের ম্যানেজমেন্ট -->
     <div class="card">
         <h3 class="section-title">👔 পরিচালকবৃন্দ সংযোজন ও ম্যানেজমেন্ট</h3>
         <form id="addDirectorForm" onsubmit="addNewDirector(event)">
@@ -118,8 +113,7 @@
             </table>
         </div>
     </div>
-        <!-- ৩. নোটিশ বোর্ড -->
-    <div class="card">
+        <div class="card">
         <h3 class="section-title">📢 জরুরি নোটিশ বোর্ড আপডেট</h3>
         <form id="noticeForm">
             <div class="form-group" style="margin-bottom: 10px;"><label>নোটিশ ১:</label><input type="text" id="notice1Input"></div>
@@ -128,7 +122,6 @@
         </form>
     </div>
 
-    <!-- ৪. নতুন সদস্য রেজিস্ট্রেশন -->
     <div class="card">
         <h3 class="section-title">➕ নতুন সদস্য রেজিস্ট্রেশন</h3>
         <form id="registerForm" onsubmit="registerMember(event)">
@@ -155,12 +148,9 @@
             <button type="submit" class="btn">সদস্য নিবন্ধন করুন</button>
         </form>
     </div>
-
-    <!-- ৫. সদস্য তালিকা ও সর্বমোট সামারি -->
-    <div class="card">
+        <div class="card">
         <h3 class="section-title">👥 সদস্য তালিকা, জমা ও ঋণ ম্যানেজমেন্ট</h3>
 
-        <!-- সর্বমোট হিসাবের সামারি বক্স -->
         <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; margin-bottom: 15px;">
             <div style="background: #e8f5e9; border: 1px solid #c8e6c9; border-left: 5px solid #2e7d32; padding: 12px; border-radius: 6px; text-align: center;">
                 <span style="font-size: 12px; color: #555; font-weight: bold;">মোট সদস্য সংখ্যা</span>
@@ -169,6 +159,10 @@
             <div style="background: #e8f5e9; border: 1px solid #c8e6c9; border-left: 5px solid #1b5e20; padding: 12px; border-radius: 6px; text-align: center;">
                 <span style="font-size: 12px; color: #555; font-weight: bold;">সর্বমোট জমা ব্যালেন্স</span>
                 <h3 id="totalAllBalance" style="color: #1b5e20; margin-top: 4px; font-size: 20px;">৳ ০</h3>
+            </div>
+            <div style="background: #e8f5e9; border: 1px solid #c8e6c9; border-left: 5px solid #0288d1; padding: 12px; border-radius: 6px; text-align: center;">
+                <span style="font-size: 12px; color: #555; font-weight: bold;">সর্বমোট পয়েন্ট</span>
+                <h3 id="totalAllMembersPoints" style="color: #0288d1; margin-top: 4px; font-size: 20px;">০ pt</h3>
             </div>
             <div style="background: #ffebee; border: 1px solid #ffcdd2; border-left: 5px solid #c62828; padding: 12px; border-radius: 6px; text-align: center;">
                 <span style="font-size: 12px; color: #555; font-weight: bold;">সর্বমোট বকেয়া ঋণ</span>
@@ -196,7 +190,6 @@
         </div>
     </div>
 </div>
-<!-- সদস্য প্রোফাইল ভিউ মোডাল -->
 <div class="modal" id="viewProfileModal">
     <div class="modal-content">
         <div class="modal-header">
@@ -214,7 +207,7 @@
             <div><b>ইউজারনেম:</b> <span id="viewProfUser"></span></div>
             <div><b>পাসওয়ার্ড:</b> <span id="viewProfPass"></span></div>
             <div><b>পয়েন্ট:</b> <span id="viewProfPoints">০</span></div>
-      </div>
+        </div>
         <div class="profile-stat-box">
             <div class="stat-card stat-green">
                 <div style="font-size: 11px;">মোট জমা ব্যালেন্স</div>
@@ -234,6 +227,7 @@
                         <th>তারিখ</th>
                         <th>মাস</th>
                         <th>টাকা</th>
+                        <th>পয়েন্ট</th>
                         <th>বিবরণ</th>
                     </tr>
                 </thead>
@@ -258,7 +252,6 @@
     </div>
 </div>
 
-<!-- সদস্য এডিট মোডাল -->
 <div class="modal" id="editModal">
     <div class="modal-content">
         <div class="modal-header">
@@ -280,8 +273,6 @@
         </form>
     </div>
 </div>
-
-<!-- জমা ও কিস্তি লেনদেন মোডাল -->
 <div class="modal" id="transactionModal">
     <div class="modal-content">
         <div class="modal-header">
@@ -296,16 +287,15 @@
 
         <input type="hidden" id="transMemberIndex">
 
-        <!-- সঞ্চয় জমা অংশ -->
         <div id="depositSection">
             <form id="depositForm" onsubmit="addDepositRecord(event)">
                 <div class="form-group" style="margin-bottom: 10px;"><label>তারিখ:</label><input type="date" id="depDate" required></div>
                 <div class="form-group" style="margin-bottom: 10px;"><label>মাস (যেমন: August):</label><input type="text" id="depMonth" placeholder="August" required></div>
                 <div class="form-group" style="margin-bottom: 10px;"><label>জমার পরিমাণ (৳):</label><input type="number" id="depAmount" placeholder="৫০০" required></div>
                 <div class="form-group" style="margin-bottom: 10px;">
-                <label>পয়েন্ট (পয়েন্ট যোগ করুন):</label>
-                <input type="number" id="depositPointsInput" placeholder="যেমন: ১০">
-        </div>
+                    <label>পয়েন্ট (পয়েন্ট যোগ করুন):</label>
+                    <input type="number" id="depositPointsInput" placeholder="যেমন: ১০">
+                </div>
                 <div class="form-group" style="margin-bottom: 10px;"><label>নোট / বিবরণ:</label><input type="text" id="depNote" placeholder="Aug-26 (Bkash)"></div>
                 <button type="submit" class="btn" style="width: 100%; margin-top: 10px;">নতুন জমা যুক্ত করুন</button>
             </form>
@@ -318,6 +308,7 @@
                             <th>তারিখ</th>
                             <th>মাস</th>
                             <th>টাকা</th>
+                            <th>পয়েন্ট</th>
                             <th>বিবরণ</th>
                             <th>অ্যাকশন</th>
                         </tr>
@@ -327,7 +318,6 @@
             </div>
         </div>
 
-        <!-- লোনের কিস্তি অংশ -->
         <div id="loanSection" style="display: none;">
             <form id="loanForm" onsubmit="addLoanRecord(event)">
                 <div class="form-group" style="margin-bottom: 10px;"><label>তারিখ:</label><input type="date" id="loanDate" required></div>
@@ -356,7 +346,6 @@
     </div>
 </div>
 
-<!-- ট্রানজেকশন/স্টেটমেন্ট এডিট পপআপ মোডাল -->
 <div class="modal" id="editTransModal" style="z-index: 1050;">
     <div class="modal-content" style="max-width: 450px;">
         <div class="modal-header">
@@ -392,8 +381,7 @@
         </form>
     </div>
 </div>
-    
-       <script type="module">
+<script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/13.0.0/firebase-app.js";
     import { getDatabase, ref, set, onValue } from "https://www.gstatic.com/firebasejs/13.0.0/firebase-database.js";
 
@@ -420,7 +408,6 @@
     let regMemberImgData = "https://via.placeholder.com/150/1b5e20/ffffff?text=User";
     let editMemberImgData = null;
 
-    // টাকার অঙ্কে কমা ফরম্যাট করার ফাংশন (যেমন: 44,110)
     function formatMoney(amount) {
         return Number(amount || 0).toLocaleString('en-IN');
     }
@@ -456,8 +443,7 @@
             }
         }
     });
-
-    window.previewNewDirImg = function() {
+        window.previewNewDirImg = function() {
         const file = document.getElementById('newDirImgFile').files[0];
         if (file) {
             const reader = new FileReader();
@@ -557,9 +543,9 @@
         const tbody = document.getElementById('memberTableBody');
         tbody.innerHTML = '';
         
-                let totalBal = 0;
+        let totalBal = 0;
         let totalLn = 0;
-        let totalPointsSum = 0; // সবার মোট পয়েন্ট জমানোর জন্য লুপের বাইরে রাখা হলো
+        let totalPointsSum = 0;
 
         if(currentData.members) {
             currentData.members.forEach((m, index) => {
@@ -570,7 +556,7 @@
 
                 totalBal += memberBal;
                 totalLn += memberLoan;
-                totalPointsSum += memberPoints; // প্রতি সদস্যের পয়েন্ট যোগ হচ্ছে
+                totalPointsSum += memberPoints;
 
                 tbody.innerHTML += `
                     <tr>
@@ -591,16 +577,13 @@
                     </tr>`;
             });
 
-            // সর্বমোট হিসাবের তথ্য আপডেট
             document.getElementById('totalMemberCount').innerText = `${currentData.members.length} জন`;
             document.getElementById('totalAllBalance').innerText = `৳ ${formatMoney(totalBal)}`;
-            document.getElementById('totalAllMembersPoints').innerText = `${totalPointsSum} pt`; // সর্বমোট পয়েন্ট কার্ড আপডেট
-            document.getElementById('totalAllLoan').innerText = `৳ ${formatMoney(totalLn)}`; // বকেয়া ঋণ সঠিকভাবে শো করবে
+            document.getElementById('totalAllMembersPoints').innerText = `${totalPointsSum} pt`;
+            document.getElementById('totalAllLoan').innerText = `৳ ${formatMoney(totalLn)}`;
         }
-     }
-
-    /* প্রোফাইল ভিউ দেখার ফাংশন */
-    window.openViewProfileModal = function(index) {
+    }
+        window.openViewProfileModal = function(index) {
         const m = currentData.members[index];
         if(!m) return;
 
@@ -615,28 +598,24 @@
         document.getElementById('viewProfLoan').innerText = `৳ ${formatMoney(m.loan)}`;
         document.getElementById('viewProfPoints').innerText = m.points || 0;
            
-        // জমা টেবিল
         const depTbody = document.getElementById('viewProfDepositTable');
         depTbody.innerHTML = '';
         const deposits = m.deposits || m.history || [];
         if(deposits.length > 0) {
             deposits.forEach(d => {
-                deptBody.innerHTML += `
+                depTbody.innerHTML += `
                     <tr>
-                            <td>${d.date || '-'}</td>
-                            <td>${d.month || '-'}</td>
-                            <td style="color:green; font-weight:bold;">৳ ${formatMoney(d.amount)}</td>
-                            <td style="color:#1b5e20; font-weight:bold;">${d.points || 0} pt</td>
-                            <td>${d.note || '-'}</td>
-                    
+                        <td>${d.date || '-'}</td>
+                        <td>${d.month || '-'}</td>
+                        <td style="color:green; font-weight:bold;">৳ ${formatMoney(d.amount)}</td>
+                        <td style="color:#1b5e20; font-weight:bold;">${d.points || 0} pt</td>
+                        <td>${d.note || '-'}</td>
                     </tr>`;
-                
             });
         } else {
             depTbody.innerHTML = '<tr><td colspan="5">কোনো জমার রেকর্ড নেই</td></tr>';
         }
 
-        // ঋণ টেবিল
         const loanTbody = document.getElementById('viewProfLoanTable');
         loanTbody.innerHTML = '';
         const loans = m.loans || m.loanHistory || [];
@@ -729,8 +708,7 @@
             });
         }
     }
-
-    window.openTransModal = function(index) {
+        window.openTransModal = function(index) {
         const m = currentData.members[index];
         document.getElementById('transMemberIndex').value = index;
         document.getElementById('transMemberName').innerText = `💳 ${m.name} (${m.id}) - এন্ট্রি ও স্টেটমেন্ট`;
@@ -772,6 +750,7 @@
                         <td>${d.date || '-'}</td>
                         <td>${d.month || '-'}</td>
                         <td style="color:green;font-weight:bold;">৳ ${formatMoney(d.amount)}</td>
+                        <td style="color:#1b5e20;font-weight:bold;">${d.points || 0} pt</td>
                         <td>${d.note || '-'}</td>
                         <td>
                             <button class="btn btn-warning btn-sm" onclick="openEditTransModal(${index}, ${dIdx}, 'deposit')">এডিট</button>
@@ -780,7 +759,7 @@
                     </tr>`;
             });
         } else {
-            depTbody.innerHTML = '<tr><td colspan="5">কোনো জমার রেকর্ড নেই</td></tr>';
+            depTbody.innerHTML = '<tr><td colspan="6">কোনো জমার রেকর্ড নেই</td></tr>';
         }
 
         const loanTbody = document.getElementById('loanHistoryTable');
@@ -812,28 +791,28 @@
         if(!member.deposits) member.deposits = [];
 
         const amount = parseFloat(document.getElementById('depAmount').value) || 0;
+        const pts = parseInt(document.getElementById('depositPointsInput').value) || 0;
         const record = {
             date: document.getElementById('depDate').value,
             month: document.getElementById('depMonth').value.trim(),
             amount: amount,
+            points: pts,
             note: document.getElementById('depNote').value.trim() || 'মাসিক সঞ্চয় জমা'
         };
 
         member.deposits.push(record);
         member.balance = (parseFloat(member.balance) || 0) + amount;
-
-        const pts = parseInt(document.getElementById('depositPointsInput').value) || 0;
         member.points = (parseInt(member.points) || 0) + pts;
            
         set(ref(db, 'siteData'), currentData).then(() => {
-            alert('সঞ্চয় জমা রেকর্ড সফলভাবে সংরক্ষণ করা হয়েছে!');
+            alert('সঞ্চয় জমা ও পয়েন্ট সফলভাবে সংরক্ষণ করা হয়েছে!');
             document.getElementById('depositForm').reset();
             renderMembers();
             renderTransactionHistory(index);
         });
     }
 
-     window.addLoanRecord = function(e) {
+    window.addLoanRecord = function(e) {
         e.preventDefault();
         const index = document.getElementById('transMemberIndex').value;
         const member = currentData.members[index];
@@ -858,7 +837,6 @@
         });
     }
 
-/* স্টেটমেন্ট এডিট ফাংশনসমূহ */
     window.openEditTransModal = function(mIdx, itemIdx, type) {
         const member = currentData.members[mIdx];
         document.getElementById('editTransMemberIdx').value = mIdx;
@@ -887,7 +865,7 @@
             document.getElementById('editTransField2').value = loan.installmentNo || '';
             document.getElementById('editTransAmount').value = loan.amount || 0;
             document.getElementById('editTransNote').value = loan.note || '';
-            if(pointsGroup) pointsGroup.style.display = 'none'; // লোনের সময় পয়েন্ট ফিল্ড হাই থাকবে
+            if(pointsGroup) pointsGroup.style.display = 'none';
         }
 
         document.getElementById('editTransModal').style.display = 'flex';
@@ -957,7 +935,7 @@
                 renderTransactionHistory(mIdx);
             });
         }
-           }
+    }
            
     window.deleteLoanRecord = function(mIdx, lIdx) {
         if(confirm('আপনি কি নিশ্চিত যে এই কিস্তির রেকর্ডটি মুছে ফেলতে চান?')) {
