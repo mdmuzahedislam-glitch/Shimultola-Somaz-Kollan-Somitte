@@ -48,7 +48,7 @@
     <header>
         <div>
             <h2 id="welcomeHeader" style="margin: 0; font-size: 1.2rem; font-weight: bold;">🙋 স্বাগতম সদস্য</h2>
-            <p style="font-size: 12px; opacity: 0.95; margin-top: 3px;">শিমুলতলা সমাজকল্যাণ সমবায় সমিতি<br>ঢেংগারগড়, ইসলামপুর, জামালপুর।</p>
+            <p style="font-size: 12px; opacity: 0.95; margin-top: 3px;">🏦শিমুলতলা সমাজকল্যাণ সমবায় সমিতি<br>🤖ঢেংগারগড়, ইসলামপুর, জামালপুর।</p>
         </div>
         <a href="#" onclick="logout()" class="logout-btn">লগআউট</a>
     </header>
@@ -210,7 +210,7 @@
                 document.getElementById('loadingMessage').style.display = 'none';
                 
                 // স্বাগতম বার্তা আপডেট
-                //document.getElementById('welcomeHeader').innerText = `🙋 স্বাগতম, ${member.name}!`;
+                document.getElementById('welcomeHeader').innerText = `🙋 স্বাগতম, ${member.name}!`;
 
                 // প্রোফাইল তথ্য ও পয়েন্ট সেট
                 document.getElementById('memberName').innerText = member.name;
