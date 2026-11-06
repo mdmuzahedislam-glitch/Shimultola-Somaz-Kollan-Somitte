@@ -958,6 +958,46 @@
             });
         }
     }
+    function exportToExcel() {
+    // উপরিভাগের সামারি বা শিরোনাম তথ্য তৈরি
+    let titleHTML = `
+        <tr style="background-color: #1b5e20; color: white; font-weight: bold; text-align: center;">
+            <td colspan="8" style="font-size: 16px; padding: 10px;">শিমুলতলা সমাজকল্যাণ সমবায় সমিতি</td>
+        </tr>
+        <tr style="background-color: #2e7d32; color: white; font-weight: bold; text-align: center;">
+            <td colspan="8" style="font-size: 12px; padding: 5px;">স্থাপিত:২০২০ইং  সদস্য তালিকা ও আর্থিক প্রতিবেদন</td>
+        </tr>
+        <tr style="background-color: #f5f5f5; font-weight: bold;">
+            <td colspan="2">মোট সদস্য সংখ্যা: 10 জন</td>
+            <td colspan="2">সর্বমোট জমা ব্যালেন্স: ৳ 4,87,050</td>
+            <td colspan="2">সর্বমোট পয়েন্ট: 1821 pt</td>
+            <td colspan="2">সর্বমোট বকেয়া ঋণ: ৳ 1,91,700</td>
+        </tr>
+        <tr style="background-color: #ffffff;"><td colspan="8"></td></tr>
+    `;
+    // টেবিল ডেটা সংগ্রহ
+    let table = document.querySelector("table").cloneNode(true);
+    
+    // যদি টেবিলে আগে থেকেই thead থাকে, তার আগে হেডার ইনসার্ট করা
+    let thead = table.querySelector("thead");
+    if (thead) {
+        thead.insertAdjacentHTML('afterbegin', titleHTML);
+    }
+
+    let html = table.outerHTML.replace(/ /g, '%20');
+    
+    let blob = new Blob(['\ufeff' + html], {
+        type: 'application/vnd.ms-excel'
+    });
+    
+    let url = URL.createObjectURL(blob);
+    let a = document.createElement('a');
+    a.href = url;
+    a.download = 'Shimultola_Cooperative_Report.xls';
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    }
 </script>
 
 </body>
